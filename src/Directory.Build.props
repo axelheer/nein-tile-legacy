@@ -1,0 +1,8 @@
+<Project>
+
+  <Import Project="..\BuildInfo.props" />
+  <Import Project="..\SourceLink.props" />
+  <Import Project="..\PackageData.props" />
+  <Import Project="..\CodeAnalysis.props" />
+
+</Project>
