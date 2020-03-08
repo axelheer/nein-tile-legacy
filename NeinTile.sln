@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EBCF0777-D8C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeinTile", "src\NeinTile\NeinTile.csproj", "{67392DD6-DC43-4A3D-97C2-9FA0BD205E0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeinTile.Console", "src\NeinTile.Console\NeinTile.Console.csproj", "{E1C9EA6A-B7F8-4404-9AD7-724FD4847352}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeinTile.Shell", "src\NeinTile.Shell\NeinTile.Shell.csproj", "{E1C9EA6A-B7F8-4404-9AD7-724FD4847352}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{F7581414-A534-468B-97D2-8881F0CE8AA9}"
 EndProject
