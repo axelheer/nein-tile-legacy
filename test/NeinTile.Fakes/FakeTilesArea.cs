@@ -9,18 +9,16 @@ namespace NeinTile.Fakes
         {
         }
 
-        public Func<MoveDirection, bool> OnCanMove { get; set; } = _ => false;
+        public Func<MoveDirection, bool> OnCanMove { get; set; }
+            = _ => false;
 
         public override bool CanMove(MoveDirection direction)
-        {
-            return OnCanMove(direction);
-        }
+            => OnCanMove(direction);
 
-        public Func<MoveDirection, TileInfo, TilesArea> OnMove { get; set; } = (_, __) => new FakeTilesArea();
+        public Func<MoveDirection, TileInfo, TilesArea> OnMove { get; set; }
+            = (_, __) => new FakeTilesArea();
 
         public override TilesArea Move(MoveDirection direction, TileInfo nextTile)
-        {
-            return OnMove(direction, nextTile);
-        }
+            => OnMove(direction, nextTile);
     }
 }

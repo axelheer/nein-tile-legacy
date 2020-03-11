@@ -28,6 +28,9 @@ namespace NeinTile
         public int Size
             => tiles.Length;
 
+        public TileInfo this[int index]
+            => tiles[index];
+
         public virtual TileSample Preview()
             => sample != TileSample.Empty ? sample : new TileSample(tiles[0]);
 
@@ -36,7 +39,7 @@ namespace NeinTile
             TileInfo[] nextTiles;
 
             (nextTile, nextTiles) = bonus == TileInfo.Empty
-                ? (tiles[0], tiles[..^1])
+                ? (tiles[0], tiles[1..])
                 : (bonus, tiles);
 
             return new TilesDeck(mixer, lottery, nextTiles);

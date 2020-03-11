@@ -28,6 +28,7 @@ namespace NeinTile.Tests
             var subject = new TileInfo(7, 11);
 
             var expected = HashCode.Combine(subject.Value, subject.Score);
+
             var actual = subject.GetHashCode();
 
             Assert.Equal(expected, actual);

@@ -16,30 +16,23 @@ namespace NeinTile
             Score = score;
         }
 
+        public override string ToString()
+            => $"({Value}, {Score})";
+
         public override int GetHashCode()
-        {
-            return HashCode.Combine(Value, Score);
-        }
+            => HashCode.Combine(Value, Score);
 
         public override bool Equals(object? obj)
-        {
-            return obj is TileInfo other ? Equals(other) : false;
-        }
+            => obj is TileInfo other ? Equals(other) : false;
 
         public bool Equals(TileInfo other)
-        {
-            return Value == other.Value
-                && Score == other.Score;
-        }
+            => Value == other.Value
+            && Score == other.Score;
 
         public static bool operator ==(TileInfo left, TileInfo right)
-        {
-            return left.Equals(right);
-        }
+            => left.Equals(right);
 
         public static bool operator !=(TileInfo left, TileInfo right)
-        {
-            return !left.Equals(right);
-        }
+            => !left.Equals(right);
     }
 }

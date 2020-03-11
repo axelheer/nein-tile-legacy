@@ -61,6 +61,7 @@ namespace NeinTile.Tests
             );
 
             var expected = HashCode.Combine(subject.First, subject.Second, subject.Third);
+
             var actual = subject.GetHashCode();
 
             Assert.Equal(expected, actual);

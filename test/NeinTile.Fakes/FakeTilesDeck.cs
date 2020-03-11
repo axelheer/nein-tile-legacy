@@ -9,14 +9,14 @@ namespace NeinTile.Fakes
         {
         }
 
-        public Func<TileSample> OnPreview { get; set; } = () => TileSample.Empty;
+        public Func<TileSample> OnPreview { get; set; }
+            = () => TileSample.Empty;
 
         public override TileSample Preview()
-        {
-            return OnPreview();
-        }
+            => OnPreview();
 
-        public Func<(TilesDeck, TileInfo)> OnDraw { get; set; } = () => (new FakeTilesDeck(), TileInfo.Empty);
+        public Func<(TilesDeck, TileInfo)> OnDraw { get; set; }
+            = () => (new FakeTilesDeck(), TileInfo.Empty);
 
         public override TilesDeck Draw(out TileInfo nextTile)
         {

@@ -72,17 +72,20 @@ namespace NeinTile.Tests
 
             Assert.Equal(expected.Second, actualNextTile);
             Assert.Equal(2, actual.Size);
+            Assert.Equal(expected.First, actual[0]);
+            Assert.Equal(expected.Third, actual[1]);
         }
 
         [Fact]
         public void ShouldDrawNextTile()
         {
             var expected = new TileInfo(1, 2);
+            var unexpected = new TileInfo(2, 3);
 
             var subject = new TilesDeck(
                 new FakeTilesDeckMixer()
                 {
-                    OnShuffle = () => new[] { expected, expected }
+                    OnShuffle = () => new[] { expected, unexpected }
                 },
                 new FakeTilesDeckLottery()
             );
@@ -91,6 +94,7 @@ namespace NeinTile.Tests
 
             Assert.Equal(expected, actualNextTile);
             Assert.Equal(1, actual.Size);
+            Assert.Equal(unexpected, actual[0]);
         }
     }
 }
