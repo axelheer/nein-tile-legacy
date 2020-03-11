@@ -5,7 +5,7 @@ namespace NeinTile.Fakes
     public class FakeTilesArea : TilesArea
     {
         public FakeTilesArea()
-            : base (new TileInfo[0, 0, 0])
+            : base (new FakeTilesAreaMixer(), new FakeTilesAreaMerger())
         {
         }
 

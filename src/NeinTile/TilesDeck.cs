@@ -4,6 +4,8 @@ namespace NeinTile
 {
     public class TilesDeck
     {
+        private static readonly TileInfo[] emptyTiles = Array.Empty<TileInfo>();
+
         private readonly ITilesDeckMixer mixer;
         private readonly ITilesDeckLottery lottery;
 
@@ -12,7 +14,7 @@ namespace NeinTile
         private readonly TileInfo bonus;
 
         public TilesDeck(ITilesDeckMixer mixer, ITilesDeckLottery lottery)
-            : this(mixer, lottery, Array.Empty<TileInfo>())
+            : this(mixer, lottery, emptyTiles)
         {
         }
 

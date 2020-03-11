@@ -2,27 +2,55 @@ using System;
 
 namespace NeinTile
 {
-    public abstract class TilesArea
+    public class TilesArea
     {
+        private static readonly TileInfo[,,] emptyTiles = new TileInfo[0, 0, 0];
+
+        private readonly ITilesAreaMixer mixer;
+        private readonly ITilesAreaMerger merger;
+
         private readonly TileInfo[,,] tiles;
 
-        protected TilesArea(TileInfo[,,] tiles)
-            => this.tiles = tiles ?? throw new ArgumentNullException(nameof(tiles));
+        public TilesArea(ITilesAreaMixer mixer, ITilesAreaMerger merger)
+            : this(mixer, merger, emptyTiles)
+        {
+        }
 
-        public int RowCount
+        private TilesArea(ITilesAreaMixer mixer, ITilesAreaMerger merger, TileInfo[,,] tiles)
+        {
+            this.mixer = mixer ?? throw new ArgumentNullException(nameof(mixer));
+            this.merger = merger ?? throw new ArgumentNullException(nameof(merger));
+
+            this.tiles = tiles.Length == 0 ? mixer.Shuffle() : tiles;
+        }
+
+        public int ColCount
             => tiles.GetLength(1);
 
-        public int ColumnCount
-            => tiles.GetLength(2);
+        public int RowCount
+            => tiles.GetLength(0);
 
-        public int LayerCount
-            => tiles.GetLength(3);
+        public int LowCount
+            => tiles.GetLength(2);
 
         public TileInfo this[int rowIndex, int columnIndex, int layerIndex]
             => tiles[rowIndex, columnIndex, layerIndex];
 
-        public abstract bool CanMove(MoveDirection direction);
+        public virtual bool CanMove(MoveDirection direction)
+        {
+            using var enumerator = new MoveEnumerator(tiles, direction);
+            while (enumerator.MoveNext())
+            {
+                var (tile, other) = enumerator.Current;
+                if (merger.CanMerge(tile, other))
+                    return true;
+            }
+            return false;
+        }
 
-        public abstract TilesArea Move(MoveDirection direction, TileInfo nextTile);
+        public virtual TilesArea Move(MoveDirection direction, TileInfo nextTile)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
