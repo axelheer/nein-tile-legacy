@@ -4,7 +4,7 @@ namespace NeinTile
 {
     public struct TileInfo : IEquatable<TileInfo>
     {
-        public static readonly TileInfo Empty = new TileInfo();
+        public static TileInfo Empty { get; } = new TileInfo();
 
         public int Value { get; }
 
@@ -18,7 +18,7 @@ namespace NeinTile
 
         public override int GetHashCode()
         {
-            return Value;
+            return HashCode.Combine(Value, Score);
         }
 
         public override bool Equals(object? obj)
@@ -28,7 +28,8 @@ namespace NeinTile
 
         public bool Equals(TileInfo other)
         {
-            return Value == other.Value;
+            return Value == other.Value
+                && Score == other.Score;
         }
 
         public static bool operator ==(TileInfo left, TileInfo right)

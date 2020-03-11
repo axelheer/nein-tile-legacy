@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace NeinTile.Tests
@@ -22,13 +23,14 @@ namespace NeinTile.Tests
         }
 
         [Fact]
-        public void ShouldUseValueAsHashCode()
+        public void ShouldCombineHashCode()
         {
             var subject = new TileInfo(7, 11);
 
+            var expected = HashCode.Combine(subject.Value, subject.Score);
             var actual = subject.GetHashCode();
 
-            Assert.Equal(7, actual);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
@@ -36,7 +38,7 @@ namespace NeinTile.Tests
         {
             var subject = new TileInfo(11, 38);
 
-            var actual = subject.Equals(new TileInfo(11, -1));
+            var actual = subject.Equals(new TileInfo(11, 38));
 
             Assert.True(actual);
         }
@@ -76,7 +78,7 @@ namespace NeinTile.Tests
         {
             var subject = new TileInfo(11, 38);
 
-            var actual = subject == new TileInfo(11, -1);
+            var actual = subject == new TileInfo(11, 38);
 
             Assert.True(actual);
         }
@@ -86,7 +88,7 @@ namespace NeinTile.Tests
         {
             var subject = new TileInfo(11, 38);
 
-            var actual = subject == new TileInfo(-1, 38);
+            var actual = subject == new TileInfo(11, -1);
 
             Assert.False(actual);
         }
@@ -96,7 +98,7 @@ namespace NeinTile.Tests
         {
             var subject = new TileInfo(11, 38);
 
-            var actual = subject != new TileInfo(11, -1);
+            var actual = subject != new TileInfo(11, 38);
 
             Assert.False(actual);
         }

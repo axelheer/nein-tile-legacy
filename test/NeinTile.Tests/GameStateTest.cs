@@ -14,7 +14,8 @@ namespace NeinTile.Tests
                 new FakeTilesArea()
                 {
                     OnCanMove = _ => false
-                });
+                }
+            );
 
             var error = Assert.Throws<InvalidOperationException>(() => subject.Move(MoveDirection.Down));
 
@@ -43,7 +44,8 @@ namespace NeinTile.Tests
 
                         return expectedArea;
                     }
-                });
+                }
+            );
 
             var actual = subject.Move(MoveDirection.Up);
 
