@@ -16,10 +16,10 @@ namespace NeinTile.Tests
         [Fact]
         public void ShouldAssignValues()
         {
-            var subject = new TileInfo(1, 2);
+            var (value, score) = new TileInfo(1, 2);
 
-            Assert.Equal(1, subject.Value);
-            Assert.Equal(2, subject.Score);
+            Assert.Equal(1, value);
+            Assert.Equal(2, score);
         }
 
         [Fact]

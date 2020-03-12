@@ -38,7 +38,7 @@ namespace NeinTile
 
         public virtual bool CanMove(MoveDirection direction)
         {
-            using var enumerator = new MoveEnumerator(tiles, direction);
+            var enumerator = new MoveEnumerator(tiles, direction);
             while (enumerator.MoveNext())
             {
                 var (tile, other) = enumerator.Current;

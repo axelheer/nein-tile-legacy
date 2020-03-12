@@ -24,11 +24,18 @@ namespace NeinTile
         {
         }
 
+        public void Deconstruct(out TileInfo first, out TileInfo second, out TileInfo third)
+        {
+            first = First;
+            second = Second;
+            third = Third;
+        }
+
         public bool IsExplicit
             => First == Second && Second == Third;
 
         public override string ToString()
-            => $"({First}, {Second}, {Third})";
+            => $"{First} | {Second} | {Third}";
 
         public override int GetHashCode()
             => HashCode.Combine(First, Second, Third);

@@ -16,6 +16,12 @@ namespace NeinTile
             Score = score;
         }
 
+        public void Deconstruct(out int value, out int score)
+        {
+            value = Value;
+            score = Score;
+        }
+
         public override string ToString()
             => $"({Value}, {Score})";
 

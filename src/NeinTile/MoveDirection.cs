@@ -4,8 +4,10 @@ namespace NeinTile
     {
         Right,
         Left,
+
         Up,
         Down,
+
         Forward,
         Backward,
     }

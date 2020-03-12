@@ -4,117 +4,108 @@ using System.Collections.Generic;
 
 namespace NeinTile
 {
-    public sealed class MoveEnumerator : IEnumerator<(TileInfo tile, TileInfo other)>
+    public struct MoveEnumerator : IEnumerator<TileMove>
     {
         private readonly TileInfo[,,] tiles;
         private readonly MoveDirection direction;
 
-        private readonly int colStart;
-        private readonly int colShift;
-        private readonly int colCount;
-        private int colIndex;
-
-        private readonly int rowStart;
-        private readonly int rowShift;
-        private readonly int rowCount;
-        private int rowIndex;
-
-        private readonly int lowStart;
-        private readonly int lowShift;
-        private readonly int lowCount;
-        private int lowIndex;
+        private bool initial;
+        private MoveData col;
+        private MoveData row;
+        private MoveData low;
 
         public MoveEnumerator(TileInfo[,,] tiles, MoveDirection direction)
         {
             this.tiles = tiles ?? throw new ArgumentNullException(nameof(tiles));
             this.direction = direction;
 
-            colCount = tiles.GetLength(0);
-            rowCount = tiles.GetLength(1);
-            lowCount = tiles.GetLength(2);
+            initial = false;
 
-            switch (direction)
-            {
-                case MoveDirection.Right:
-                    colCount -= 1;
-                    colShift = +1;
-                    break;
-
-                case MoveDirection.Left:
-                    colStart += 1;
-                    colShift = -1;
-                    break;
-
-                case MoveDirection.Up:
-                    rowCount -= 1;
-                    rowShift = +1;
-                    break;
-
-                case MoveDirection.Down:
-                    rowStart += 1;
-                    rowShift = -1;
-                    break;
-
-                case MoveDirection.Forward:
-                    lowCount -= 1;
-                    lowShift = +1;
-                    break;
-
-                case MoveDirection.Backward:
-                    lowStart += 1;
-                    lowShift = -1;
-                    break;
-
-                default:
-                    throw new NotSupportedException($"Direction '{direction}' not supported.");
-            }
+            col = new MoveData(0, tiles.GetLength(0), direction);
+            row = new MoveData(1, tiles.GetLength(1), direction);
+            low = new MoveData(2, tiles.GetLength(2), direction);
 
             Reset();
         }
 
-        public (TileInfo tile, TileInfo other) Current
-            => (tiles[colIndex, rowCount, lowIndex], tiles[colIndex + colShift, rowIndex + rowShift, lowIndex + lowShift]);
+        public TileMove Current
+            => new TileMove(
+                tiles[col.Index, row.Index, low.Index],
+                tiles[col.ShiftIndex, row.ShiftIndex, low.ShiftIndex]
+            );
 
         object? IEnumerator.Current
             => Current;
 
         public bool MoveNext()
         {
-            if (colIndex < colCount)
+            if (initial)
             {
-                colIndex += 1;
+                initial = false;
                 return true;
             }
 
-            colIndex = colStart;
-
-            if (rowIndex < rowCount)
-            {
-                rowIndex += 1;
+            if (col.MoveNext())
                 return true;
-            }
+            col.Reset();
 
-            rowIndex = rowCount;
-
-            if (lowIndex < lowCount)
-            {
-                lowIndex += 1;
+            if (row.MoveNext())
                 return true;
-            }
+            row.Reset();
 
+            if (low.MoveNext())
+                return true;
             return false;
         }
 
         public void Reset()
         {
-            colIndex = colStart - 1;
-            rowIndex = rowStart;
-            lowIndex = lowStart;
+            initial = true;
+
+            col.Reset();
+            row.Reset();
+            low.Reset();
         }
 
         public void Dispose()
+            => Reset();
+
+        private struct MoveData
         {
-            GC.SuppressFinalize(this);
+            private readonly int direction;
+
+            public readonly int Start { get; }
+            public readonly int Shift { get; }
+            public readonly int Count { get; }
+
+            public int Index { get; set; }
+
+            public MoveData(int dimension, int count, MoveDirection direction)
+            {
+                this.direction = (int)direction % 2 == 0 ? 1 : -1;
+
+                var positive = dimension + dimension == (int)direction;
+                var negative = dimension + dimension + 1 == (int)direction;
+
+                Start = negative ? 1 : 0;
+                Shift = positive ? 1 : negative ? -1 : 0;
+                Count = positive ? count - 1 : count;
+
+                Index = -1;
+            }
+
+            public int ShiftIndex
+                => Index + Shift;
+
+            public void Reset()
+                => Index = direction > 0 ? Start : Count - 1;
+
+            public bool MoveNext()
+            {
+                Index += direction;
+
+                return Start <= Index && Index < Count;
+            }
         }
     }
 }
