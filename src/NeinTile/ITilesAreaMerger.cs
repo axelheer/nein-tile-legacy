@@ -2,8 +2,8 @@ namespace NeinTile
 {
     public interface ITilesAreaMerger
     {
-        bool CanMerge(TileInfo tile, TileInfo other);
+        bool CanMerge(TileInfo source, TileInfo target);
 
-        TileInfo Merge(TileInfo tile, TileInfo other);
+        TileInfo Merge(TileInfo source, TileInfo target, out TileInfo remainder);
     }
 }

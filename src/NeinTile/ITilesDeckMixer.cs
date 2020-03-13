@@ -3,6 +3,8 @@ namespace NeinTile
 {
     public interface ITilesDeckMixer
     {
-        TileInfo[] Shuffle();
+        TileInfo[] Tiles { get; }
+
+        ITilesDeckMixer Shuffle();
     }
 }

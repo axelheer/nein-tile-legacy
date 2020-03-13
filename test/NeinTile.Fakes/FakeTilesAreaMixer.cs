@@ -4,10 +4,13 @@ namespace NeinTile.Fakes
 {
     public class FakeTilesAreaMixer : ITilesAreaMixer
     {
-        public Func<TileInfo[,,]> OnShuffle { get; set; }
-            = () => new TileInfo[0, 0, 0];
+        public TileInfo[,,] Tiles { get; set; }
+            = new TileInfo[0, 0, 0];
 
-        public TileInfo[,,] Shuffle()
+        public Func<ITilesAreaMixer> OnShuffle { get; set; }
+            = () => new FakeTilesAreaMixer();
+
+        public ITilesAreaMixer Shuffle()
             => OnShuffle();
     }
 }

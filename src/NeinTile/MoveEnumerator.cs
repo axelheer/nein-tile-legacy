@@ -28,6 +28,14 @@ namespace NeinTile
             Reset();
         }
 
+        public MoveMarking Update(TileInfo source, TileInfo target)
+        {
+            tiles[col.Index, row.Index, low.Index] = source;
+            tiles[col.ShiftIndex, row.ShiftIndex, low.ShiftIndex] = target;
+
+            return new MoveMarking(col.ShiftMark, row.ShiftMark, low.ShiftMark);
+        }
+
         public TileMove Current
             => new TileMove(
                 tiles[col.Index, row.Index, low.Index],
@@ -82,7 +90,7 @@ namespace NeinTile
 
             public MoveData(int dimension, int count, MoveDirection direction)
             {
-                this.direction = (int)direction % 2 == 0 ? 1 : -1;
+                this.direction = (int)direction % 2 == 1 ? 1 : -1;
 
                 var positive = dimension + dimension == (int)direction;
                 var negative = dimension + dimension + 1 == (int)direction;
@@ -96,6 +104,9 @@ namespace NeinTile
 
             public int ShiftIndex
                 => Index + Shift;
+
+            public int ShiftMark
+                => Shift == 0 ? Index : direction < 0 ? 0 : Count - 1;
 
             public void Reset()
                 => Index = direction > 0 ? Start : Count - 1;

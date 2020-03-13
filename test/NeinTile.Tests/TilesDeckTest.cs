@@ -1,4 +1,3 @@
-using System;
 using NeinTile.Fakes;
 using Xunit;
 
@@ -19,7 +18,7 @@ namespace NeinTile.Tests
                 new FakeTilesDeckMixer(),
                 new FakeTilesDeckLottery()
                 {
-                    OnDraw = () => (expected, default)
+                    Sample = expected
                 }
             );
 
@@ -38,7 +37,7 @@ namespace NeinTile.Tests
             var subject = new TilesDeck(
                 new FakeTilesDeckMixer()
                 {
-                    OnShuffle = () => new[] { expected.First }
+                    Tiles = new[] { expected.First }
                 },
                 new FakeTilesDeckLottery()
             );
@@ -60,11 +59,12 @@ namespace NeinTile.Tests
             var subject = new TilesDeck(
                 new FakeTilesDeckMixer()
                 {
-                    OnShuffle = () => new[] { expected.First, expected.Third }
+                    Tiles = new[] { expected.First, expected.Third }
                 },
                 new FakeTilesDeckLottery()
                 {
-                    OnDraw = () => (expected, expected.Second)
+                    Sample = expected,
+                    Bonus = expected.Second
                 }
             );
 
@@ -85,7 +85,7 @@ namespace NeinTile.Tests
             var subject = new TilesDeck(
                 new FakeTilesDeckMixer()
                 {
-                    OnShuffle = () => new[] { expected, unexpected }
+                    Tiles = new[] { expected, unexpected }
                 },
                 new FakeTilesDeckLottery()
             );
@@ -95,6 +95,54 @@ namespace NeinTile.Tests
             Assert.Equal(expected, actualNextTile);
             Assert.Equal(1, actual.Size);
             Assert.Equal(unexpected, actual[0]);
+        }
+
+        [Fact]
+        public void ShouldDrawNewMixer()
+        {
+            var expected = new FakeTilesDeckMixer()
+            {
+                Tiles = new[] { new TileInfo(1, 2) }
+            };
+
+            var subject = new TilesDeck(
+                new FakeTilesDeckMixer()
+                {
+                    Tiles = new TileInfo[1],
+                    OnShuffle = () => expected
+                },
+                new FakeTilesDeckLottery()
+            );
+
+            var actual = subject.Draw(out _);
+
+            Assert.Equal(1, actual.Size);
+            Assert.Equal(expected.Tiles[0], actual[0]);
+        }
+
+        [Fact]
+        public void ShouldDrawNewLottery()
+        {
+            var expected = new FakeTilesDeckLottery()
+            {
+                Sample = new TileSample(new TileInfo(1, 2)),
+                Bonus = new TileInfo(1, 2)
+            };
+
+            var subject = new TilesDeck(
+                new FakeTilesDeckMixer()
+                {
+                    Tiles = new TileInfo[1]
+                },
+                new FakeTilesDeckLottery()
+                {
+                    OnDraw = () => expected
+                }
+            );
+
+            var actual = subject.Draw(out _).Preview();
+
+            Assert.Equal(expected.Sample, actual);
         }
     }
 }

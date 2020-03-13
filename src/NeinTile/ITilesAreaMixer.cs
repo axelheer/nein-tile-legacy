@@ -2,6 +2,8 @@ namespace NeinTile
 {
     public interface ITilesAreaMixer
     {
-        TileInfo[,,] Shuffle();
+        TileInfo[,,] Tiles { get; }
+
+        ITilesAreaMixer Shuffle();
     }
 }
