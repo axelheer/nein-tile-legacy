@@ -50,7 +50,7 @@ namespace NeinTile
         public virtual TilesArea Move(MoveDirection direction, TileInfo nextTile)
         {
             var markings = new List<MoveMarking>();
-            var nextTiles = new TileInfo[ColCount, RowCount, LowCount];
+            var nextTiles = (TileInfo[,,])tiles.Clone();
 
             var enumerator = new MoveEnumerator(nextTiles, direction);
             while (enumerator.MoveNext())
