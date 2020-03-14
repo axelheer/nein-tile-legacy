@@ -5,26 +5,22 @@ namespace NeinTile
 {
     public class TilesArea
     {
-        private static readonly TileInfo[,,] emptyTiles = new TileInfo[0, 0, 0];
-
-        private readonly ITilesAreaMixer mixer;
         private readonly ITilesAreaMerger merger;
         private readonly ITilesAreaLottery lottery;
 
         private readonly TileInfo[,,] tiles;
 
         public TilesArea(ITilesAreaMixer mixer, ITilesAreaMerger merger, ITilesAreaLottery lottery)
-            : this(mixer, merger, lottery, emptyTiles)
+            : this(merger, lottery, (mixer ?? throw new ArgumentNullException(nameof(mixer))).Shuffle())
         {
         }
 
-        private TilesArea(ITilesAreaMixer mixer, ITilesAreaMerger merger, ITilesAreaLottery lottery, TileInfo[,,] tiles)
+        private TilesArea(ITilesAreaMerger merger, ITilesAreaLottery lottery, TileInfo[,,] tiles)
         {
-            this.mixer = mixer ?? throw new ArgumentNullException(nameof(mixer));
             this.merger = merger ?? throw new ArgumentNullException(nameof(merger));
             this.lottery = lottery ?? throw new ArgumentNullException(nameof(lottery));
 
-            this.tiles = tiles.Length == 0 ? mixer.Tiles : tiles;
+            this.tiles = tiles;
         }
 
         public int ColCount
@@ -67,10 +63,10 @@ namespace NeinTile
                 }
             }
 
-            var (colIndex, rowIndex, lowIndex) = lottery.Pick(markings.ToArray());
+            var (colIndex, rowIndex, lowIndex) = lottery.Draw(markings.ToArray());
             nextTiles[colIndex, rowIndex, lowIndex] = nextTile;
 
-            return new TilesArea(mixer.Shuffle(), merger, lottery.Draw(), nextTiles);
+            return new TilesArea(merger, lottery.CreateNext(), nextTiles);
         }
     }
 }

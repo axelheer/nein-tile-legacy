@@ -2,10 +2,8 @@ namespace NeinTile
 {
     public interface ITilesDeckLottery
     {
-        TileInfo Bonus { get; }
+        TileSample Draw(TileInfo[] tiles, out TileInfo bonus);
 
-        TileSample Sample { get; }
-
-        ITilesDeckLottery Draw();
+        ITilesDeckLottery CreateNext();
     }
 }

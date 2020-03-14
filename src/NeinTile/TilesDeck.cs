@@ -4,15 +4,15 @@ namespace NeinTile
 {
     public class TilesDeck
     {
-        private static readonly TileInfo[] emptyTiles = Array.Empty<TileInfo>();
-
         private readonly ITilesDeckMixer mixer;
         private readonly ITilesDeckLottery lottery;
 
         private readonly TileInfo[] tiles;
+        private readonly TileSample sample;
+        private readonly TileInfo bonus;
 
         public TilesDeck(ITilesDeckMixer mixer, ITilesDeckLottery lottery)
-            : this(mixer, lottery, emptyTiles)
+            : this(mixer, lottery, Array.Empty<TileInfo>())
         {
         }
 
@@ -21,7 +21,8 @@ namespace NeinTile
             this.mixer = mixer ?? throw new ArgumentNullException(nameof(mixer));
             this.lottery = lottery ?? throw new ArgumentNullException(nameof(lottery));
 
-            this.tiles = tiles.Length == 0 ? mixer.Tiles : tiles;
+            this.tiles = tiles.Length == 0 ? mixer.Shuffle() : tiles;
+            sample = lottery.Draw(this.tiles, out bonus);
         }
 
         public int Size
@@ -31,17 +32,17 @@ namespace NeinTile
             => tiles[index];
 
         public virtual TileSample Preview()
-            => lottery.Sample != TileSample.Empty ? lottery.Sample : new TileSample(tiles[0]);
+            => sample != TileSample.Empty ? sample : new TileSample(tiles[0]);
 
         public virtual TilesDeck Draw(out TileInfo nextTile)
         {
             TileInfo[] nextTiles;
 
-            (nextTile, nextTiles) = lottery.Bonus == TileInfo.Empty
+            (nextTile, nextTiles) = bonus == TileInfo.Empty
                 ? (tiles[0], tiles[1..])
-                : (lottery.Bonus, tiles);
+                : (bonus, tiles);
 
-            return new TilesDeck(mixer.Shuffle(), lottery.Draw(), nextTiles);
+            return new TilesDeck(mixer.CreateNext(), lottery.CreateNext(), nextTiles);
         }
     }
 }

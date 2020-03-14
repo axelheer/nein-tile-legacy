@@ -4,16 +4,16 @@ namespace NeinTile.Fakes
 {
     public class FakeTilesAreaLottery : ITilesAreaLottery
     {
-        public Func<ITilesAreaLottery> OnDraw { get; }
-            = () => new FakeTilesAreaLottery();
-
-        public ITilesAreaLottery Draw()
-            => OnDraw();
-
-        public Func<MoveMarking[], MoveMarking> OnPick { get; }
+        public Func<MoveMarking[], MoveMarking> OnDraw { get; set; }
             = _ => MoveMarking.Empty;
 
-        public MoveMarking Pick(MoveMarking[] markings)
-            => OnPick(markings);
+        public MoveMarking Draw(MoveMarking[] markings)
+            => OnDraw(markings);
+
+        public Func<ITilesAreaLottery> OnCreateNext { get; set; }
+            = () => new FakeTilesAreaLottery();
+
+        public ITilesAreaLottery CreateNext()
+            => OnCreateNext();
     }
 }

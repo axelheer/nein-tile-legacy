@@ -15,9 +15,9 @@ namespace NeinTile.Fakes
 
         public TileInfo Merge(TileInfo source, TileInfo target, out TileInfo remainder)
         {
-            TileInfo nextTile;
-            (nextTile, remainder) = OnMerge(source, target);
-            return nextTile;
+            TileInfo result;
+            (result, remainder) = OnMerge(source, target);
+            return result;
         }
     }
 }

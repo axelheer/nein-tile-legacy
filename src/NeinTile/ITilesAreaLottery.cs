@@ -2,8 +2,8 @@ namespace NeinTile
 {
     public interface ITilesAreaLottery
     {
-        MoveMarking Pick(MoveMarking[] markings);
+        MoveMarking Draw(MoveMarking[] markings);
 
-        ITilesAreaLottery Draw();
+        ITilesAreaLottery CreateNext();
     }
 }

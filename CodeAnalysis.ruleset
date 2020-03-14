@@ -6,7 +6,5 @@
         <Rule Id="CA1303" Action="None" />
         <!-- Prefer jagged arrays over multidimensional -->
         <Rule Id="CA1814" Action="None" />
-        <!-- Properties should not return arrays -->
-        <Rule Id="CA1819" Action="None" />
     </Rules>
 </RuleSet>
