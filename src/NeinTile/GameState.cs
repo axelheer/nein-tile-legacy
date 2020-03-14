@@ -2,7 +2,7 @@ using System;
 
 namespace NeinTile
 {
-    public class GameState
+    public sealed class GameState
     {
         public TilesDeck Deck { get; }
 
@@ -22,7 +22,7 @@ namespace NeinTile
             Previous = previous ?? throw new ArgumentNullException(nameof(previous));
         }
 
-        public virtual GameState Move(MoveDirection direction)
+        public GameState Move(MoveDirection direction)
         {
             if (!Area.CanMove(direction))
                 throw new InvalidOperationException($"Unable to move into direction '{direction}'.");

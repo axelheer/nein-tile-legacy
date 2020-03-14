@@ -28,7 +28,7 @@ namespace NeinTile.Tests
         }
 
         [Fact]
-        public void ShouldBeExplicit()
+        public void ShouldBeSingle()
         {
             var subject = new TileSample(
                 new TileInfo(1, 2),
@@ -36,11 +36,11 @@ namespace NeinTile.Tests
                 new TileInfo(1, 2)
             );
 
-            Assert.True(subject.IsExplicit);
+            Assert.True(subject.IsSingle);
         }
 
         [Fact]
-        public void ShouldBeNotExplicit()
+        public void ShouldBeNotSingle()
         {
             var subject = new TileSample(
                 new TileInfo(1, 2),
@@ -48,7 +48,31 @@ namespace NeinTile.Tests
                 new TileInfo(5, 6)
             );
 
-            Assert.False(subject.IsExplicit);
+            Assert.False(subject.IsSingle);
+        }
+
+        [Fact]
+        public void ShouldBeEither()
+        {
+            var subject = new TileSample(
+                new TileInfo(1, 2),
+                new TileInfo(3, 4),
+                new TileInfo(3, 4)
+            );
+
+            Assert.True(subject.IsEither);
+        }
+
+        [Fact]
+        public void ShouldBeNotEither()
+        {
+            var subject = new TileSample(
+                new TileInfo(1, 2),
+                new TileInfo(3, 4),
+                new TileInfo(5, 6)
+            );
+
+            Assert.False(subject.IsEither);
         }
 
         [Fact]

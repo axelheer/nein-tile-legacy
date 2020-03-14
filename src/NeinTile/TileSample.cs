@@ -19,8 +19,13 @@ namespace NeinTile
             Third = third;
         }
 
-        public TileSample(TileInfo actual)
-            : this(actual, actual, actual)
+        public TileSample(TileInfo first, TileInfo second)
+            : this(first, second, second)
+        {
+        }
+
+        public TileSample(TileInfo first)
+            : this(first, first)
         {
         }
 
@@ -31,8 +36,11 @@ namespace NeinTile
             third = Third;
         }
 
-        public bool IsExplicit
+        public bool IsSingle
             => First == Second && Second == Third;
+
+        public bool IsEither
+            => First != Second && Second == Third;
 
         public override string ToString()
             => $"{First} | {Second} | {Third}";
