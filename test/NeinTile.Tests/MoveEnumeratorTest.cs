@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -23,136 +24,39 @@ namespace NeinTile.Tests
 
         [Fact]
         public void ShouldMoveRight()
-        {
-            var iteration = 0;
-
-            var subject = new MoveEnumerator(tiles, MoveDirection.Right);
-            while (subject.MoveNext())
-            {
-                output.WriteLine(subject.Current.ToString());
-
-                var expectedSource = 63 - iteration - iteration / 3;
-                var expectedTarget = expectedSource + 1;
-
-                var (actualSource, actualTarget) = subject.Current;
-
-                Assert.Equal(expectedSource, actualSource.Value);
-                Assert.Equal(expectedTarget, actualTarget.Value);
-
-                iteration +=1;
-            };
-
-            Assert.Equal(48, iteration);
-        }
+            => TestMove(MoveDirection.Right, i => 63 - i - i / 3, s => s + 1);
 
         [Fact]
         public void ShouldMoveLeft()
-        {
-            var iteration = 0;
-
-            var subject = new MoveEnumerator(tiles, MoveDirection.Left);
-            while (subject.MoveNext())
-            {
-                output.WriteLine(subject.Current.ToString());
-
-                var expectedSource = 2 + iteration + iteration / 3;
-                var expectedTarget = expectedSource - 1;
-
-                var (actualSource, actualTarget) = subject.Current;
-
-                Assert.Equal(expectedSource, actualSource.Value);
-                Assert.Equal(expectedTarget, actualTarget.Value);
-
-                iteration +=1;
-            };
-
-            Assert.Equal(48, iteration);
-        }
+            => TestMove(MoveDirection.Left, i => 2 + i + i / 3, s => s - 1);
 
         [Fact]
         public void ShouldMoveUp()
-        {
-            var iteration = 0;
-
-            var subject = new MoveEnumerator(tiles, MoveDirection.Up);
-            while (subject.MoveNext())
-            {
-                output.WriteLine(subject.Current.ToString());
-
-                var expectedSource = 60 - iteration - 4 * (iteration / 12);
-                var expectedTarget = expectedSource + 4;
-
-                var (actualSource, actualTarget) = subject.Current;
-
-                Assert.Equal(expectedSource, actualSource.Value);
-                Assert.Equal(expectedTarget, actualTarget.Value);
-
-                iteration +=1;
-            };
-
-            Assert.Equal(48, iteration);
-        }
+            => TestMove(MoveDirection.Up, i => 60 - i - 4 * (i / 12), s => s + 4);
 
         [Fact]
         public void ShouldMoveDown()
-        {
-            var iteration = 0;
-
-            var subject = new MoveEnumerator(tiles, MoveDirection.Down);
-            while (subject.MoveNext())
-            {
-                output.WriteLine(subject.Current.ToString());
-
-                var expectedSource = 5 + iteration + 4 * (iteration / 12);
-                var expectedTarget = expectedSource - 4;
-
-                var (actualSource, actualTarget) = subject.Current;
-
-                Assert.Equal(expectedSource, actualSource.Value);
-                Assert.Equal(expectedTarget, actualTarget.Value);
-
-                iteration +=1;
-            };
-
-            Assert.Equal(48, iteration);
-        }
+            => TestMove(MoveDirection.Down, i => 5 + i + 4 * (i / 12), s => s - 4);
 
         [Fact]
         public void ShouldMoveForward()
-        {
-            var iteration = 0;
-
-            var subject = new MoveEnumerator(tiles, MoveDirection.Forward);
-            while (subject.MoveNext())
-            {
-                output.WriteLine(subject.Current.ToString());
-
-                var expectedSource = 48 - iteration;
-                var expectedTarget = expectedSource + 16;
-
-                var (actualSource, actualTarget) = subject.Current;
-
-                Assert.Equal(expectedSource, actualSource.Value);
-                Assert.Equal(expectedTarget, actualTarget.Value);
-
-                iteration +=1;
-            };
-
-            Assert.Equal(48, iteration);
-        }
+            => TestMove(MoveDirection.Forward, i => 48 - i, s => s + 16);
 
         [Fact]
         public void ShouldMoveBackward()
+            => TestMove(MoveDirection.Backward, i => 17 + i, s => s - 16);
+
+        private void TestMove(MoveDirection direction, Func<int, int> source, Func<int, int> target)
         {
             var iteration = 0;
 
-            var subject = new MoveEnumerator(tiles, MoveDirection.Backward);
+            var subject = new MoveEnumerator(tiles, direction);
             while (subject.MoveNext())
             {
                 output.WriteLine(subject.Current.ToString());
 
-                var expectedSource = 17 + iteration;
-                var expectedTarget = expectedSource - 16;
+                var expectedSource = source(iteration);
+                var expectedTarget = target(expectedSource);
 
                 var (actualSource, actualTarget) = subject.Current;
 
@@ -167,130 +71,39 @@ namespace NeinTile.Tests
 
         [Fact]
         public void ShouldMarkRight()
-        {
-            var iteration = 0;
-
-            var subject = new MoveEnumerator(tiles, MoveDirection.Right);
-            while (subject.MoveNext())
-            {
-                output.WriteLine(subject.Current.ToString());
-
-                var expected = new MoveMarking(0, 3 - iteration / 3 % 4, 3 - iteration / 12);
-
-                var (source, target) = subject.Current;
-                var actual = subject.Update(source, target);
-
-                Assert.Equal(expected, actual);
-
-                iteration +=1;
-            }
-
-            Assert.Equal(48, iteration);
-        }
+            => TestMark(MoveDirection.Right, i => (0, 3 - i / 3 % 4, 3 - i / 12));
 
         [Fact]
         public void ShouldMarkLeft()
-        {
-            var iteration = 0;
-
-            var subject = new MoveEnumerator(tiles, MoveDirection.Left);
-            while (subject.MoveNext())
-            {
-                output.WriteLine(subject.Current.ToString());
-
-                var expected = new MoveMarking(3, iteration / 3 % 4, iteration / 12);
-
-                var (source, target) = subject.Current;
-                var actual = subject.Update(source, target);
-
-                Assert.Equal(expected, actual);
-
-                iteration +=1;
-            }
-
-            Assert.Equal(48, iteration);
-        }
+            => TestMark(MoveDirection.Left, i => (3, i / 3 % 4, i / 12));
 
         [Fact]
         public void ShouldMarkUp()
-        {
-            var iteration = 0;
-
-            var subject = new MoveEnumerator(tiles, MoveDirection.Up);
-            while (subject.MoveNext())
-            {
-                output.WriteLine(subject.Current.ToString());
-
-                var expected = new MoveMarking(3 - iteration % 4, 0, 3 - iteration / 12);
-
-                var (source, target) = subject.Current;
-                var actual = subject.Update(source, target);
-
-                Assert.Equal(expected, actual);
-
-                iteration +=1;
-            }
-
-            Assert.Equal(48, iteration);
-        }
+            => TestMark(MoveDirection.Up, i => (3 - i % 4, 0, 3 - i / 12));
 
         [Fact]
         public void ShouldMarkDown()
-        {
-            var iteration = 0;
-
-            var subject = new MoveEnumerator(tiles, MoveDirection.Down);
-            while (subject.MoveNext())
-            {
-                output.WriteLine(subject.Current.ToString());
-
-                var expected = new MoveMarking(iteration % 4, 3, iteration / 12);
-
-                var (source, target) = subject.Current;
-                var actual = subject.Update(source, target);
-
-                Assert.Equal(expected, actual);
-
-                iteration +=1;
-            }
-
-            Assert.Equal(48, iteration);
-        }
+            => TestMark(MoveDirection.Down, i => (i % 4, 3, i / 12));
 
         [Fact]
         public void ShouldMarkForward()
-        {
-            var iteration = 0;
-
-            var subject = new MoveEnumerator(tiles, MoveDirection.Forward);
-            while (subject.MoveNext())
-            {
-                output.WriteLine(subject.Current.ToString());
-
-                var expected = new MoveMarking(3 - iteration % 4, 3 - iteration / 4 % 4, 0);
-
-                var (source, target) = subject.Current;
-                var actual = subject.Update(source, target);
-
-                Assert.Equal(expected, actual);
-
-                iteration +=1;
-            }
-
-            Assert.Equal(48, iteration);
-        }
+            => TestMark(MoveDirection.Forward, i => (3 - i % 4, 3 - i / 4 % 4, 0));
 
         [Fact]
         public void ShouldMarkBackward()
+            => TestMark(MoveDirection.Backward, i => (i % 4, i / 4 % 4, 3));
+
+        private void TestMark(MoveDirection direction, Func<int, (int colIndex, int rowIndex, int lowIndex)> marking)
         {
             var iteration = 0;
 
-            var subject = new MoveEnumerator(tiles, MoveDirection.Backward);
+            var subject = new MoveEnumerator(tiles, direction);
             while (subject.MoveNext())
             {
                 output.WriteLine(subject.Current.ToString());
 
-                var expected = new MoveMarking(iteration % 4, iteration / 4 % 4, 3);
+                var (colIndex, rowIndex, lowIndex) = marking(iteration);
+                var expected = new MoveMarking(colIndex, rowIndex, lowIndex);
 
                 var (source, target) = subject.Current;
                 var actual = subject.Update(source, target);
