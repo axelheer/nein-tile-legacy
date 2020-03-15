@@ -40,7 +40,7 @@ namespace NeinTile
         public virtual TileInfo Show()
             => IsBonus ? bonus : tiles[0];
 
-        public virtual TilesDeck Draw(TilesArea? area)
+        public virtual TilesDeck Draw(TilesArea? area = null)
             => new TilesDeck(mixer.CreateNext(), lottery.CreateNext(area), Slice());
 
         private TileInfo[] Slice()

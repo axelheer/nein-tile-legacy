@@ -68,9 +68,9 @@ namespace NeinTile
         private static TileInfo[] GetPool(TileInfo minBonus, int maxBonusValue)
         {
             var length = 1;
-            for (var value = minBonus.Value; value < maxBonusValue; value = value + value)
+            for (var value = minBonus.Value; value < maxBonusValue; value *= 2)
             {
-                length = length + 1;
+                length += 1;
             }
             var pool = new TileInfo[length];
             pool[0] = minBonus;

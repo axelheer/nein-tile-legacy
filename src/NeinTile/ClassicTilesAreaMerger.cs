@@ -4,12 +4,25 @@ namespace NeinTile
     {
         public bool CanMerge(TileInfo source, TileInfo target)
         {
-            throw new System.NotImplementedException();
+            return (source.Value, target.Value) switch
+            {
+                (1, 1) => false,
+                (1, 2) => true,
+                (2, 1) => true,
+                (2, 2) => false,
+                var (s, t) => s == t
+            };
         }
 
         public TileInfo Merge(TileInfo source, TileInfo target, out TileInfo remainder)
         {
-            throw new System.NotImplementedException();
+            remainder = default;
+            return (source, target) switch
+            {
+                ((1, _), (2, _)) => new TileInfo(3, 3),
+                ((2, _), (1, _)) => new TileInfo(3, 3),
+                var ((v, s), _) => new TileInfo(v * 2, s * 3)
+            };
         }
     }
 }

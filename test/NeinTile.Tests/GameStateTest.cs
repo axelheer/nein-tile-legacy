@@ -1,4 +1,3 @@
-using System;
 using NeinTile.Fakes;
 using Xunit;
 
@@ -7,7 +6,7 @@ namespace NeinTile.Tests
     public class GameStateTest
     {
         [Fact]
-        public void ShouldThrowOnMove()
+        public void ShouldNotMove()
         {
             var subject = new GameState(
                 new FakeTilesDeck(),
@@ -17,9 +16,9 @@ namespace NeinTile.Tests
                 }
             );
 
-            var error = Assert.Throws<InvalidOperationException>(() => subject.Move(MoveDirection.Down));
+            var actual = subject.Move(MoveDirection.Down);
 
-            Assert.Equal("Unable to move into direction 'Down'.", error.Message);
+            Assert.Equal(subject, actual);
         }
 
         [Fact]

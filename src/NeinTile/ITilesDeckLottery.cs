@@ -4,6 +4,6 @@ namespace NeinTile
     {
         TileSample Draw(out TileInfo bonus);
 
-        ITilesDeckLottery CreateNext(TilesArea? area);
+        ITilesDeckLottery CreateNext(TilesArea? area = null);
     }
 }

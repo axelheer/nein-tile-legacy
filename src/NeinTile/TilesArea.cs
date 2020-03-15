@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NeinTile
 {
@@ -65,7 +66,7 @@ namespace NeinTile
 
         public virtual TilesArea Move(MoveDirection direction, TileInfo nextTile)
         {
-            var markings = new List<MoveMarking>();
+            var markings = new HashSet<MoveMarking>();
             var nextTiles = (TileInfo[,,])tiles.Clone();
 
             var enumerator = new MoveEnumerator(nextTiles, direction);

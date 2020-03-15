@@ -24,14 +24,16 @@ namespace NeinTile
 
         public GameState Move(MoveDirection direction)
         {
-            if (!Area.CanMove(direction))
-                throw new InvalidOperationException($"Unable to move into direction '{direction}'.");
+            if (Area.CanMove(direction))
+            {
+                var nextTile = Deck.Show();
+                var nextArea = Area.Move(direction, nextTile);
+                var nextDeck = Deck.Draw(nextArea);
 
-            var nextTile = Deck.Show();
-            var nextArea = Area.Move(direction, nextTile);
-            var nextDeck = Deck.Draw(nextArea);
+                return new GameState(nextDeck, nextArea, this);
+            }
 
-            return new GameState(nextDeck, nextArea, this);
+            return this;
         }
     }
 }

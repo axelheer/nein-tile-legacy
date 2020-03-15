@@ -112,7 +112,7 @@ namespace NeinTile.Tests
                 new FakeTilesDeckLottery()
             );
 
-            var actual = subject.Draw(null);
+            var actual = subject.Draw();
 
             Assert.Equal(1, actual.Size);
             Assert.Equal(expected, actual[0]);
@@ -137,7 +137,7 @@ namespace NeinTile.Tests
                 }
             );
 
-            var actual = subject.Draw(null).Hint();
+            var actual = subject.Draw().Hint();
 
             Assert.Equal(expected, actual);
         }
