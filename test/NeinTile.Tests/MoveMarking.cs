@@ -16,11 +16,11 @@ namespace NeinTile.Tests
         [Fact]
         public void ShouldAssignValues()
         {
-            var (colIndex, rowIndex, lowIndex) = new MoveMarking(1, 2, 3);
+            var (colIndex, rowIndex, layIndex) = new MoveMarking(1, 2, 3);
 
             Assert.Equal(1, colIndex);
             Assert.Equal(2, rowIndex);
-            Assert.Equal(3, lowIndex);
+            Assert.Equal(3, layIndex);
         }
 
         [Fact]
@@ -28,7 +28,7 @@ namespace NeinTile.Tests
         {
             var subject = new MoveMarking(7, 11, 13);
 
-            var expected = HashCode.Combine(subject.ColIndex, subject.RowIndex, subject.LowIndex);
+            var expected = HashCode.Combine(subject.ColIndex, subject.RowIndex, subject.LayIndex);
 
             var actual = subject.GetHashCode();
 

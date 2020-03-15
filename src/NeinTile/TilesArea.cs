@@ -23,17 +23,17 @@ namespace NeinTile
 
             ColCount = tiles.GetLength(0);
             RowCount = tiles.GetLength(1);
-            LowCount = tiles.GetLength(2);
+            LayIndex = tiles.GetLength(2);
 
             this.tiles = tiles;
         }
 
         public int ColCount { get; }
         public int RowCount { get; }
-        public int LowCount { get; }
+        public int LayIndex { get; }
 
-        public TileInfo this[int colIndex, int rowIndex, int lowIndex]
-            => tiles[colIndex, rowIndex, lowIndex];
+        public TileInfo this[int colIndex, int rowIndex, int layIndex]
+            => tiles[colIndex, rowIndex, layIndex];
 
         public int MaxValue
             => Calculate<int>((value, i) => Math.Max(value, i.Value));
@@ -47,8 +47,8 @@ namespace NeinTile
             T value = default;
             for (var colIndex = 0; colIndex < ColCount; colIndex++)
                 for (var rowIndex = 0; rowIndex < RowCount; rowIndex++)
-                    for (var lowIndex = 0; lowIndex < LowCount; lowIndex++)
-                        value = calculator(value, this[colIndex, rowIndex, lowIndex]);
+                    for (var layIndex = 0; layIndex < LayIndex; layIndex++)
+                        value = calculator(value, this[colIndex, rowIndex, layIndex]);
             return value;
         }
 
@@ -80,8 +80,8 @@ namespace NeinTile
                 }
             }
 
-            var (colIndex, rowIndex, lowIndex) = lottery.Draw(markings.ToArray());
-            nextTiles[colIndex, rowIndex, lowIndex] = nextTile;
+            var (colIndex, rowIndex, layIndex) = lottery.Draw(markings.ToArray());
+            nextTiles[colIndex, rowIndex, layIndex] = nextTile;
 
             return new TilesArea(merger, lottery.CreateNext(), nextTiles);
         }

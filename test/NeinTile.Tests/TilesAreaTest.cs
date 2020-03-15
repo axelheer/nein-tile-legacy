@@ -49,7 +49,7 @@ namespace NeinTile.Tests
             Assert.True(actual);
             Assert.Equal(2, subject.ColCount);
             Assert.Equal(2, subject.RowCount);
-            Assert.Equal(1, subject.LowCount);
+            Assert.Equal(1, subject.LayIndex);
             Assert.Equal(1, subject[0, 0, 0].Value);
             Assert.Equal(1, subject[1, 0, 0].Value);
             Assert.Equal(3, subject[0, 1, 0].Value);
@@ -80,7 +80,7 @@ namespace NeinTile.Tests
             Assert.False(actual);
             Assert.Equal(2, subject.ColCount);
             Assert.Equal(2, subject.RowCount);
-            Assert.Equal(1, subject.LowCount);
+            Assert.Equal(1, subject.LayIndex);
             Assert.Equal(1, subject[0, 0, 0].Value);
             Assert.Equal(2, subject[1, 0, 0].Value);
             Assert.Equal(3, subject[0, 1, 0].Value);

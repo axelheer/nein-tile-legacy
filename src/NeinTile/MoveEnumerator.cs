@@ -12,7 +12,7 @@ namespace NeinTile
         private bool initial;
         private MoveData col;
         private MoveData row;
-        private MoveData low;
+        private MoveData lay;
 
         public MoveEnumerator(TileInfo[,,] tiles, MoveDirection direction)
         {
@@ -23,23 +23,23 @@ namespace NeinTile
 
             col = new MoveData(0, tiles.GetLength(0), direction);
             row = new MoveData(1, tiles.GetLength(1), direction);
-            low = new MoveData(2, tiles.GetLength(2), direction);
+            lay = new MoveData(2, tiles.GetLength(2), direction);
 
             Reset();
         }
 
         public MoveMarking Update(TileInfo source, TileInfo target)
         {
-            tiles[col.Index, row.Index, low.Index] = source;
-            tiles[col.ShiftIndex, row.ShiftIndex, low.ShiftIndex] = target;
+            tiles[col.Index, row.Index, lay.Index] = source;
+            tiles[col.ShiftIndex, row.ShiftIndex, lay.ShiftIndex] = target;
 
-            return new MoveMarking(col.ShiftMark, row.ShiftMark, low.ShiftMark);
+            return new MoveMarking(col.ShiftMark, row.ShiftMark, lay.ShiftMark);
         }
 
         public TileMove Current
             => new TileMove(
-                tiles[col.Index, row.Index, low.Index],
-                tiles[col.ShiftIndex, row.ShiftIndex, low.ShiftIndex]
+                tiles[col.Index, row.Index, lay.Index],
+                tiles[col.ShiftIndex, row.ShiftIndex, lay.ShiftIndex]
             );
 
         object? IEnumerator.Current
@@ -61,7 +61,7 @@ namespace NeinTile
                 return true;
             row.Reset();
 
-            if (low.MoveNext())
+            if (lay.MoveNext())
                 return true;
             return false;
         }
@@ -72,7 +72,7 @@ namespace NeinTile
 
             col.Reset();
             row.Reset();
-            low.Reset();
+            lay.Reset();
         }
 
         void IDisposable.Dispose()

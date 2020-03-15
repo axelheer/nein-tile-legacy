@@ -9,5 +9,11 @@ namespace NeinTile.Fakes
 
         public TileInfo[,,] Shuffle()
             => OnShuffle();
+
+        public Func<TilesDeck> OnCreateDeck { get; set; }
+            = () => new FakeTilesDeck();
+
+        public TilesDeck CreateDeck()
+            => OnCreateDeck();
     }
 }

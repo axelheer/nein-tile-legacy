@@ -15,9 +15,9 @@ namespace NeinTile.Tests
 
             for (var colIndex = 0; colIndex < 4; colIndex++)
                 for (var rowIndex = 0; rowIndex < 4; rowIndex++)
-                    for (var lowIndex = 0; lowIndex < 4; lowIndex++)
-                        tiles[colIndex, rowIndex, lowIndex]
-                            = new TileInfo(16 * lowIndex + rowIndex * 4 + colIndex + 1, 0);
+                    for (var layIndex = 0; layIndex < 4; layIndex++)
+                        tiles[colIndex, rowIndex, layIndex]
+                            = new TileInfo(16 * layIndex + rowIndex * 4 + colIndex + 1, 0);
 
             this.output = output;
         }
@@ -93,7 +93,7 @@ namespace NeinTile.Tests
         public void ShouldMarkBackward()
             => TestMark(MoveDirection.Backward, i => (i % 4, i / 4 % 4, 3));
 
-        private void TestMark(MoveDirection direction, Func<int, (int colIndex, int rowIndex, int lowIndex)> marking)
+        private void TestMark(MoveDirection direction, Func<int, (int colIndex, int rowIndex, int layIndex)> marking)
         {
             var iteration = 0;
 
@@ -102,8 +102,8 @@ namespace NeinTile.Tests
             {
                 output.WriteLine(subject.Current.ToString());
 
-                var (colIndex, rowIndex, lowIndex) = marking(iteration);
-                var expected = new MoveMarking(colIndex, rowIndex, lowIndex);
+                var (colIndex, rowIndex, layIndex) = marking(iteration);
+                var expected = new MoveMarking(colIndex, rowIndex, layIndex);
 
                 var (source, target) = subject.Current;
                 var actual = subject.Update(source, target);
