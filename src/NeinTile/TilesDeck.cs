@@ -41,6 +41,15 @@ namespace NeinTile
             => IsBonus ? bonus : tiles[0];
 
         public virtual TilesDeck Draw(TilesArea? area)
-            => new TilesDeck(mixer.CreateNext(), lottery.CreateNext(area), IsBonus ? tiles : tiles[1..]);
+            => new TilesDeck(mixer.CreateNext(), lottery.CreateNext(area), Slice());
+
+        private TileInfo[] Slice()
+        {
+            if (IsBonus)
+                return tiles;
+            var result = new TileInfo[tiles.Length - 1];
+            Array.Copy(tiles, 1, result, 0, result.Length);
+            return result;
+        }
     }
 }
