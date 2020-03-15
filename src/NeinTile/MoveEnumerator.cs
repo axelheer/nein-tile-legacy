@@ -75,7 +75,7 @@ namespace NeinTile
             low.Reset();
         }
 
-        public void Dispose()
+        void IDisposable.Dispose()
             => Reset();
 
         private struct MoveData

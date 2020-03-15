@@ -23,7 +23,7 @@ namespace NeinTile
             var random = heuristic.Next();
 
             // Has chance?
-            var maxValue = area != null ? FindMax(area) : 0;
+            var maxValue = area?.MaxValue ?? 0;
             var minBonus = new TileInfo(6, 9);
             var maxBonusValue = maxValue / 8;
 
@@ -77,22 +77,9 @@ namespace NeinTile
             for (var index = 1; index < pool.Length; index++)
             {
                 var (lastValue, lastScore) = pool[index - 1];
-                pool[index] = new TileInfo(
-                    lastValue + lastValue,
-                    lastScore + lastScore + lastScore
-                );
+                pool[index] = new TileInfo(lastValue * 2, lastScore * 3);
             }
             return pool;
-        }
-
-        private static int FindMax(TilesArea area)
-        {
-            var maxValue = 1;
-            for (var colIndex = 0; colIndex < area.ColCount; colIndex++)
-                for (var rowIndex = 0; rowIndex < area.RowCount; rowIndex++)
-                    for (var lowIndex = 0; lowIndex < area.LowCount; lowIndex++)
-                        maxValue = Math.Max(maxValue, area[colIndex, rowIndex, lowIndex].Value);
-            return maxValue;
         }
 
         public ITilesDeckLottery CreateNext(TilesArea? area)

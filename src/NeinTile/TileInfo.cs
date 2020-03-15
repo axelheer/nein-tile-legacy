@@ -8,15 +8,15 @@ namespace NeinTile
 
         public int Value { get; }
 
-        public int Score { get; }
+        public long Score { get; }
 
-        public TileInfo(int value, int score)
+        public TileInfo(int value, long score)
         {
             Value = value;
             Score = score;
         }
 
-        public void Deconstruct(out int value, out int score)
+        public void Deconstruct(out int value, out long score)
         {
             value = Value;
             score = Score;
