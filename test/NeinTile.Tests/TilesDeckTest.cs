@@ -6,7 +6,7 @@ namespace NeinTile.Tests
     public class TilesDeckTest
     {
         [Fact]
-        public void ShouldPreviewBonus()
+        public void ShouldHintBonus()
         {
             var expected = new TileSample(
                 new TileInfo(1, 2),
@@ -18,17 +18,18 @@ namespace NeinTile.Tests
                 new FakeTilesDeckMixer(),
                 new FakeTilesDeckLottery()
                 {
-                    OnDraw = _ => (expected, expected.Second)
+                    OnDraw = () => (expected, expected.Second)
                 }
             );
 
-            var actual = subject.Preview();
+            var actual = subject.Hint();
 
+            Assert.True(subject.IsBonus);
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void ShouldPreviewNextTile()
+        public void ShouldHintNextTile()
         {
             var expected = new TileSample(
                 new TileInfo(1, 2)
@@ -42,13 +43,14 @@ namespace NeinTile.Tests
                 new FakeTilesDeckLottery()
             );
 
-            var actual = subject.Preview();
+            var actual = subject.Hint();
 
+            Assert.False(subject.IsBonus);
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void ShouldDrawBonus()
+        public void ShouldShowBonus()
         {
             var expected = new TileSample(
                 new TileInfo(1, 2),
@@ -63,20 +65,18 @@ namespace NeinTile.Tests
                 },
                 new FakeTilesDeckLottery()
                 {
-                    OnDraw = _ => (expected, expected.Second)
+                    OnDraw = () => (expected, expected.Second)
                 }
             );
 
-            var actual = subject.Draw(out var actualNextTile);
+            var actual = subject.Show();
 
-            Assert.Equal(expected.Second, actualNextTile);
-            Assert.Equal(2, actual.Size);
-            Assert.Equal(expected.First, actual[0]);
-            Assert.Equal(expected.Third, actual[1]);
+            Assert.True(subject.IsBonus);
+            Assert.Equal(expected.Second, actual);
         }
 
         [Fact]
-        public void ShouldDrawNextTile()
+        public void ShouldShowNextTile()
         {
             var expected = new TileInfo(1, 2);
             var unexpected = new TileInfo(2, 3);
@@ -89,11 +89,10 @@ namespace NeinTile.Tests
                 new FakeTilesDeckLottery()
             );
 
-            var actual = subject.Draw(out var actualNextTile);
+            var actual = subject.Show();
 
-            Assert.Equal(expected, actualNextTile);
-            Assert.Equal(1, actual.Size);
-            Assert.Equal(unexpected, actual[0]);
+            Assert.False(subject.IsBonus);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
@@ -113,7 +112,7 @@ namespace NeinTile.Tests
                 new FakeTilesDeckLottery()
             );
 
-            var actual = subject.Draw(out _);
+            var actual = subject.Draw(null);
 
             Assert.Equal(1, actual.Size);
             Assert.Equal(expected, actual[0]);
@@ -131,14 +130,14 @@ namespace NeinTile.Tests
                 },
                 new FakeTilesDeckLottery()
                 {
-                    OnCreateNext = () => new FakeTilesDeckLottery()
+                    OnCreateNext = _ => new FakeTilesDeckLottery()
                     {
-                        OnDraw = _ => (expected, expected.First)
+                        OnDraw = () => (expected, expected.First)
                     }
                 }
             );
 
-            var actual = subject.Draw(out _).Preview();
+            var actual = subject.Draw(null).Hint();
 
             Assert.Equal(expected, actual);
         }

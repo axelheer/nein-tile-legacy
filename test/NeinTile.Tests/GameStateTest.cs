@@ -32,7 +32,8 @@ namespace NeinTile.Tests
             var subject = new GameState(
                 new FakeTilesDeck()
                 {
-                    OnDraw = () => (expectedDeck, expectedTile)
+                    OnShow = () => expectedTile,
+                    OnDraw = _ => expectedDeck
                 },
                 new FakeTilesArea()
                 {

@@ -27,8 +27,9 @@ namespace NeinTile
             if (!Area.CanMove(direction))
                 throw new InvalidOperationException($"Unable to move into direction '{direction}'.");
 
-            var nextDeck = Deck.Draw(out var nextTile);
+            var nextTile = Deck.Show();
             var nextArea = Area.Move(direction, nextTile);
+            var nextDeck = Deck.Draw(nextArea);
 
             return new GameState(nextDeck, nextArea, this);
         }

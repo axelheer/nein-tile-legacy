@@ -22,8 +22,11 @@ namespace NeinTile
             this.lottery = lottery ?? throw new ArgumentNullException(nameof(lottery));
 
             this.tiles = tiles.Length == 0 ? mixer.Shuffle() : tiles;
-            sample = lottery.Draw(this.tiles, out bonus);
+            sample = lottery.Draw(out bonus);
         }
+
+        public bool IsBonus
+            => bonus != TileInfo.Empty;
 
         public int Size
             => tiles.Length;
@@ -31,18 +34,13 @@ namespace NeinTile
         public TileInfo this[int index]
             => tiles[index];
 
-        public virtual TileSample Preview()
-            => sample != TileSample.Empty ? sample : new TileSample(tiles[0]);
+        public virtual TileSample Hint()
+            => IsBonus ? sample : new TileSample(tiles[0]);
 
-        public virtual TilesDeck Draw(out TileInfo nextTile)
-        {
-            TileInfo[] nextTiles;
+        public virtual TileInfo Show()
+            => IsBonus ? bonus : tiles[0];
 
-            (nextTile, nextTiles) = bonus == TileInfo.Empty
-                ? (tiles[0], tiles[1..])
-                : (bonus, tiles);
-
-            return new TilesDeck(mixer.CreateNext(), lottery.CreateNext(), nextTiles);
-        }
+        public virtual TilesDeck Draw(TilesArea? area)
+            => new TilesDeck(mixer.CreateNext(), lottery.CreateNext(area), IsBonus ? tiles : tiles[1..]);
     }
 }

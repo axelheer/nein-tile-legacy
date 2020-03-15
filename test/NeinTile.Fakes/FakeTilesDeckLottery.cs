@@ -4,20 +4,20 @@ namespace NeinTile.Fakes
 {
     public class FakeTilesDeckLottery : ITilesDeckLottery
     {
-        public Func<TileInfo[], (TileSample, TileInfo)> OnDraw { get; set; }
-            = _ => (TileSample.Empty, TileInfo.Empty);
+        public Func<(TileSample, TileInfo)> OnDraw { get; set; }
+            = () => (TileSample.Empty, TileInfo.Empty);
 
-        public TileSample Draw(TileInfo[] tiles, out TileInfo bonus)
+        public TileSample Draw(out TileInfo bonus)
         {
             TileSample sample;
-            (sample, bonus) = OnDraw(tiles);
+            (sample, bonus) = OnDraw();
             return sample;
         }
 
-        public Func<ITilesDeckLottery> OnCreateNext { get; set; }
-            = () => new FakeTilesDeckLottery();
+        public Func<TilesArea, ITilesDeckLottery> OnCreateNext { get; set; }
+            =_ => new FakeTilesDeckLottery();
 
-        public ITilesDeckLottery CreateNext()
-            => OnCreateNext();
+        public ITilesDeckLottery CreateNext(TilesArea area)
+            => OnCreateNext(area);
     }
 }

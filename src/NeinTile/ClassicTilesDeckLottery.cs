@@ -4,25 +4,21 @@ namespace NeinTile
 {
     public sealed class ClassicTilesDeckLottery : ITilesDeckLottery
     {
-        private TilesArea? area;
+        private readonly TilesArea? area;
         private readonly DeterministicHeuristic heuristic;
 
         public ClassicTilesDeckLottery()
-            : this(DeterministicHeuristic.CreateNew())
+            : this(null, DeterministicHeuristic.CreateNew())
         {
         }
 
-        private ClassicTilesDeckLottery(DeterministicHeuristic heuristic)
-            => this.heuristic = heuristic;
-
         private ClassicTilesDeckLottery(TilesArea? area, DeterministicHeuristic heuristic)
-            : this(heuristic)
-            => Attach(area);
+        {
+            this.area = area;
+            this.heuristic = heuristic;
+        }
 
-        public void Attach(TilesArea? area)
-            => this.area = area;
-
-        public TileSample Draw(TileInfo[] tiles, out TileInfo bonus)
+        public TileSample Draw(out TileInfo bonus)
         {
             var random = heuristic.Next();
 
@@ -99,7 +95,7 @@ namespace NeinTile
             return maxValue;
         }
 
-        public ITilesDeckLottery CreateNext()
+        public ITilesDeckLottery CreateNext(TilesArea? area)
             => new ClassicTilesDeckLottery(area, heuristic.CreateNext());
     }
 }
