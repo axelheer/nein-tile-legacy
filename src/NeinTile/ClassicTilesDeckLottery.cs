@@ -8,63 +8,64 @@ namespace NeinTile
         private readonly DeterministicHeuristic heuristic;
 
         public ClassicTilesDeckLottery()
-            : this(null, DeterministicHeuristic.CreateNew())
+            : this(DeterministicHeuristic.CreateNew())
         {
         }
+
+        private ClassicTilesDeckLottery(DeterministicHeuristic heuristic)
+            => this.heuristic = heuristic;
 
         private ClassicTilesDeckLottery(TilesArea? area, DeterministicHeuristic heuristic)
-        {
-            this.area = area;
-            this.heuristic = heuristic;
-        }
+            : this(heuristic)
+            => Attach(area);
 
-        public void Attach(TilesArea area)
+        public void Attach(TilesArea? area)
             => this.area = area;
 
         public TileSample Draw(TileInfo[] tiles, out TileInfo bonus)
         {
-            var maxValue = area != null ? FindMax(area) : 0;
+            var random = heuristic.Next();
 
+            // Has chance?
+            var maxValue = area != null ? FindMax(area) : 0;
             var minBonus = new TileInfo(6, 9);
             var maxBonusValue = maxValue / 8;
 
-            var random = heuristic.Next();
+            // Is lucky?
             var nope = random.Next(21) != 0;
-
             if (nope || minBonus.Value > maxBonusValue)
             {
                 bonus = TileInfo.Empty;
                 return TileSample.Empty;
             }
 
+            // Is single?
             var pool = GetPool(minBonus, maxBonusValue);
-
             if (pool.Length == 1)
             {
                 bonus = pool[0];
                 return new TileSample(pool[0]);
             }
 
+            // Is either?
             var index = random.Next(pool.Length);
-
             if (pool.Length == 2)
             {
                 bonus = pool[index];
                 return new TileSample(pool[0], pool[1]);
             }
 
+            // Is random?
             var position = random.Next(
                 Math.Max(1, index - pool.Length + 4),
                 Math.Min(3, index + 1)
             );
-
             bonus = pool[index];
             return position switch
             {
                 1 => new TileSample(pool[index], pool[index + 1], pool[index + 2]),
                 2 => new TileSample(pool[index - 1], pool[index], pool[index + 1]),
-                3 => new TileSample(pool[index - 2], pool[index - 1], pool[index]),
-                _ => default
+                _ => new TileSample(pool[index - 2], pool[index - 1], pool[index])
             };
         }
 

@@ -135,6 +135,7 @@ namespace NeinTile.Tests
                     {
                         Assert.Equal(actual.Second.Value, actual.First.Value * 2);
                         Assert.Equal(actual.Second.Score, actual.First.Score * 3);
+
                         if (!actual.IsEither)
                         {
                             Assert.Equal(actual.Third.Value, actual.Second.Value * 2);
