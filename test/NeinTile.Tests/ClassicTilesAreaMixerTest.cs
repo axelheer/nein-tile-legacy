@@ -14,7 +14,9 @@ namespace NeinTile.Tests
             };
             deck.OnDraw = _ => deck;
 
-            var subject = new ClassicTilesAreaMixer(deck, 3, 2, 1);
+            var subject = new ClassicTilesAreaMixer(new GameOptions(3, 2, 1));
+
+            DoShuffle(deck, subject);
 
             var actual = subject.Shuffle();
 
@@ -31,26 +33,14 @@ namespace NeinTile.Tests
             Assert.Equal(3, drawn);
         }
 
-        [Fact]
-        public void ShouldCreateDeck()
+        private static void DoShuffle(TilesDeck deck, ClassicTilesAreaMixer subject)
         {
-            var drawn = 0;
-            var expected = new FakeTilesDeck()
+            var tile = deck.Show();
+            while (subject.AddNext(tile))
             {
-                OnShow = () => new TileInfo(1, 2)
-            };
-            expected.OnDraw = _ =>
-            {
-                drawn += 1;
-                return expected;
-            };
-
-            var subject = new ClassicTilesAreaMixer(expected, 3, 2, 1);
-
-            var actual = subject.CreateDeck();
-
-            Assert.Equal(actual, expected);
-            Assert.Equal(3, drawn);
+                deck = deck.Draw();
+                tile = deck.Show();
+            }
         }
     }
 }

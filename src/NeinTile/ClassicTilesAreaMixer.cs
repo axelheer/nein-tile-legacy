@@ -4,33 +4,47 @@ namespace NeinTile
 {
     public class ClassicTilesAreaMixer : ITilesAreaMixer
     {
-        private readonly TilesDeck deck;
+        private readonly Random random = new Random();
+
         private readonly TileInfo[,,] tiles;
 
-        public ClassicTilesAreaMixer(TilesDeck initialDeck, int colCount, int rowCount, int layCount)
-        {
-            if (initialDeck is null)
-                throw new ArgumentNullException(nameof(initialDeck));
+        private readonly int colCount;
+        private readonly int rowCount;
+        private readonly int layCount;
 
-            var random = new Random();
+        private int iteration;
+
+        public ClassicTilesAreaMixer(GameOptions options)
+        {
+            if (options is null)
+                throw new ArgumentNullException(nameof(options));
+
+            colCount = options.ColCount;
+            rowCount = options.RowCount;
+            layCount = options.LayCount;
+
             tiles = new TileInfo[colCount, rowCount, layCount];
-            for (var i = 0; i < tiles.Length; i += 2)
+        }
+
+        private bool IsMixing
+            => iteration < tiles.Length;
+
+        public TileInfo[,,]? Shuffle()
+            => !IsMixing ? tiles : null;
+
+        public bool AddNext(TileInfo nextTile)
+        {
+            if (IsMixing)
             {
                 var (colIndex, rowIndex, layIndex)
                     = (random.Next(colCount), random.Next(rowCount), random.Next(layCount));
                 while (tiles[colIndex, rowIndex, layIndex] != TileInfo.Empty)
                     (colIndex, rowIndex, layIndex)
                     = (random.Next(colCount), random.Next(rowCount), random.Next(layCount));
-                tiles[colIndex, rowIndex, layIndex] = initialDeck.Show();
-                initialDeck = initialDeck.Draw();
+                tiles[colIndex, rowIndex, layIndex] = nextTile;
+                iteration += 2;
             }
-            deck = initialDeck;
+            return IsMixing;
         }
-
-        public TileInfo[,,] Shuffle()
-            => tiles;
-
-        public TilesDeck CreateDeck()
-            => deck;
     }
 }

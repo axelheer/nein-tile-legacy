@@ -2,8 +2,8 @@ namespace NeinTile
 {
     public interface ITilesAreaMixer
     {
-        TileInfo[,,] Shuffle();
+        bool AddNext(TileInfo nextTile);
 
-        TilesDeck CreateDeck();
+        TileInfo[,,]? Shuffle();
     }
 }

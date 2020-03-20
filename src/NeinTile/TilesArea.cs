@@ -12,7 +12,7 @@ namespace NeinTile
         private readonly TileInfo[,,] tiles;
 
         public TilesArea(ITilesAreaMixer mixer, ITilesAreaMerger merger, ITilesAreaLottery lottery)
-            : this(merger, lottery, (mixer ?? throw new ArgumentNullException(nameof(mixer))).Shuffle())
+            : this(merger, lottery, mixer?.Shuffle() ?? throw new ArgumentNullException(nameof(mixer)))
         {
         }
 
