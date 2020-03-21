@@ -3,7 +3,7 @@ using Xunit;
 
 namespace NeinTile.Rules.Tests
 {
-    public class ClassicTilesAreaLotteryTest
+    public class DefaultTilesAreaLotteryTest
     {
         [Fact]
         public void ShouldDrawSameMove()
@@ -13,10 +13,10 @@ namespace NeinTile.Rules.Tests
 
             for (var i = 0; i < 100; i++)
             {
-                var subject = new ClassicTilesAreaLottery();
+                var subject = new DefaultTilesAreaLottery();
 
                 subject.Draw(new[] { expected });
-                subject = (ClassicTilesAreaLottery)subject.CreateNext();
+                subject = (DefaultTilesAreaLottery)subject.CreateNext();
 
                 var actual = subject.Draw(new[] { unexpected, expected, unexpected });
 
@@ -38,10 +38,10 @@ namespace NeinTile.Rules.Tests
             var results = new HashSet<MoveMarking>();
             for (var i = 0; i < 100; i++)
             {
-                var subject = new ClassicTilesAreaLottery();
+                var subject = new DefaultTilesAreaLottery();
 
                 subject.Draw(new[] { unexpected });
-                subject = (ClassicTilesAreaLottery)subject.CreateNext();
+                subject = (DefaultTilesAreaLottery)subject.CreateNext();
 
                 var actual = subject.Draw(expected);
 

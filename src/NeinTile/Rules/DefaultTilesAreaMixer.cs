@@ -3,7 +3,7 @@ using NeinTile.Abstractions;
 
 namespace NeinTile.Rules
 {
-    public class ClassicTilesAreaMixer : ITilesAreaMixer
+    public sealed class DefaultTilesAreaMixer : ITilesAreaMixer
     {
         private readonly Random random = new Random();
 
@@ -15,7 +15,7 @@ namespace NeinTile.Rules
 
         private int iteration;
 
-        public ClassicTilesAreaMixer(GameOptions options)
+        public DefaultTilesAreaMixer(GameOptions options)
         {
             if (options is null)
                 throw new ArgumentNullException(nameof(options));

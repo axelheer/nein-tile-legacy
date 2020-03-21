@@ -4,18 +4,18 @@ using NeinTile.Abstractions;
 
 namespace NeinTile.Rules
 {
-    public sealed class ClassicTilesAreaLottery : ITilesAreaLottery
+    public sealed class DefaultTilesAreaLottery : ITilesAreaLottery
     {
         private MoveMarking move;
         private readonly MoveMarking lastMove;
         private readonly DeterministicHeuristic heuristic;
 
-        public ClassicTilesAreaLottery()
+        public DefaultTilesAreaLottery()
             : this(MoveMarking.Empty, DeterministicHeuristic.CreateNew())
         {
         }
 
-        private ClassicTilesAreaLottery(MoveMarking lastMove, DeterministicHeuristic heuristic)
+        private DefaultTilesAreaLottery(MoveMarking lastMove, DeterministicHeuristic heuristic)
         {
             this.lastMove = lastMove;
             this.heuristic = heuristic;
@@ -39,6 +39,6 @@ namespace NeinTile.Rules
         }
 
         public ITilesAreaLottery CreateNext()
-            => new ClassicTilesAreaLottery(move, heuristic.CreateNext());
+            => new DefaultTilesAreaLottery(move, heuristic.CreateNext());
     }
 }

@@ -3,7 +3,7 @@ using Xunit;
 
 namespace NeinTile.Rules.Tests
 {
-    public class ClassicTilesAreaMixerTest
+    public class DefaultTilesAreaMixerTest
     {
         [Fact]
         public void ShouldShuffle()
@@ -14,7 +14,7 @@ namespace NeinTile.Rules.Tests
             };
             deck.OnDraw = _ => deck;
 
-            var subject = new ClassicTilesAreaMixer(new GameOptions(3, 2, 1));
+            var subject = new DefaultTilesAreaMixer(new GameOptions(3, 2, 1));
 
             DoShuffle(deck, subject);
 
@@ -33,7 +33,7 @@ namespace NeinTile.Rules.Tests
             Assert.Equal(3, drawn);
         }
 
-        private static void DoShuffle(TilesDeck deck, ClassicTilesAreaMixer subject)
+        private static void DoShuffle(TilesDeck deck, DefaultTilesAreaMixer subject)
         {
             var tile = deck.Show();
             while (subject.AddNext(tile))
