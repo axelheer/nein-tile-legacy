@@ -14,7 +14,7 @@ namespace NeinTile
         private static void Register(string name, GameFactory factory)
         {
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentException("message", nameof(name));
+                throw new ArgumentNullException(nameof(name));
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
@@ -24,14 +24,14 @@ namespace NeinTile
         public static GameState CreateNew(string name, GameOptions options)
         {
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentException("message", nameof(name));
+                throw new ArgumentNullException(nameof(name));
             if (options is null)
                 throw new ArgumentNullException(nameof(options));
 
-            if (factories.TryGetValue(name, out var factory))
-                return factory.CreateNew(options);
+            if (!factories.TryGetValue(name, out var factory))
+                throw new ArgumentOutOfRangeException(nameof(name), name, null);
 
-            throw new ArgumentOutOfRangeException(nameof(name), name, null);
+            return factory.CreateNew(options);
         }
 
         public abstract ITilesDeckMixer CreateDeckMixer(GameOptions options);
