@@ -1,5 +1,4 @@
-
-namespace NeinTile
+namespace NeinTile.Abstractions
 {
     public interface ITilesDeckMixer
     {

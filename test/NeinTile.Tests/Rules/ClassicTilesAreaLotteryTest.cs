@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Xunit;
 
-namespace NeinTile.Tests
+namespace NeinTile.Rules.Tests
 {
     public class ClassicTilesAreaLotteryTest
     {
@@ -13,10 +13,10 @@ namespace NeinTile.Tests
 
             for (var i = 0; i < 100; i++)
             {
-                ITilesAreaLottery subject = new ClassicTilesAreaLottery();
+                var subject = new ClassicTilesAreaLottery();
 
                 subject.Draw(new[] { expected });
-                subject = subject.CreateNext();
+                subject = (ClassicTilesAreaLottery)subject.CreateNext();
 
                 var actual = subject.Draw(new[] { unexpected, expected, unexpected });
 
@@ -38,10 +38,10 @@ namespace NeinTile.Tests
             var results = new HashSet<MoveMarking>();
             for (var i = 0; i < 100; i++)
             {
-                ITilesAreaLottery subject = new ClassicTilesAreaLottery();
+                var subject = new ClassicTilesAreaLottery();
 
                 subject.Draw(new[] { unexpected });
-                subject = subject.CreateNext();
+                subject = (ClassicTilesAreaLottery)subject.CreateNext();
 
                 var actual = subject.Draw(expected);
 

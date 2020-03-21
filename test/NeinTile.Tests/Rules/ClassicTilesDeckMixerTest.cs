@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace NeinTile.Tests
+namespace NeinTile.Rules.Tests
 {
     public class ClassicTilesDeckMixerTest
     {

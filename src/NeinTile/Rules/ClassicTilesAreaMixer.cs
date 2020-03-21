@@ -1,6 +1,7 @@
 using System;
+using NeinTile.Abstractions;
 
-namespace NeinTile
+namespace NeinTile.Rules
 {
     public class ClassicTilesAreaMixer : ITilesAreaMixer
     {

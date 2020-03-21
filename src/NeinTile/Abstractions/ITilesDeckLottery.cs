@@ -1,4 +1,4 @@
-namespace NeinTile
+namespace NeinTile.Abstractions
 {
     public interface ITilesDeckLottery
     {

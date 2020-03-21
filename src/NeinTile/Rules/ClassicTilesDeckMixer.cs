@@ -1,4 +1,6 @@
-namespace NeinTile
+using NeinTile.Abstractions;
+
+namespace NeinTile.Rules
 {
     public sealed class ClassicTilesDeckMixer : ITilesDeckMixer
     {

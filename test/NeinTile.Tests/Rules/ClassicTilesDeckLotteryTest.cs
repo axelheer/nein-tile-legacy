@@ -1,9 +1,8 @@
-using System;
 using NeinTile.Fakes;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace NeinTile.Tests
+namespace NeinTile.Rules.Tests
 {
     public class ClassicTilesDeckLotteryTest
     {
@@ -98,13 +97,13 @@ namespace NeinTile.Tests
         {
             const int testCount = 1000;
 
-            ITilesDeckLottery subject = new ClassicTilesDeckLottery();
+            var subject = new ClassicTilesDeckLottery();
 
             var nope = 0;
 
             for (var i = 0; i < testCount; i++)
             {
-                subject = subject.CreateNext(area);
+                subject = (ClassicTilesDeckLottery)subject.CreateNext(area);
 
                 var actual = subject.Draw(out var bonus);
 

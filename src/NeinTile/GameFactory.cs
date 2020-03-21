@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using NeinTile.Abstractions;
+using NeinTile.Rules;
 
 namespace NeinTile
 {

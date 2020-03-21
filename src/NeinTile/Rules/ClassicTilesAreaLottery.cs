@@ -1,7 +1,8 @@
 using System;
 using System.Linq;
+using NeinTile.Abstractions;
 
-namespace NeinTile
+namespace NeinTile.Rules
 {
     public sealed class ClassicTilesAreaLottery : ITilesAreaLottery
     {
