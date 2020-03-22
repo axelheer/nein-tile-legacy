@@ -21,10 +21,10 @@ namespace NeinTile.Fakes
         public override TileInfo Show()
             => OnShow();
 
-        public Func<TilesArea, TilesDeck> OnDraw { get; set; }
+        public Func<TilesArea?, TilesDeck> OnDraw { get; set; }
             = _ => new FakeTilesDeck();
 
-        public override TilesDeck Draw(TilesArea area)
+        public override TilesDeck Draw(TilesArea? area)
             => OnDraw(area);
     }
 }

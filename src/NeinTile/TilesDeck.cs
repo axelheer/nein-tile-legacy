@@ -44,6 +44,8 @@ namespace NeinTile
         public virtual TilesDeck Draw(TilesArea? area = null)
             => new TilesDeck(mixer.CreateNext(), lottery.CreateNext(area), Slice());
 
+#if NETSTANDARD2_0
+
         private TileInfo[] Slice()
         {
             if (IsBonus)
@@ -52,5 +54,13 @@ namespace NeinTile
             Array.Copy(tiles, 1, result, 0, result.Length);
             return result;
         }
+
+#else
+
+        private TileInfo[] Slice()
+            => IsBonus ? tiles : tiles[1..];
+
+#endif
+
     }
 }

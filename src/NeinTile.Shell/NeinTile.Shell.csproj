@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackAsTool>true</PackAsTool>
-    <ToolCommandName>neintile</ToolCommandName>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NeinTile\NeinTile.csproj" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>neintile</ToolCommandName>
+  </PropertyGroup>
 
 </Project>

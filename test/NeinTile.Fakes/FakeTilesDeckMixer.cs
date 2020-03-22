@@ -6,7 +6,7 @@ namespace NeinTile.Fakes
     public class FakeTilesDeckMixer : ITilesDeckMixer
     {
         public Func<TileInfo[]> OnShuffle { get; set; }
-            = () => new TileInfo[0];
+            = () => Array.Empty<TileInfo>();
 
         public TileInfo[] Shuffle()
             => OnShuffle();

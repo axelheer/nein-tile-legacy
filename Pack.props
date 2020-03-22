@@ -1,6 +1,16 @@
 <Project>
 
   <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <PropertyGroup>
     <Authors>Axel Heer</Authors>
     <Copyright>Copyright © 2020 Axel Heer</Copyright>
     <Description>Just playing around...</Description>

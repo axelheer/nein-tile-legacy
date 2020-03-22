@@ -20,7 +20,9 @@ namespace NeinTile.Editions.Tests
 
             var actual = subject.Shuffle();
 
-            Assert.Equal(3, actual.GetLength(0));
+            Assert.NotNull(actual);
+
+            Assert.Equal(3, actual!.GetLength(0));
             Assert.Equal(2, actual.GetLength(1));
             Assert.Equal(1, actual.GetLength(2));
 
