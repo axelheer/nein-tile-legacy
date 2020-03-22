@@ -2,7 +2,7 @@ using NeinTile.Fakes;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace NeinTile.Rules.Tests
+namespace NeinTile.Editions.Tests
 {
     public class ClassicTilesDeckLotteryTest
     {

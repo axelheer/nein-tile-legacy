@@ -1,6 +1,6 @@
 using NeinTile.Abstractions;
 
-namespace NeinTile.Rules
+namespace NeinTile.Editions
 {
     public class ClassicTilesAreaMerger : ITilesAreaMerger
     {

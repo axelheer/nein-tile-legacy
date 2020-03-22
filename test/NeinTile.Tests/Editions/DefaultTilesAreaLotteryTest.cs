@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Xunit;
 
-namespace NeinTile.Rules.Tests
+namespace NeinTile.Editions.Tests
 {
     public class DefaultTilesAreaLotteryTest
     {

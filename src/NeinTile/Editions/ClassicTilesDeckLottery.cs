@@ -1,7 +1,7 @@
 using System;
 using NeinTile.Abstractions;
 
-namespace NeinTile.Rules
+namespace NeinTile.Editions
 {
     public sealed class ClassicTilesDeckLottery : ITilesDeckLottery
     {

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using NeinTile.Abstractions;
 
-namespace NeinTile.Rules
+namespace NeinTile.Editions
 {
     public sealed class DefaultTilesAreaLottery : ITilesAreaLottery
     {
