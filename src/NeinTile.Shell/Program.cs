@@ -6,7 +6,7 @@ namespace NeinTile.Shell
     {
         public static void Main()
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine(Strings.HelloWorld);
         }
     }
 }
