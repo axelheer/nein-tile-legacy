@@ -47,9 +47,13 @@ namespace NeinTile
         {
             T value = default;
             for (var colIndex = 0; colIndex < ColCount; colIndex++)
+            {
                 for (var rowIndex = 0; rowIndex < RowCount; rowIndex++)
+                {
                     for (var layIndex = 0; layIndex < LayIndex; layIndex++)
                         value = calculator(value, this[colIndex, rowIndex, layIndex]);
+                }
+            }
             return value;
         }
 
@@ -77,7 +81,7 @@ namespace NeinTile
                 if (merger.CanMerge(source, target))
                 {
                     target = merger.Merge(source, target, out source);
-                    markings.Add(enumerator.Update(source, target));
+                    _ = markings.Add(enumerator.Update(source, target));
                 }
             }
 

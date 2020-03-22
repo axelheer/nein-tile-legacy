@@ -40,8 +40,10 @@ namespace NeinTile.Editions
                 var (colIndex, rowIndex, layIndex)
                     = (random.Next(colCount), random.Next(rowCount), random.Next(layCount));
                 while (tiles[colIndex, rowIndex, layIndex] != TileInfo.Empty)
+                {
                     (colIndex, rowIndex, layIndex)
                     = (random.Next(colCount), random.Next(rowCount), random.Next(layCount));
+                }
                 tiles[colIndex, rowIndex, layIndex] = nextTile;
                 iteration += 2;
             }

@@ -61,9 +61,7 @@ namespace NeinTile
                 return true;
             row.Reset();
 
-            if (lay.MoveNext())
-                return true;
-            return false;
+            return lay.MoveNext();
         }
 
         public void Reset()

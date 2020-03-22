@@ -28,9 +28,13 @@ namespace NeinTile.Editions.Tests
 
             var drawn = 0;
             for (var colIndex = 0; colIndex < 3; colIndex++)
+            {
                 for (var rowIndex = 0; rowIndex < 2; rowIndex++)
+                {
                     for (var layIndex = 0; layIndex < 1; layIndex++)
                         drawn = actual[colIndex, rowIndex, layIndex] != TileInfo.Empty ? drawn + 1 : drawn;
+                }
+            }
 
             Assert.Equal(3, drawn);
         }

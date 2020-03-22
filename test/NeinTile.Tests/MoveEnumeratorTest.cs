@@ -14,10 +14,16 @@ namespace NeinTile.Tests
             tiles = new TileInfo[4, 4, 4];
 
             for (var colIndex = 0; colIndex < 4; colIndex++)
+            {
                 for (var rowIndex = 0; rowIndex < 4; rowIndex++)
+                {
                     for (var layIndex = 0; layIndex < 4; layIndex++)
+                    {
                         tiles[colIndex, rowIndex, layIndex]
                             = new TileInfo(16 * layIndex + rowIndex * 4 + colIndex + 1, 0);
+                    }
+                }
+            }
 
             this.output = output;
         }

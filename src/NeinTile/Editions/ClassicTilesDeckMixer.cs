@@ -12,7 +12,9 @@ namespace NeinTile.Editions
         }
 
         private ClassicTilesDeckMixer(DeterministicHeuristic heuristic)
-            => this.heuristic = heuristic;
+        {
+            this.heuristic = heuristic;
+        }
 
         public TileInfo[] Shuffle()
         {

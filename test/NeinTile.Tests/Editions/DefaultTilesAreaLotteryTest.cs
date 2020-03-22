@@ -15,7 +15,7 @@ namespace NeinTile.Editions.Tests
             {
                 var subject = new DefaultTilesAreaLottery();
 
-                subject.Draw(new[] { expected });
+                _ = subject.Draw(new[] { expected });
                 subject = (DefaultTilesAreaLottery)subject.CreateNext();
 
                 var actual = subject.Draw(new[] { unexpected, expected, unexpected });
@@ -40,14 +40,14 @@ namespace NeinTile.Editions.Tests
             {
                 var subject = new DefaultTilesAreaLottery();
 
-                subject.Draw(new[] { unexpected });
+                _ = subject.Draw(new[] { unexpected });
                 subject = (DefaultTilesAreaLottery)subject.CreateNext();
 
                 var actual = subject.Draw(expected);
 
                 Assert.Contains(actual, expected);
 
-                results.Add(actual);
+                _ = results.Add(actual);
             }
 
             Assert.NotEqual(1, results.Count);

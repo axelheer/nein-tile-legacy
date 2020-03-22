@@ -9,7 +9,9 @@ namespace NeinTile.Editions.Tests
         private readonly ITestOutputHelper output;
 
         public ClassicTilesDeckLotteryTest(ITestOutputHelper output)
-            => this.output = output;
+        {
+            this.output = output;
+        }
 
         [Fact]
         public void ShouldDrawEmptySample()
@@ -110,7 +112,7 @@ namespace NeinTile.Editions.Tests
                 if (bonus == TileInfo.Empty)
                 {
                     Assert.Equal(TileSample.Empty, actual);
-                    nope = nope + 1;
+                    nope += 1;
                     continue;
                 }
 

@@ -140,7 +140,7 @@ namespace NeinTile.Tests
                 new FakeTilesAreaLottery()
             );
 
-            subject.Move(MoveDirection.Right, TileInfo.Empty);
+            _ = subject.Move(MoveDirection.Right, TileInfo.Empty);
 
             Assert.Equal(1, subject[0, 0, 0].Value);
             Assert.Equal(1, subject[1, 0, 0].Value);
