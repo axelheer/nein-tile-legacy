@@ -12,9 +12,7 @@ namespace NeinTile.Editions
         }
 
         private SimpleTilesDeckLottery(DeterministicHeuristic heuristic)
-        {
-            this.heuristic = heuristic;
-        }
+            => this.heuristic = heuristic;
 
         public TileSample Draw(out TileInfo bonus)
         {
