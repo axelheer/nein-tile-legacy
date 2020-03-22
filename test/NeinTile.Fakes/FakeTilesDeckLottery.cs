@@ -16,7 +16,7 @@ namespace NeinTile.Fakes
         }
 
         public Func<TilesArea?, ITilesDeckLottery> OnCreateNext { get; set; }
-            =_ => new FakeTilesDeckLottery();
+            = _ => new FakeTilesDeckLottery();
 
         public ITilesDeckLottery CreateNext(TilesArea? area)
             => OnCreateNext(area);

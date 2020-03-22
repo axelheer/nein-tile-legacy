@@ -7,7 +7,7 @@ namespace NeinTile.Editions
         private readonly DeterministicHeuristic heuristic;
 
         public ClassicTilesDeckMixer()
-            : this (DeterministicHeuristic.CreateNew())
+            : this(DeterministicHeuristic.CreateNew())
         {
         }
 

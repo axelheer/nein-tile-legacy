@@ -63,7 +63,7 @@ namespace NeinTile.Tests
                 Assert.Equal(expectedSource, actualSource.Value);
                 Assert.Equal(expectedTarget, actualTarget.Value);
 
-                iteration +=1;
+                iteration += 1;
             };
 
             Assert.Equal(48, iteration);
@@ -110,7 +110,7 @@ namespace NeinTile.Tests
 
                 Assert.Equal(expected, actual);
 
-                iteration +=1;
+                iteration += 1;
             }
 
             Assert.Equal(48, iteration);

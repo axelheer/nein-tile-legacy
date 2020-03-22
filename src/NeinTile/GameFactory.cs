@@ -9,10 +9,10 @@ namespace NeinTile
     {
         private static readonly IDictionary<string, GameFactory> factories
             = new Dictionary<string, GameFactory>(StringComparer.OrdinalIgnoreCase)
-        {
-            ["simple"] = new SimpleGameFactory(),
-            ["classic"] = new ClassicGameFactory()
-        };
+            {
+                ["simple"] = new SimpleGameFactory(),
+                ["classic"] = new ClassicGameFactory()
+            };
 
         private static void Register(string name, GameFactory factory)
         {
