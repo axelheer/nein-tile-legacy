@@ -36,8 +36,8 @@ namespace NeinTile
         public TileInfo this[int colIndex, int rowIndex, int layIndex]
             => tiles[colIndex, rowIndex, layIndex];
 
-        public int MaxValue
-            => Calculate<int>((value, i) => Math.Max(value, i.Value));
+        public long MaxValue
+            => Calculate<long>((value, i) => Math.Max(value, i.Value));
 
         public long TotalScore
             => Calculate<long>((score, i) => score + i.Score);

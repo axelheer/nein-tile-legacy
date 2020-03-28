@@ -6,17 +6,17 @@ namespace NeinTile
     {
         public static TileInfo Empty { get; } = new TileInfo();
 
-        public int Value { get; }
+        public long Value { get; }
 
         public long Score { get; }
 
-        public TileInfo(int value, long score)
+        public TileInfo(long value, long score)
         {
             Value = value;
             Score = score;
         }
 
-        public void Deconstruct(out int value, out long score)
+        public void Deconstruct(out long value, out long score)
         {
             value = Value;
             score = Score;

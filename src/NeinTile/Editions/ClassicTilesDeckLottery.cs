@@ -66,7 +66,7 @@ namespace NeinTile.Editions
             };
         }
 
-        private static TileInfo[] GetPool(TileInfo minBonus, int maxBonusValue)
+        private static TileInfo[] GetPool(TileInfo minBonus, long maxBonusValue)
         {
             var length = 1;
             for (var value = minBonus.Value; value < maxBonusValue; value *= 2)
