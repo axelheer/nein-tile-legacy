@@ -4,14 +4,14 @@ namespace NeinTile
 {
     internal struct DeterministicHeuristic
     {
-        private static readonly Random initRandom = new Random();
-        private static readonly object randomLock = new object();
+        private static readonly Random InitRandom = new Random();
+        private static readonly object RandomLock = new object();
 
         public static DeterministicHeuristic CreateNew()
         {
-            lock (randomLock)
+            lock (RandomLock)
             {
-                return new DeterministicHeuristic(initRandom.Next());
+                return new DeterministicHeuristic(InitRandom.Next());
             }
         }
 

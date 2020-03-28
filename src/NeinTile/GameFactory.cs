@@ -7,7 +7,7 @@ namespace NeinTile
 {
     public abstract class GameFactory
     {
-        private static readonly IDictionary<string, GameFactory> factories
+        private static readonly IDictionary<string, GameFactory> Factories
             = new Dictionary<string, GameFactory>(StringComparer.OrdinalIgnoreCase)
             {
                 ["simple"] = new SimpleGameFactory(),
@@ -21,7 +21,7 @@ namespace NeinTile
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            factories[name] = factory;
+            Factories[name] = factory;
         }
 
         public static GameState CreateNew(string name, GameOptions options)
@@ -31,7 +31,7 @@ namespace NeinTile
             if (options is null)
                 throw new ArgumentNullException(nameof(options));
 
-            if (!factories.TryGetValue(name, out var factory))
+            if (!Factories.TryGetValue(name, out var factory))
                 throw new ArgumentOutOfRangeException(nameof(name), name, null);
 
             return factory.CreateNew(options);
