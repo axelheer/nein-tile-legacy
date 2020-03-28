@@ -39,6 +39,9 @@ namespace NeinTile
         public long MaxValue
             => Calculate<long>((value, i) => Math.Max(value, i.Value));
 
+        public long MinValue
+            => Calculate<long>((value, i) => Math.Min(value, i.Value));
+
         public long TotalScore
             => Calculate<long>((score, i) => score + i.Score);
 

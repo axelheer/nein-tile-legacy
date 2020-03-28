@@ -11,7 +11,8 @@ namespace NeinTile
             = new Dictionary<string, GameFactory>(StringComparer.OrdinalIgnoreCase)
             {
                 ["simple"] = new SimpleGameFactory(),
-                ["classic"] = new ClassicGameFactory()
+                ["classic"] = new ClassicGameFactory(),
+                ["insanity"] = new InsanityGameFactory()
             };
 
         private static void Register(string name, GameFactory factory)

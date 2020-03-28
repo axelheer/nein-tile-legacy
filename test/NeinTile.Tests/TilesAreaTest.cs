@@ -13,7 +13,7 @@ namespace NeinTile.Tests
                 {
                     OnShuffle = () => new TileInfo[2, 2, 1]
                     {
-                        { { new TileInfo(1, 2) }, { new TileInfo(5, 6) } },
+                        { { new TileInfo(1, 2) }, { new TileInfo(-5, 6) } },
                         { { new TileInfo(3, 4) }, { new TileInfo(7, 8) } }
                     }
                 },
@@ -21,6 +21,7 @@ namespace NeinTile.Tests
                 new FakeTilesAreaLottery()
             );
 
+            Assert.Equal(-5, subject.MinValue);
             Assert.Equal(7, subject.MaxValue);
             Assert.Equal(20, subject.TotalScore);
         }
