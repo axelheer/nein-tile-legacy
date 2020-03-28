@@ -8,7 +8,7 @@ namespace NeinTile
     public abstract class GameFactory
     {
         private static readonly IDictionary<string, GameFactory> Factories
-            = new Dictionary<string, GameFactory>(StringComparer.OrdinalIgnoreCase)
+            = new Dictionary<string, GameFactory>(OptionComparer.Instance)
             {
                 ["simple"] = new SimpleGameFactory(),
                 ["classic"] = new ClassicGameFactory(),
