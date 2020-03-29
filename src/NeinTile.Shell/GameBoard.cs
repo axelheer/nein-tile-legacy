@@ -44,7 +44,8 @@ namespace NeinTile.Shell
         {
             var tiles = PrintTiles();
 
-            var text = new StringBuilder(Width * Height + Environment.NewLine.Length * Height);
+            var text = new StringBuilder();
+            PrintDeckInfo(text);
             PrintSeparator(text, CornerLeftTop, StepTop, CornerRightTop);
             PrintRow(text, tiles, 0);
             for (var rowIndex = 1; rowIndex < RowCount; rowIndex++)
@@ -53,7 +54,7 @@ namespace NeinTile.Shell
                 PrintRow(text, tiles, rowIndex);
             }
             PrintSeparator(text, CornerLeftBottom, StepBottom, CornerRightBottom);
-            PrintDeck(text);
+            PrintTotalScoreWithLayer(text);
             return text.ToString();
         }
 
@@ -86,21 +87,41 @@ namespace NeinTile.Shell
             _ = text.AppendLine();
         }
 
-        private void PrintDeck(StringBuilder text)
+        private void PrintTotalScoreWithLayer(StringBuilder text)
         {
-            _ = text.Append("Possible next value(s): ");
+            var totalScore = "Total score: " + gameState.Area.TotalScore.ToString("N0", CultureInfo.CurrentCulture);
+            var currentLayer = "Layer: " + (layerIndex + 1).ToString("N0", CultureInfo.CurrentCulture);
+
+            _ = text.Append(" ")
+                    .Append(totalScore)
+                    .Append(' ', Width - 2 - totalScore.Length - currentLayer.Length)
+                    .Append(currentLayer)
+                    .Append(" ");
+            _ = text.AppendLine();
+        }
+
+        private void PrintDeckInfo(StringBuilder text)
+        {
             var hint = gameState.Deck.Hint();
-            _ = text.Append(hint.First.Value.ToString("N0", CultureInfo.CurrentCulture));
+
+            var deckInfo = "Possible next value(s): ";
+            deckInfo += hint.First.Value.ToString("N0", CultureInfo.CurrentCulture);
             if (!hint.IsSingle)
             {
-                _ = text.Append(",  ");
-                _ = text.Append(hint.Second.Value.ToString("N0", CultureInfo.CurrentCulture));
+                deckInfo += ",  ";
+                deckInfo += hint.Second.Value.ToString("N0", CultureInfo.CurrentCulture);
                 if (!hint.IsEither)
                 {
-                    _ = text.Append(",  ");
-                    _ = text.Append(hint.Third.Value.ToString("N0", CultureInfo.CurrentCulture));
+                    deckInfo += ",  ";
+                    deckInfo += hint.Third.Value.ToString("N0", CultureInfo.CurrentCulture);
                 }
             }
+            var leftSpaces = (Width - deckInfo.Length) / 2;
+
+            _ = text.Append(' ', leftSpaces)
+                    .Append(deckInfo)
+                    .Append(' ', Width - deckInfo.Length - leftSpaces);
+            _ = text.AppendLine();
         }
 
         private string[,] PrintTiles()
@@ -117,7 +138,7 @@ namespace NeinTile.Shell
             return result;
         }
 
-        private string PrintTile(TileInfo tile)
+        private static string PrintTile(TileInfo tile)
         {
             var text = tile != TileInfo.Empty ? tile.Value.ToString("N0", CultureInfo.CurrentCulture) : "";
             return text.PadLeft((TileWidth * TileHeight - text.Length) / 2 + text.Length)

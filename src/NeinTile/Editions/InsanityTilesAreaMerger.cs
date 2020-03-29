@@ -9,6 +9,7 @@ namespace NeinTile.Editions
         {
             return (source.Value, target.Value) switch
             {
+                (_, 0) => true,
                 (-2, -2) => false,
                 (-2, -1) => true,
                 (-1, -2) => true,
@@ -26,6 +27,7 @@ namespace NeinTile.Editions
             remainder = default;
             return (source, target) switch
             {
+                (_, (0, _)) => source,
                 ((-2, _), (-1, _)) => new TileInfo(-3, 3),
                 ((-1, _), (-2, _)) => new TileInfo(-3, 3),
                 ((1, _), (2, _)) => new TileInfo(3, 3),

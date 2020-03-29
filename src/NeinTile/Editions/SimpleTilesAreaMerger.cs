@@ -5,12 +5,14 @@ namespace NeinTile.Editions
     public class SimpleTilesAreaMerger : ITilesAreaMerger
     {
         public bool CanMerge(TileInfo source, TileInfo target)
-            => source.Value == target.Value;
+            => target == TileInfo.Empty || source.Value == target.Value;
 
         public TileInfo Merge(TileInfo source, TileInfo target, out TileInfo remainder)
         {
             remainder = default;
-            return new TileInfo(source.Value * 2, source.Score * 3);
+            return target != TileInfo.Empty
+                ? new TileInfo(source.Value * 2, source.Score * 3)
+                : source;
         }
     }
 }

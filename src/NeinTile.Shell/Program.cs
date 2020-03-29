@@ -44,7 +44,7 @@ namespace NeinTile.Shell
             while (OnKeyDown(gameBoard, Console.ReadKey(true)));
         }
 
-        private bool OnKeyDown(GameBoard gameBoard, ConsoleKeyInfo next)
+        private static bool OnKeyDown(GameBoard gameBoard, ConsoleKeyInfo next)
         {
             if (next.Modifiers != default && next.Key == ConsoleKey.Q)
                 return false;
@@ -72,12 +72,10 @@ namespace NeinTile.Shell
                     break;
 
                 case ConsoleKey.R:
-                case ConsoleKey.PageUp:
                     gameBoard.Move(MoveDirection.Forward);
                     break;
 
                 case ConsoleKey.F:
-                case ConsoleKey.PageDown:
                     gameBoard.Move(MoveDirection.Backward);
                     break;
 
