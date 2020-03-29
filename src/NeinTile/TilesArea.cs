@@ -24,14 +24,14 @@ namespace NeinTile
 
             ColCount = tiles.GetLength(0);
             RowCount = tiles.GetLength(1);
-            LayIndex = tiles.GetLength(2);
+            LayCount = tiles.GetLength(2);
 
             this.tiles = tiles;
         }
 
         public int ColCount { get; }
         public int RowCount { get; }
-        public int LayIndex { get; }
+        public int LayCount { get; }
 
         public TileInfo this[int colIndex, int rowIndex, int layIndex]
             => tiles[colIndex, rowIndex, layIndex];
@@ -53,7 +53,7 @@ namespace NeinTile
             {
                 for (var rowIndex = 0; rowIndex < RowCount; rowIndex++)
                 {
-                    for (var layIndex = 0; layIndex < LayIndex; layIndex++)
+                    for (var layIndex = 0; layIndex < LayCount; layIndex++)
                         value = calculator(value, this[colIndex, rowIndex, layIndex]);
                 }
             }
