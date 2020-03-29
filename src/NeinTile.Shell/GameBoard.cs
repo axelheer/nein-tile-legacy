@@ -1,12 +1,11 @@
 using System;
-using System.Globalization;
 using System.Text;
 
 namespace NeinTile.Shell
 {
     public sealed class GameBoard
     {
-        public const int TileWidth = 8;
+        public const int TileWidth = 9;
         public const int TileHeight = 5;
 
         private GameState gameState;
@@ -26,15 +25,15 @@ namespace NeinTile.Shell
             Height = RowCount * (TileHeight + 1) + 1;
         }
 
-        private const char CornerLeftTop = '┌';
-        private const char CornerRightTop = '┐';
-        private const char CornerLeftBottom = '└';
-        private const char CornerRightBottom = '┘';
+        private const char LeftTop = '┌';
+        private const char RightTop = '┐';
+        private const char LeftBottom = '└';
+        private const char RightBottom = '┘';
 
-        private const char StepLeft = '├';
-        private const char StepRight = '┤';
-        private const char StepTop = '┬';
-        private const char StepBottom = '┴';
+        private const char Left = '├';
+        private const char Right = '┤';
+        private const char Top = '┬';
+        private const char Bottom = '┴';
 
         private const char Crossing = '┼';
         private const char Vertical = '│';
@@ -45,27 +44,28 @@ namespace NeinTile.Shell
             var tiles = PrintTiles();
 
             var text = new StringBuilder();
-            PrintDeckInfo(text);
-            PrintSeparator(text, CornerLeftTop, StepTop, CornerRightTop);
-            PrintRow(text, tiles, 0);
+            PrintHeader(text);
+            PrintSeparator(text, LeftTop, Top, RightTop);
+            PrintTileRow(text, tiles, 0);
             for (var rowIndex = 1; rowIndex < RowCount; rowIndex++)
             {
-                PrintSeparator(text, StepLeft, Crossing, StepRight);
-                PrintRow(text, tiles, rowIndex);
+                PrintSeparator(text, Left, Crossing, Right);
+                PrintTileRow(text, tiles, rowIndex);
             }
-            PrintSeparator(text, CornerLeftBottom, StepBottom, CornerRightBottom);
-            PrintTotalScoreWithLayer(text);
+            PrintSeparator(text, LeftBottom, Bottom, RightBottom);
+            PrintFooter(text);
             return text.ToString();
         }
 
-        private void PrintRow(StringBuilder text, string[,] tiles, int rowIndex)
+        private void PrintTileRow(StringBuilder text, string[,] tiles, int rowIndex)
         {
             for (var lineIndex = 0; lineIndex < TileHeight; lineIndex++)
             {
                 _ = text.Append(Vertical);
                 for (var colIndex = 0; colIndex < ColCount; colIndex++)
                 {
-                    _ = text.Append(tiles[rowIndex, colIndex].Substring(lineIndex * TileWidth, TileWidth));
+                    _ = text.Append(tiles[rowIndex, colIndex]
+                        .Substring(lineIndex * TileWidth, TileWidth));
                     _ = text.Append(Vertical);
                 }
                 _ = text.AppendLine();
@@ -87,43 +87,6 @@ namespace NeinTile.Shell
             _ = text.AppendLine();
         }
 
-        private void PrintTotalScoreWithLayer(StringBuilder text)
-        {
-            var totalScore = "Total score: " + gameState.Area.TotalScore.ToString("N0", CultureInfo.CurrentCulture);
-            var currentLayer = "Layer: " + (layerIndex + 1).ToString("N0", CultureInfo.CurrentCulture);
-
-            _ = text.Append(" ")
-                    .Append(totalScore)
-                    .Append(' ', Width - 2 - totalScore.Length - currentLayer.Length)
-                    .Append(currentLayer)
-                    .Append(" ");
-            _ = text.AppendLine();
-        }
-
-        private void PrintDeckInfo(StringBuilder text)
-        {
-            var hint = gameState.Deck.Hint();
-
-            var deckInfo = "Possible next value(s): ";
-            deckInfo += hint.First.Value.ToString("N0", CultureInfo.CurrentCulture);
-            if (!hint.IsSingle)
-            {
-                deckInfo += ",  ";
-                deckInfo += hint.Second.Value.ToString("N0", CultureInfo.CurrentCulture);
-                if (!hint.IsEither)
-                {
-                    deckInfo += ",  ";
-                    deckInfo += hint.Third.Value.ToString("N0", CultureInfo.CurrentCulture);
-                }
-            }
-            var leftSpaces = (Width - deckInfo.Length) / 2;
-
-            _ = text.Append(' ', leftSpaces)
-                    .Append(deckInfo)
-                    .Append(' ', Width - deckInfo.Length - leftSpaces);
-            _ = text.AppendLine();
-        }
-
         private string[,] PrintTiles()
         {
             var result = new string[RowCount, ColCount];
@@ -140,9 +103,44 @@ namespace NeinTile.Shell
 
         private static string PrintTile(TileInfo tile)
         {
-            var text = tile != TileInfo.Empty ? tile.Value.ToString("N0", CultureInfo.CurrentCulture) : "";
-            return text.PadLeft((TileWidth * TileHeight - text.Length) / 2 + text.Length)
-                       .PadRight(TileWidth * TileHeight);
+            var tileInfo = tile != TileInfo.Empty ? $"{tile.Value:N0}" : "";
+
+            return tileInfo.PadRight((TileWidth * TileHeight - tileInfo.Length) / 2 + tileInfo.Length)
+                           .PadLeft(TileWidth * TileHeight);
+        }
+
+        private void PrintFooter(StringBuilder text)
+        {
+            var scoreInfo = $"Score: {gameState.Area.TotalScore:N0}";
+            var layerInfo = $"Layer: {layerIndex + 1:N0}";
+
+            _ = text.Append(' ')
+                    .Append(scoreInfo)
+                    .Append(' ', Width - 2 - scoreInfo.Length - layerInfo.Length)
+                    .Append(layerInfo)
+                    .Append(' ');
+            _ = text.AppendLine();
+        }
+
+        private void PrintHeader(StringBuilder text)
+        {
+            var hint = gameState.Deck.Hint();
+
+            var deckInfo = $"Preview: {hint.First.Value:N0}";
+            if (!hint.IsSingle)
+            {
+                deckInfo += $", {hint.Second.Value:N0}";
+                if (!hint.IsEither)
+                {
+                    deckInfo += $", {hint.Third.Value:N0}";
+                }
+            }
+            var leftSpaces = (Width - deckInfo.Length) / 2;
+
+            _ = text.Append(' ', leftSpaces)
+                    .Append(deckInfo)
+                    .Append(' ', Width - deckInfo.Length - leftSpaces);
+            _ = text.AppendLine();
         }
 
         public void Move(MoveDirection direction)
@@ -151,7 +149,7 @@ namespace NeinTile.Shell
         public void Undo()
             => gameState = gameState.Previous ?? gameState;
 
-        public void Switch()
+        public void Scroll()
             => layerIndex = (layerIndex + 1) % gameState.Area.LayCount;
     }
 }

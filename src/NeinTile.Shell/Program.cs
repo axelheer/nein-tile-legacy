@@ -80,11 +80,9 @@ namespace NeinTile.Shell
                     break;
 
                 case ConsoleKey.X:
-                case ConsoleKey.Enter:
-                    gameBoard.Switch();
+                    gameBoard.Scroll();
                     break;
 
-                case ConsoleKey.Escape:
                 case ConsoleKey.Backspace:
                     gameBoard.Undo();
                     break;
