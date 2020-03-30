@@ -12,11 +12,11 @@ namespace NeinTile
 
         public GameOptions(int colCount, int rowCount, int layCount)
         {
-            if (16 < colCount || colCount < 1)
+            if (colCount < 2)
                 throw new ArgumentOutOfRangeException(nameof(colCount), colCount, null);
-            if (16 < rowCount || rowCount < 1)
+            if (rowCount < 2)
                 throw new ArgumentOutOfRangeException(nameof(rowCount), rowCount, null);
-            if (16 < layCount || layCount < 1)
+            if (layCount < 1)
                 throw new ArgumentOutOfRangeException(nameof(layCount), layCount, null);
 
             ColCount = colCount;

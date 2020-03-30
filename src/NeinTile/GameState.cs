@@ -22,6 +22,9 @@ namespace NeinTile
             Previous = previous ?? throw new ArgumentNullException(nameof(previous));
         }
 
+        public bool CanMove(MoveDirection direction)
+            => Area.CanMove(direction);
+
         public GameState Move(MoveDirection direction)
         {
             if (Area.CanMove(direction))
