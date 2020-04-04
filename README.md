@@ -13,7 +13,7 @@ Just playing around...
 
 *Note:* inspired by the one and only [Threes!](https://en.wikipedia.org/wiki/Threes)
 
-Controls
+Key controls
 --------
 
 | Key                            | Action         |
@@ -28,3 +28,8 @@ Controls
 | <kbd>1</kbd> - <kbd>0</kbd>    | Layer 1 - 10   |
 | <kbd>R</kbd>                   | Refresh screen |
 | <kbd>Ctrl</kbd> + <kbd>Q</kbd> | Quit           |
+
+Unofficial song
+---------------
+
+[Mein Teil](https://www.youtube.com/watch?v=PBvwcH4XX6U) &ndash; for obvious reasons
