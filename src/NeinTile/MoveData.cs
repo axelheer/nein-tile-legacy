@@ -8,6 +8,8 @@ namespace NeinTile
         public readonly int Shift { get; }
         public readonly int Count { get; }
 
+        public readonly bool Blocked { get; }
+
         public int Index { get; set; }
 
         public MoveData(int dimension, int count, MoveDirection direction)
@@ -21,6 +23,8 @@ namespace NeinTile
             Shift = positive ? 1 : negative ? -1 : 0;
             Count = positive ? count - 1 : count;
 
+            Blocked = Start + Shift == Count + Shift;
+
             Index = -1;
         }
 
@@ -33,11 +37,14 @@ namespace NeinTile
         public void Reset()
             => Index = direction > 0 ? Start : Count - 1;
 
+        public bool CanMove()
+            => Start <= Index && Index < Count;
+
         public bool MoveNext()
         {
             Index += direction;
 
-            return Start <= Index && Index < Count;
+            return CanMove();
         }
     }
 }

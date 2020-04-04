@@ -12,6 +12,7 @@ namespace NeinTile
         private MoveData col;
         private MoveData row;
         private MoveData lay;
+        private bool blocked;
 
         public MoveEnumerator(TileInfo[,,] tiles, MoveDirection direction)
         {
@@ -22,6 +23,8 @@ namespace NeinTile
             col = new MoveData(0, tiles.GetLength(0), direction);
             row = new MoveData(1, tiles.GetLength(1), direction);
             lay = new MoveData(2, tiles.GetLength(2), direction);
+
+            blocked = false;
 
             Reset();
         }
@@ -45,6 +48,9 @@ namespace NeinTile
 
         public bool MoveNext()
         {
+            if (blocked)
+                return false;
+
             if (initial)
             {
                 initial = false;
@@ -69,6 +75,10 @@ namespace NeinTile
             col.Reset();
             row.Reset();
             lay.Reset();
+
+            blocked = col.Blocked
+                || row.Blocked
+                || lay.Blocked;
         }
 
         void IDisposable.Dispose()

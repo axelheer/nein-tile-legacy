@@ -35,17 +35,32 @@ namespace NeinTile.Editions
             }
 
             var random = heuristic.Next();
-
-            moves = new MoveMarking[(markings.Length + 3) / 4];
-            for (var index = 0; index < moves.Length; index++)
+            for (var index = 0; index < markings.Length - 1; index++)
             {
-                var next = markings[random.Next(markings.Length)];
-                while (moves.Contains(next))
-                    next = markings[random.Next(markings.Length)];
-                moves[index] = next;
+                var next = random.Next(index, markings.Length);
+                var temp = markings[index];
+                markings[index] = markings[next];
+                markings[next] = temp;
             }
+
+            return Slice(markings, (markings.Length + 3) / 4);
+        }
+
+#if NETSTANDARD2_0
+
+        private MoveMarking[] Slice(MoveMarking[] markings, int length)
+        {
+            moves = new MoveMarking[length];
+            Array.Copy(markings, moves, moves.Length);
             return moves;
         }
+
+#else
+
+        private MoveMarking[] Slice(MoveMarking[] markings, int length)
+            => moves = markings[..length];
+
+#endif
 
         public ITilesAreaLottery CreateNext()
             => new DefaultTilesAreaLottery(moves, heuristic.CreateNext());
