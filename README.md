@@ -9,5 +9,22 @@
 Just playing around...
 
     > dotnet tool install --global NeinTile.Shell
+    > neintile --help
 
 *Note:* inspired by the one and only [Threes!](https://en.wikipedia.org/wiki/Threes)
+
+Controls
+--------
+
+| Key                            | Action         |
+|:------------------------------:|----------------|
+| <kbd>&rarr;</kbd>              | Move right     |
+| <kbd>&larr;</kbd>              | Move left      |
+| <kbd>&uarr;</kbd>              | Move up        |
+| <kbd>&darr;</kbd>              | Move down      |
+| <kbd>F</kbd>                   | Move forward   |
+| <kbd>B</kbd>                   | Move backward  |
+| <kbd>U</kbd>                   | Undo last move |
+| <kbd>1</kbd> - <kbd>0</kbd>    | Layer 1 - 10   |
+| <kbd>R</kbd>                   | Refresh screen |
+| <kbd>Ctrl</kbd> + <kbd>Q</kbd> | Quit           |
