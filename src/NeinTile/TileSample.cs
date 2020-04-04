@@ -49,7 +49,7 @@ namespace NeinTile
             => HashCode.Combine(First, Second, Third);
 
         public override bool Equals(object? obj)
-            => obj is TileSample other ? Equals(other) : false;
+            => obj is TileSample other && Equals(other);
 
         public bool Equals(TileSample other)
             => First == other.First

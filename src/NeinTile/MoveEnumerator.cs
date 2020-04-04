@@ -7,7 +7,6 @@ namespace NeinTile
     public struct MoveEnumerator : IEnumerator<TileMove>
     {
         private readonly TileInfo[,,] tiles;
-        private readonly MoveDirection direction;
 
         private bool initial;
         private MoveData col;
@@ -17,7 +16,6 @@ namespace NeinTile
         public MoveEnumerator(TileInfo[,,] tiles, MoveDirection direction)
         {
             this.tiles = tiles ?? throw new ArgumentNullException(nameof(tiles));
-            this.direction = direction;
 
             initial = false;
 

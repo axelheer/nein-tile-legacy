@@ -29,7 +29,7 @@ namespace NeinTile
             => HashCode.Combine(Source, Target);
 
         public override bool Equals(object? obj)
-            => obj is TileMove other ? Equals(other) : false;
+            => obj is TileMove other && Equals(other);
 
         public bool Equals(TileMove other)
             => Source == other.Source

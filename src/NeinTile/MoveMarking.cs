@@ -33,7 +33,7 @@ namespace NeinTile
             => HashCode.Combine(ColIndex, RowIndex, LayIndex);
 
         public override bool Equals(object? obj)
-            => obj is MoveMarking other ? Equals(other) : false;
+            => obj is MoveMarking other && Equals(other);
 
         public bool Equals(MoveMarking other)
             => ColIndex == other.ColIndex
