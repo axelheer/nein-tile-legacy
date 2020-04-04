@@ -22,6 +22,14 @@ namespace NeinTile
             Previous = previous ?? throw new ArgumentNullException(nameof(previous));
         }
 
+        public bool CanMove()
+            => Area.CanMove(MoveDirection.Right)
+            || Area.CanMove(MoveDirection.Left)
+            || Area.CanMove(MoveDirection.Up)
+            || Area.CanMove(MoveDirection.Down)
+            || Area.CanMove(MoveDirection.Forward)
+            || Area.CanMove(MoveDirection.Backward);
+
         public bool CanMove(MoveDirection direction)
             => Area.CanMove(direction);
 

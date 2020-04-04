@@ -53,7 +53,7 @@ namespace NeinTile.Shell
 
             PrepareTilesBuffer(gameState.Area, layerIndex);
 
-            PrintHeader(gameState.Deck.Hint());
+            PrintHeader(gameState.Deck.Hint(), !gameState.CanMove());
             PrintSeparator(LeftTop, Top, RightTop);
             PrintTilesRow(0);
             for (var rowIndex = 1; rowIndex < RowCount; rowIndex++)
@@ -108,10 +108,10 @@ namespace NeinTile.Shell
                        .AppendLine();
         }
 
-        private void PrintHeader(TileSample hint)
+        private void PrintHeader(TileSample hint, bool done)
         {
-            var deckInfo = $"Preview: {hint.First.Value:N0}";
-            if (!hint.IsSingle)
+            var deckInfo = done ? "Done." : $"Next: {hint.First.Value:N0}";
+            if (!done && !hint.IsSingle)
             {
                 deckInfo += $" / {hint.Second.Value:N0}";
                 if (!hint.IsEither)
