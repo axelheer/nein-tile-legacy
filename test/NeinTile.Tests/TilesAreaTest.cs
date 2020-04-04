@@ -113,7 +113,7 @@ namespace NeinTile.Tests
                 },
                 new FakeTilesAreaLottery()
                 {
-                    OnDraw = markings => markings[0]
+                    OnDraw = markings => markings
                 }
             );
 
@@ -163,6 +163,12 @@ namespace NeinTile.Tests
                     OnMerge = (_, __) => (new TileInfo(11, 0), new TileInfo(7, 0))
                 },
                 new FakeTilesAreaLottery()
+                {
+                    OnCreateNext = () => new FakeTilesAreaLottery()
+                    {
+                        OnDraw = _ => new[] { MoveMarking.Empty }
+                    }
+                }
             );
 
             var actual = subject.Move(MoveDirection.Right, TileInfo.Empty)
@@ -191,7 +197,7 @@ namespace NeinTile.Tests
                 {
                     OnCreateNext = () => new FakeTilesAreaLottery()
                     {
-                        OnDraw = _ => new MoveMarking(0, 1, 0)
+                        OnDraw = _ => new[] { new MoveMarking(0, 1, 0) }
                     }
                 }
             );

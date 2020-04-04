@@ -88,8 +88,8 @@ namespace NeinTile
                 }
             }
 
-            var (colIndex, rowIndex, layIndex) = lottery.Draw(markings.ToArray());
-            nextTiles[colIndex, rowIndex, layIndex] = nextTile;
+            foreach (var (colIndex, rowIndex, layIndex) in lottery.Draw(markings.ToArray()))
+                nextTiles[colIndex, rowIndex, layIndex] = nextTile;
 
             return new TilesArea(merger, lottery.CreateNext(), nextTiles);
         }

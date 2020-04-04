@@ -5,10 +5,10 @@ namespace NeinTile.Fakes
 {
     public class FakeTilesAreaLottery : ITilesAreaLottery
     {
-        public Func<MoveMarking[], MoveMarking> OnDraw { get; set; }
-            = _ => MoveMarking.Empty;
+        public Func<MoveMarking[], MoveMarking[]> OnDraw { get; set; }
+            = _ => Array.Empty<MoveMarking>();
 
-        public MoveMarking Draw(MoveMarking[] markings)
+        public MoveMarking[] Draw(MoveMarking[] markings)
             => OnDraw(markings);
 
         public Func<ITilesAreaLottery> OnCreateNext { get; set; }

@@ -6,39 +6,48 @@ namespace NeinTile.Editions
 {
     public sealed class DefaultTilesAreaLottery : ITilesAreaLottery
     {
-        private MoveMarking move;
-        private readonly MoveMarking lastMove;
+        private MoveMarking[] moves;
+        private readonly MoveMarking[] lastMoves;
         private readonly DeterministicHeuristic heuristic;
 
         public DefaultTilesAreaLottery()
-            : this(MoveMarking.Empty, DeterministicHeuristic.CreateNew())
+            : this(Array.Empty<MoveMarking>(), DeterministicHeuristic.CreateNew())
         {
         }
 
-        private DefaultTilesAreaLottery(MoveMarking lastMove, DeterministicHeuristic heuristic)
+        private DefaultTilesAreaLottery(MoveMarking[] lastMoves, DeterministicHeuristic heuristic)
         {
-            this.lastMove = lastMove;
+            this.lastMoves = lastMoves;
             this.heuristic = heuristic;
+
+            moves = Array.Empty<MoveMarking>();
         }
 
-        public MoveMarking Draw(MoveMarking[] markings)
+        public MoveMarking[] Draw(MoveMarking[] markings)
         {
             if (markings is null)
                 throw new ArgumentNullException(nameof(markings));
 
-            if (markings.Contains(lastMove))
+            if (lastMoves.Any() && lastMoves.All(move => markings.Contains(move)))
             {
-                move = lastMove;
-                return move;
+                moves = lastMoves;
+                return moves;
             }
 
             var random = heuristic.Next();
-            var next = random.Next(markings.Length);
-            move = markings[next];
-            return move;
+
+            moves = new MoveMarking[(markings.Length + 3) / 4];
+            for (var index = 0; index < moves.Length; index++)
+            {
+                var next = markings[random.Next(markings.Length)];
+                while (moves.Contains(next))
+                    next = markings[random.Next(markings.Length)];
+                moves[index] = next;
+            }
+            return moves;
         }
 
         public ITilesAreaLottery CreateNext()
-            => new DefaultTilesAreaLottery(move, heuristic.CreateNext());
+            => new DefaultTilesAreaLottery(moves, heuristic.CreateNext());
     }
 }

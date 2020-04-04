@@ -113,9 +113,9 @@ namespace NeinTile.Shell
             var deckInfo = $"Preview: {hint.First.Value:N0}";
             if (!hint.IsSingle)
             {
-                deckInfo += $", {hint.Second.Value:N0}";
+                deckInfo += $" / {hint.Second.Value:N0}";
                 if (!hint.IsEither)
-                    deckInfo += $", {hint.Third.Value:N0}";
+                    deckInfo += $" / {hint.Third.Value:N0}";
             }
             var leftSpaces = Math.Max(1, Width - deckInfo.Length) / 2;
             var rightSpaces = Math.Max(1, Width - deckInfo.Length - leftSpaces);
