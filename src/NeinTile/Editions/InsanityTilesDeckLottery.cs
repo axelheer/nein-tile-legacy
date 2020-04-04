@@ -26,7 +26,7 @@ namespace NeinTile.Editions
             var totalScore = area?.TotalScore ?? 0;
 
             // Is unlucky or poor anyway?
-            var nope = random.Next(21) != 0;
+            var nope = random.Next(13) != 0;
             if (nope || totalScore < 1_000)
             {
                 bonus = TileInfo.Empty;

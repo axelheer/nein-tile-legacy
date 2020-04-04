@@ -7,10 +7,10 @@ namespace NeinTile.Shell
 {
     public sealed class GameView : IDisposable
     {
-        private static bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         private readonly int bufferWidth;
-        private readonly int bufferHeigth;
+        private readonly int bufferHeight;
 
         private readonly bool cursorVisible;
 
@@ -22,7 +22,7 @@ namespace NeinTile.Shell
             if (IsWindows)
             {
                 bufferWidth = Console.BufferWidth;
-                bufferHeigth = Console.BufferHeight;
+                bufferHeight = Console.BufferHeight;
                 cursorVisible = Console.CursorVisible;
                 windowWidth = Console.WindowWidth;
                 windowHeight = Console.WindowHeight;
@@ -36,7 +36,7 @@ namespace NeinTile.Shell
             Console.Clear();
         }
 
-        public void Paint(string content)
+        public void Print(string content)
         {
             Console.SetCursorPosition(0, 0);
             Console.Write(content);
@@ -58,7 +58,7 @@ namespace NeinTile.Shell
             if (IsWindows)
             {
                 Console.SetWindowSize(1, 1);
-                Console.SetBufferSize(bufferWidth, bufferHeigth);
+                Console.SetBufferSize(bufferWidth, bufferHeight);
                 Console.SetWindowSize(windowWidth, windowHeight);
                 Console.CursorVisible = cursorVisible;
             }

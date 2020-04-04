@@ -38,11 +38,17 @@ namespace NeinTile
             return factory.CreateNew(options);
         }
 
-        public abstract ITilesDeckMixer CreateDeckMixer(GameOptions options);
-        public abstract ITilesDeckLottery CreateDeckLottery(GameOptions options);
-        public abstract ITilesAreaMixer CreateAreaMixer(GameOptions options);
+        public virtual ITilesAreaLottery CreateAreaLottery(GameOptions options)
+            => new DefaultTilesAreaLottery();
+
         public abstract ITilesAreaMerger CreateAreaMerger(GameOptions options);
-        public abstract ITilesAreaLottery CreateAreaLottery(GameOptions options);
+
+        public virtual ITilesAreaMixer CreateAreaMixer(GameOptions options)
+            => new DefaultTilesAreaMixer(options);
+
+        public abstract ITilesDeckLottery CreateDeckLottery(GameOptions options);
+
+        public abstract ITilesDeckMixer CreateDeckMixer(GameOptions options);
 
         public virtual GameState CreateNew(GameOptions options)
         {

@@ -20,7 +20,7 @@ namespace NeinTile.Editions
         {
             var random = heuristic.Next();
 
-            if (random.Next(16) != 0)
+            if (random.Next(8) != 0)
             {
                 bonus = TileInfo.Empty;
                 return TileSample.Empty;

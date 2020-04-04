@@ -40,7 +40,7 @@ namespace NeinTile.Shell
                 while (playing)
                 {
                     var content = gamePrinter.Print(gameState, layerIndex);
-                    view.Paint(content);
+                    view.Print(content);
 
                     var next = view.Next();
                     switch (next.Key)
