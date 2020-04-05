@@ -5,8 +5,8 @@ namespace NeinTile.Shell
 {
     public sealed class GamePrinter
     {
-        public const int TileWidth = 9;
-        public const int TileHeight = 5;
+        public const int TileWidth = 12;
+        public const int TileHeight = 4;
         public const int TileSize = TileWidth * TileHeight;
 
         public int ColCount { get; }
