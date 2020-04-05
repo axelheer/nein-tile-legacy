@@ -27,7 +27,7 @@ namespace NeinTile.Editions
             remainder = default;
             return (source, target) switch
             {
-                (_, (0, _)) => source,
+                (_, (0, 0)) => source,
                 ((-2, _), (-1, _)) => new TileInfo(-3, 3),
                 ((-1, _), (-2, _)) => new TileInfo(-3, 3),
                 ((1, _), (2, _)) => new TileInfo(3, 3),

@@ -12,10 +12,11 @@ namespace NeinTile
             {
                 ["simple"] = new SimpleGameFactory(),
                 ["classic"] = new ClassicGameFactory(),
+                ["duality"] = new DualityGameFactory(),
                 ["insanity"] = new InsanityGameFactory()
             };
 
-        private static void Register(string name, GameFactory factory)
+        public static void Register(string name, GameFactory factory)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name));

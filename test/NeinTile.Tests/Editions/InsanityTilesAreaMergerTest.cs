@@ -44,6 +44,7 @@ namespace NeinTile.Editions.Tests
                 { new TileInfo(-2, 0), new TileInfo(-1, 0), new TileInfo(-3, 3) },
                 { new TileInfo(-1, 0), new TileInfo(-2, 0), new TileInfo(-3, 3) },
                 { new TileInfo(0, 100), new TileInfo(0, 50), new TileInfo(0, 100) },
+                { new TileInfo(0, 50), new TileInfo(0, 100), new TileInfo(0, 100) },
                 { new TileInfo(1, 0), new TileInfo(2, 0), new TileInfo(3, 3) },
                 { new TileInfo(2, 0), new TileInfo(1, 0), new TileInfo(3, 3) },
                 { new TileInfo(3, 3), new TileInfo(3, 3), new TileInfo(6, 9) },
