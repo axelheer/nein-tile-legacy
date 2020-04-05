@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using NeinTile.Fakes;
 using Xunit;
 
@@ -5,6 +6,8 @@ namespace NeinTile.Tests
 {
     public class GamePrinterTest
     {
+        private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
         private readonly TileInfo[,,] tiles;
 
         public GamePrinterTest()
@@ -71,7 +74,7 @@ namespace NeinTile.Tests
 
             var actual = subject.Print(state, 0);
 
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected, actual, ignoreLineEndingDifferences: IsWindows);
         }
 
         [Fact]
@@ -116,7 +119,7 @@ namespace NeinTile.Tests
 
             var actual = subject.Print(state, 0);
 
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected, actual, ignoreLineEndingDifferences: IsWindows);
         }
 
         [Fact]
@@ -161,7 +164,7 @@ namespace NeinTile.Tests
 
             var actual = subject.Print(state, 0);
 
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected, actual, ignoreLineEndingDifferences: IsWindows);
         }
 
         [Fact]
@@ -206,7 +209,7 @@ namespace NeinTile.Tests
 
             var actual = subject.Print(state, 0);
 
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected, actual, ignoreLineEndingDifferences: IsWindows);
         }
     }
 }
