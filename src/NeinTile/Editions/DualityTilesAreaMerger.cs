@@ -5,7 +5,7 @@ namespace NeinTile.Editions
     public class DualityTilesAreaMerger : ITilesAreaMerger
     {
         public bool CanMerge(TileInfo source, TileInfo target)
-            => target == TileInfo.Empty || source.Value == target.Value;
+            => source != TileInfo.Empty && (target == TileInfo.Empty || source.Value == target.Value);
 
         public TileInfo Merge(TileInfo source, TileInfo target, out TileInfo remainder)
         {

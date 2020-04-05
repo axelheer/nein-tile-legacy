@@ -7,7 +7,7 @@ namespace NeinTile.Editions
     {
         public bool CanMerge(TileInfo source, TileInfo target)
         {
-            return target == TileInfo.Empty || (source.Value, target.Value) switch
+            return source != TileInfo.Empty && (target == TileInfo.Empty || (source.Value, target.Value) switch
             {
                 (-2, -2) => false,
                 (-2, -1) => true,
@@ -18,7 +18,7 @@ namespace NeinTile.Editions
                 (2, 1) => true,
                 (2, 2) => false,
                 var (s, t) => s == t
-            };
+            });
         }
 
         public TileInfo Merge(TileInfo source, TileInfo target, out TileInfo remainder)

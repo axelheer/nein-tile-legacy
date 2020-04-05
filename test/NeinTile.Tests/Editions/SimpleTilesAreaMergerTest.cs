@@ -7,6 +7,7 @@ namespace NeinTile.Editions.Tests
         public static TheoryData CanMergeData
             => new TheoryData<TileInfo, TileInfo, bool>()
             {
+                { new TileInfo(0, 0), new TileInfo(0, 0), false },
                 { new TileInfo(0, 0), new TileInfo(2, 0), false },
                 { new TileInfo(2, 0), new TileInfo(0, 0), true },
                 { new TileInfo(2, 2), new TileInfo(4, 6), false },
