@@ -6,6 +6,10 @@
     <VersionPrefix>0.2.0</VersionPrefix>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" $(APPVEYOR_BUILD_NUMBER) != '' and $(APPVEYOR_REPO_BRANCH) != 'release' ">
     <VersionSuffix>preview.$(APPVEYOR_BUILD_NUMBER)</VersionSuffix>
   </PropertyGroup>
