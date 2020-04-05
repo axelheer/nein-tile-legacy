@@ -16,16 +16,6 @@ namespace NeinTile
                 ["insanity"] = new InsanityGameFactory()
             };
 
-        public static void Register(string name, GameFactory factory)
-        {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException(nameof(name));
-            if (factory is null)
-                throw new ArgumentNullException(nameof(factory));
-
-            Factories[name] = factory;
-        }
-
         public static GameState CreateNew(string name, GameOptions options)
         {
             if (string.IsNullOrEmpty(name))
@@ -39,23 +29,20 @@ namespace NeinTile
             return factory.CreateNew(options);
         }
 
-        public virtual ITilesAreaLottery CreateAreaLottery(GameOptions options)
+        protected virtual ITilesAreaLottery CreateAreaLottery(GameOptions options)
             => new DefaultTilesAreaLottery();
 
-        public abstract ITilesAreaMerger CreateAreaMerger(GameOptions options);
+        protected abstract ITilesAreaMerger CreateAreaMerger(GameOptions options);
 
-        public virtual ITilesAreaMixer CreateAreaMixer(GameOptions options)
+        protected virtual ITilesAreaMixer CreateAreaMixer(GameOptions options)
             => new DefaultTilesAreaMixer(options);
 
-        public abstract ITilesDeckLottery CreateDeckLottery(GameOptions options);
+        protected abstract ITilesDeckLottery CreateDeckLottery(GameOptions options);
 
-        public abstract ITilesDeckMixer CreateDeckMixer(GameOptions options);
+        protected abstract ITilesDeckMixer CreateDeckMixer(GameOptions options);
 
-        public virtual GameState CreateNew(GameOptions options)
+        protected virtual GameState CreateNew(GameOptions options)
         {
-            if (options is null)
-                throw new ArgumentNullException(nameof(options));
-
             var deckMixer = CreateDeckMixer(options);
             var deckLottery = CreateDeckLottery(options);
 

@@ -23,12 +23,12 @@ namespace NeinTile
         }
 
         public bool CanMove()
-            => Area.CanMove(MoveDirection.Right)
-            || Area.CanMove(MoveDirection.Left)
-            || Area.CanMove(MoveDirection.Up)
-            || Area.CanMove(MoveDirection.Down)
-            || Area.CanMove(MoveDirection.Forward)
-            || Area.CanMove(MoveDirection.Backward);
+            => CanMove(MoveDirection.Right)
+            || CanMove(MoveDirection.Left)
+            || CanMove(MoveDirection.Up)
+            || CanMove(MoveDirection.Down)
+            || CanMove(MoveDirection.Forward)
+            || CanMove(MoveDirection.Backward);
 
         public bool CanMove(MoveDirection direction)
             => Area.CanMove(direction);

@@ -37,12 +37,11 @@ namespace NeinTile.Editions
         {
             if (IsMixing)
             {
-                var (colIndex, rowIndex, layIndex)
-                    = (random.Next(colCount), random.Next(rowCount), random.Next(layCount));
+                var (colIndex, rowIndex, layIndex) = (0, 0, 0);
                 while (tiles[colIndex, rowIndex, layIndex] != TileInfo.Empty)
                 {
                     (colIndex, rowIndex, layIndex)
-                    = (random.Next(colCount), random.Next(rowCount), random.Next(layCount));
+                        = (random.Next(colCount), random.Next(rowCount), random.Next(layCount));
                 }
                 tiles[colIndex, rowIndex, layIndex] = nextTile;
                 iteration += 2;

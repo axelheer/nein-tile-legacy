@@ -16,8 +16,11 @@ namespace NeinTile.Tests
                 }
             );
 
+            Assert.False(subject.CanMove());
+
             var actual = subject.Move(MoveDirection.Down);
 
+            Assert.Null(actual.Previous);
             Assert.Equal(subject, actual);
         }
 
@@ -47,8 +50,11 @@ namespace NeinTile.Tests
                 }
             );
 
+            Assert.True(subject.CanMove());
+
             var actual = subject.Move(MoveDirection.Up);
 
+            Assert.Equal(subject, actual.Previous);
             Assert.Equal(expectedDeck, actual.Deck);
             Assert.Equal(expectedArea, actual.Area);
         }

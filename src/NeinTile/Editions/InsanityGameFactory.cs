@@ -4,13 +4,13 @@ namespace NeinTile.Editions
 {
     public sealed class InsanityGameFactory : GameFactory
     {
-        public override ITilesAreaMerger CreateAreaMerger(GameOptions options)
+        protected override ITilesAreaMerger CreateAreaMerger(GameOptions options)
             => new InsanityTilesAreaMerger();
 
-        public override ITilesDeckLottery CreateDeckLottery(GameOptions options)
+        protected override ITilesDeckLottery CreateDeckLottery(GameOptions options)
             => new InsanityTilesDeckLottery();
 
-        public override ITilesDeckMixer CreateDeckMixer(GameOptions options)
+        protected override ITilesDeckMixer CreateDeckMixer(GameOptions options)
             => new InsanityTilesDeckMixer();
     }
 }

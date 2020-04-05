@@ -29,6 +29,28 @@ namespace NeinTile.Tests
         }
 
         [Fact]
+        public void ShouldHandleNull()
+        {
+            var tiles = Assert.Throws<ArgumentNullException>(()
+                => new MoveEnumerator(null!, default));
+
+            Assert.Equal(nameof(tiles), tiles.ParamName);
+        }
+
+        [Theory]
+        [InlineData(1, 2, 2, MoveDirection.Right)]
+        [InlineData(2, 1, 2, MoveDirection.Up)]
+        [InlineData(2, 2, 1, MoveDirection.Forward)]
+        public void ShouldFreeze(int colCount, int rowCount, int layCount, MoveDirection direction)
+        {
+            var tiles = new TileInfo[colCount, rowCount, layCount];
+
+            var subject = new MoveEnumerator(tiles, direction);
+
+            Assert.False(subject.MoveNext());
+        }
+
+        [Fact]
         public void ShouldMoveRight()
             => TestMove(MoveDirection.Right, i => 63 - i - i / 3, s => s + 1);
 
@@ -59,7 +81,7 @@ namespace NeinTile.Tests
             var subject = new MoveEnumerator(tiles, direction);
             while (subject.MoveNext())
             {
-                output.WriteLine(subject.Current.ToString());
+                output.WriteLine($"{subject.Current}");
 
                 var expectedSource = source(iteration);
                 var expectedTarget = target(expectedSource);
@@ -106,10 +128,10 @@ namespace NeinTile.Tests
             var subject = new MoveEnumerator(tiles, direction);
             while (subject.MoveNext())
             {
-                output.WriteLine(subject.Current.ToString());
-
                 var (colIndex, rowIndex, layIndex) = marking(iteration);
                 var expected = new MoveMarking(colIndex, rowIndex, layIndex);
+
+                output.WriteLine($"{subject.Current} => {expected}");
 
                 var (source, target) = subject.Current;
                 var actual = subject.Update(source, target);
