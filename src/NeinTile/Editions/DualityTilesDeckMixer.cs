@@ -23,7 +23,11 @@ namespace NeinTile.Editions
             {
                 new TileInfo(-2, 2),
                 new TileInfo(-2, 2),
+                new TileInfo(-2, 2),
+                new TileInfo(-2, 2),
 
+                new TileInfo(2, 2),
+                new TileInfo(2, 2),
                 new TileInfo(2, 2),
                 new TileInfo(2, 2)
             };

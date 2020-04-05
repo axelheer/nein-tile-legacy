@@ -27,9 +27,9 @@ namespace NeinTile.Editions.Tests
                 Assert.Equal(2, Math.Abs(item.Value));
             });
 
-            Assert.Equal(4, actual.Length);
-            Assert.Equal(2, positive);
-            Assert.Equal(2, negative);
+            Assert.Equal(8, actual.Length);
+            Assert.Equal(4, positive);
+            Assert.Equal(4, negative);
         }
 
         [Fact]
