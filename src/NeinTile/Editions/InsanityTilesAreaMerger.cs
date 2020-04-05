@@ -7,9 +7,8 @@ namespace NeinTile.Editions
     {
         public bool CanMerge(TileInfo source, TileInfo target)
         {
-            return (source.Value, target.Value) switch
+            return target == TileInfo.Empty || (source.Value, target.Value) switch
             {
-                (_, 0) => true,
                 (-2, -2) => false,
                 (-2, -1) => true,
                 (-1, -2) => true,
@@ -28,10 +27,10 @@ namespace NeinTile.Editions
             return (source, target) switch
             {
                 (_, (0, 0)) => source,
-                ((-2, _), (-1, _)) => new TileInfo(-3, 3),
-                ((-1, _), (-2, _)) => new TileInfo(-3, 3),
-                ((1, _), (2, _)) => new TileInfo(3, 3),
-                ((2, _), (1, _)) => new TileInfo(3, 3),
+                ((-2, 0), (-1, 0)) => new TileInfo(-3, 3),
+                ((-1, 0), (-2, 0)) => new TileInfo(-3, 3),
+                ((1, 0), (2, 0)) => new TileInfo(3, 3),
+                ((2, 0), (1, 0)) => new TileInfo(3, 3),
                 var ((v, s), _) when v < 0 => new TileInfo(v * 2, s * 2),
                 var ((v, s), _) when v > 0 => new TileInfo(v * 2, s * 3),
                 var ((_, s1), (_, s2)) => new TileInfo(0, Math.Max(s1, s2))

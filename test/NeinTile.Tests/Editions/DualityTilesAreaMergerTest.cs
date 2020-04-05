@@ -11,8 +11,8 @@ namespace NeinTile.Editions.Tests
                 { new TileInfo(-4, 4), new TileInfo(-4, 4), true },
                 { new TileInfo(-2, 2), new TileInfo(-2, 2), true },
                 { new TileInfo(-2, 2), new TileInfo(-4, 4), false },
-                { new TileInfo(0, 0), new TileInfo(2, 0), false },
-                { new TileInfo(2, 0), new TileInfo(0, 0), true },
+                { new TileInfo(0, 0), new TileInfo(2, 2), false },
+                { new TileInfo(2, 2), new TileInfo(0, 0), true },
                 { new TileInfo(2, 2), new TileInfo(4, 6), false },
                 { new TileInfo(2, 2), new TileInfo(2, 2), true },
                 { new TileInfo(4, 6), new TileInfo(4, 6), true },
@@ -37,6 +37,7 @@ namespace NeinTile.Editions.Tests
                 { new TileInfo(-2, 2), new TileInfo(-2, 2), new TileInfo(-4, 4) },
                 { new TileInfo(2, 2), new TileInfo(0, 0), new TileInfo(2, 2) },
                 { new TileInfo(2, 2), new TileInfo(2, 2), new TileInfo(4, 6) },
+                { new TileInfo(0, 1), new TileInfo(0, 0), new TileInfo(0, 1) },
                 { new TileInfo(4, 6), new TileInfo(4, 6), new TileInfo(8, 18) }
             };
 
