@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace NeinTile.Shell
+namespace NeinTile
 {
     public sealed class GamePrinter
     {
@@ -23,7 +23,7 @@ namespace NeinTile.Shell
             Width = ColCount * (TileWidth + 1) + 1;
             Height = RowCount * (TileHeight + 1) + 1;
 
-            printer = new StringBuilder();
+            printer = new StringBuilder((Width + 2) * (Height + 2));
             tilesBuffer = new string[RowCount, ColCount];
         }
 
@@ -97,32 +97,25 @@ namespace NeinTile.Shell
 
         private void PrintFooter(long totalScore, int layerIndex, int layerCount)
         {
-            var scoreInfo = $"Score: {totalScore:N0}";
-            var layerInfo = $"Layer: {layerIndex + 1:N0} / {layerCount:N0}";
-            var infoSpaces = Math.Max(1, Width - 2 - scoreInfo.Length - layerInfo.Length);
-            _ = printer.Append(' ')
-                       .Append(scoreInfo)
-                       .Append(' ', infoSpaces)
-                       .Append(layerInfo)
-                       .Append(' ')
-                       .AppendLine();
+            var left = $" Score: {totalScore:N0} ";
+            var right = $" Layer: {layerIndex + 1:N0} / {layerCount:N0} ";
+            var footer = left.Length + right.Length <= Width
+                ? left.PadRight(Width - right.Length) + right
+                : left.PadRight(Width);
+            _ = printer.AppendLine(footer);
         }
 
         private void PrintHeader(TileSample hint, bool done)
         {
-            var deckInfo = done ? "Done." : $"Next: {hint.First.Value:N0}";
-            if (!done && !hint.IsSingle)
-            {
-                deckInfo += $" / {hint.Second.Value:N0}";
-                if (!hint.IsEither)
-                    deckInfo += $" / {hint.Third.Value:N0}";
-            }
-            var leftSpaces = Math.Max(1, Width - deckInfo.Length) / 2;
-            var rightSpaces = Math.Max(1, Width - deckInfo.Length - leftSpaces);
-            _ = printer.Append(' ', leftSpaces)
-                       .Append(deckInfo)
-                       .Append(' ', rightSpaces)
-                       .AppendLine();
+            var header = done
+                ? " Done. "
+                : hint.IsSingle
+                ? $" Next: {hint.First.Value:N0} "
+                : hint.IsEither
+                ? $" Next: {hint.First.Value:N0} / {hint.Second.Value:N0} "
+                : $" Next: {hint.First.Value:N0} / {hint.Second.Value:N0} / {hint.Third.Value:N0} ";
+            _ = printer.AppendLine(header.PadRight((Width - header.Length) / 2 + header.Length)
+                                         .PadLeft(Width));
         }
 
         private void PrepareTilesBuffer(TilesArea tilesArea, int layerIndex)
@@ -139,9 +132,9 @@ namespace NeinTile.Shell
 
         private static string Stringify(TileInfo tile)
         {
-            var tileInfo = tile != TileInfo.Empty ? $"{tile.Value:N0}" : "";
-            return tileInfo.PadRight((TileSize - tileInfo.Length) / 2 + tileInfo.Length)
-                           .PadLeft(TileSize);
+            var info = tile != TileInfo.Empty ? $"{tile.Value:N0}" : "";
+            return info.PadRight((TileSize - info.Length) / 2 + info.Length)
+                       .PadLeft(TileSize);
         }
     }
 }

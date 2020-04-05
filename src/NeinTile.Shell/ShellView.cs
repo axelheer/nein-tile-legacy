@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace NeinTile.Shell
 {
-    public sealed class GameView : IDisposable
+    public sealed class ShellView : IDisposable
     {
         private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
@@ -17,7 +17,7 @@ namespace NeinTile.Shell
         private readonly int windowWidth;
         private readonly int windowHeight;
 
-        public GameView(int width, int height)
+        public ShellView(int width, int height)
         {
             if (IsWindows)
             {

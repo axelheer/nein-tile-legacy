@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 
 namespace NeinTile.Shell
@@ -26,7 +27,7 @@ namespace NeinTile.Shell
         [Option(Description = "Number of layers (defaults to 1)")]
         public int Layers { get; set; } = 1;
 
-        private void OnExecute()
+        public Task OnExecuteAsync()
         {
             var playing = true;
             var layerIndex = Layers - 1;
@@ -35,7 +36,7 @@ namespace NeinTile.Shell
             var gameOptions = new GameOptions(Columns, Rows, Layers);
             var gameState = GameFactory.CreateNew(Edition, gameOptions);
 
-            using var view = new GameView(gamePrinter.Width, gamePrinter.Height);
+            using var view = new ShellView(gamePrinter.Width, gamePrinter.Height);
 
             while (playing)
             {
@@ -126,6 +127,8 @@ namespace NeinTile.Shell
                         break;
                 }
             }
+
+            return Task.CompletedTask;
         }
     }
 }
