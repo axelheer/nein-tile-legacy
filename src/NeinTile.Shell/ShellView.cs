@@ -28,8 +28,8 @@ namespace NeinTile.Shell
                 windowHeight = Console.WindowHeight;
 
                 Console.SetWindowSize(1, 1);
-                Console.SetBufferSize(width, height + 4);
-                Console.SetWindowSize(width, height + 4);
+                Console.SetBufferSize(width + 2, height + 4);
+                Console.SetWindowSize(width + 2, height + 4);
                 Console.CursorVisible = false;
             }
 
