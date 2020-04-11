@@ -3,7 +3,7 @@
 
 [![Latest package](https://img.shields.io/nuget/v/NeinTile.Shell.svg)](https://www.nuget.org/packages/NeinTile.Shell)
 [![Download tracker](https://img.shields.io/nuget/dt/NeinTile.Shell.svg)](https://www.nuget.org/packages/NeinTile.Shell)
-[![GitHub status](https://github.com/axelheer/nein-tile/workflows/everything/badge.svg)](https://ci.appveyor.com/project/axelheer/nein-tile/branch/master)
+[![GitHub status](https://github.com/axelheer/nein-tile/workflows/everything/badge.svg)](https://github.com/axelheer/nein-tile/actions)
 [![Code coverage](https://codecov.io/gh/axelheer/nein-tile/branch/master/graph/badge.svg)](https://codecov.io/gh/axelheer/nein-tile)
 
 Just playing around...
