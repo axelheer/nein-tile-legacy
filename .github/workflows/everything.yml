@@ -60,7 +60,7 @@ jobs:
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish packages
-        run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}
+        run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
   release:
     needs: build
     runs-on: windows-latest
@@ -79,10 +79,10 @@ jobs:
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.NUGET_TOKEN }}
       - name: Publish packages
-        run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }}
+        run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate
       - name: Extract version
         run: |
-          if ((gci pkg | select -p name -f 1) -match '\d+\.\d+\.\d+') {
+          if ((gci | select -p name -f 1) -match '\d+\.\d+\.\d+') {
             echo "::set-env name=RELEASE_VERSION::$($matches[0])"
           }
           else {
