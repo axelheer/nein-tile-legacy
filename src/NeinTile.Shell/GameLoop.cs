@@ -19,6 +19,9 @@ namespace NeinTile.Shell
 
             while (playing)
             {
+                if (gameState is null)
+                    throw new ArgumentNullException(nameof(gameState));
+
                 var content = gamePrinter.Print(gameState, layerIndex);
                 view.Print(content);
 
