@@ -70,7 +70,7 @@ namespace NeinTile.Tests
                 )
             );
 
-            var subject = new GamePrinter(3, 3);
+            var subject = new GamePrinter(state);
 
             var actual = subject.Print(state, 0);
 
@@ -115,7 +115,7 @@ namespace NeinTile.Tests
                 )
             );
 
-            var subject = new GamePrinter(3, 3);
+            var subject = new GamePrinter(state);
 
             var actual = subject.Print(state, 0);
 
@@ -160,7 +160,7 @@ namespace NeinTile.Tests
                 )
             );
 
-            var subject = new GamePrinter(3, 3);
+            var subject = new GamePrinter(state);
 
             var actual = subject.Print(state, 0);
 
@@ -205,7 +205,7 @@ namespace NeinTile.Tests
                 )
             );
 
-            var subject = new GamePrinter(3, 3);
+            var subject = new GamePrinter(state);
 
             var actual = subject.Print(state, 0);
 

@@ -26,8 +26,12 @@ Key controls
 | <kbd>B</kbd>                   | Move backward  |
 | <kbd>U</kbd>                   | Undo last move |
 | <kbd>1</kbd> - <kbd>0</kbd>    | Layer 1 - 10   |
-| <kbd>R</kbd>                   | Refresh screen |
+| <kbd>Ctrl</kbd> + <kbd>S</kbd> | Save game      |
+| <kbd>Ctrl</kbd> + <kbd>L</kbd> | Load game      |
+| <kbd>Ctrl</kbd> + <kbd>R</kbd> | Refresh*       |
 | <kbd>Ctrl</kbd> + <kbd>Q</kbd> | Quit           |
+
+_(*)_ useful after resizing your terminal
 
 Unofficial song
 ---------------

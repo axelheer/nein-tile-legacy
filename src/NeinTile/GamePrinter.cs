@@ -15,10 +15,13 @@ namespace NeinTile
         public int Width { get; }
         public int Height { get; }
 
-        public GamePrinter(int colCount, int rowCount)
+        public GamePrinter(GameState initialState)
         {
-            ColCount = colCount;
-            RowCount = rowCount;
+            if (initialState is null)
+                throw new ArgumentNullException(nameof(initialState));
+
+            ColCount = initialState.Area.ColCount;
+            RowCount = initialState.Area.RowCount;
 
             Width = ColCount * (TileWidth + 1) + 1;
             Height = RowCount * (TileHeight + 1) + 1;

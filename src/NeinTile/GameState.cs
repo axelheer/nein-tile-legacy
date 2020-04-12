@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace NeinTile
 {
@@ -46,5 +48,14 @@ namespace NeinTile
 
             return this;
         }
+
+#pragma warning disable CA1801
+#pragma warning disable CA1822
+
+        public Task SaveAsync(Stream stream)
+            => throw new NotImplementedException();
+
+        public static Task<GameState> LoadAsync(Stream stream)
+            => throw new NotImplementedException();
     }
 }
