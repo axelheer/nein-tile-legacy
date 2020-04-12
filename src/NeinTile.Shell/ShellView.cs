@@ -7,8 +7,12 @@ namespace NeinTile.Shell
 {
     public sealed class ShellView : IDisposable
     {
-        private static bool DoResize => !Console.IsOutputRedirected
-            && RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        private static readonly bool HasWindow
+            = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                && !Console.IsOutputRedirected;
+
+        private static readonly bool HasCursor
+            = !Console.IsOutputRedirected;
 
         private readonly int bufferWidth;
         private readonly int bufferHeight;
@@ -20,7 +24,7 @@ namespace NeinTile.Shell
 
         public ShellView(int width, int height)
         {
-            if (DoResize)
+            if (HasWindow)
             {
                 bufferWidth = Console.BufferWidth;
                 bufferHeight = Console.BufferHeight;
@@ -39,7 +43,11 @@ namespace NeinTile.Shell
 
         public void Print(string content)
         {
-            Console.SetCursorPosition(0, 0);
+            if (HasCursor)
+            {
+                Console.SetCursorPosition(0, 0);
+            }
+
             Console.Write(content);
         }
 
@@ -56,7 +64,7 @@ namespace NeinTile.Shell
         {
             Console.Clear();
 
-            if (DoResize)
+            if (HasWindow)
             {
                 Console.SetWindowSize(1, 1);
                 Console.SetBufferSize(bufferWidth, bufferHeight);
