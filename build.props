@@ -17,6 +17,11 @@
   </ItemGroup>
 
   <PropertyGroup>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)nein-tile.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <NoWarn>$(NoWarn);CA1031;CA1814;CA2007;NU5105</NoWarn>
   </PropertyGroup>
 
