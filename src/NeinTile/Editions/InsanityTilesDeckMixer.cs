@@ -1,7 +1,9 @@
+using System;
 using NeinTile.Abstractions;
 
 namespace NeinTile.Editions
 {
+    [Serializable]
     public sealed class InsanityTilesDeckMixer : ITilesDeckMixer
     {
         private readonly DeterministicHeuristic heuristic;

@@ -4,6 +4,7 @@ using NeinTile.Abstractions;
 
 namespace NeinTile.Editions
 {
+    [Serializable]
     public sealed class DefaultTilesAreaLottery : ITilesAreaLottery
     {
         private MoveMarking[] moves;

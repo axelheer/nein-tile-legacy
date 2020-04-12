@@ -1,7 +1,9 @@
+using System;
 using NeinTile.Abstractions;
 
 namespace NeinTile.Editions
 {
+    [Serializable]
     public class SimpleTilesAreaMerger : ITilesAreaMerger
     {
         public bool CanMerge(TileInfo source, TileInfo target)

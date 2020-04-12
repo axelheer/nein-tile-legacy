@@ -3,6 +3,7 @@ using NeinTile.Abstractions;
 
 namespace NeinTile
 {
+    [Serializable]
     public class TilesDeck
     {
         private readonly ITilesDeckMixer mixer;

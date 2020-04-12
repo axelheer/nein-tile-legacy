@@ -2,6 +2,7 @@ using System;
 
 namespace NeinTile
 {
+    [Serializable]
     internal struct DeterministicHeuristic
     {
         private static readonly Random InitRandom = new Random();

@@ -5,6 +5,7 @@ using NeinTile.Abstractions;
 
 namespace NeinTile
 {
+    [Serializable]
     public class TilesArea
     {
         private readonly ITilesAreaMerger merger;

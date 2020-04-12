@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using McMaster.Extensions.CommandLineUtils;
 
 #pragma warning disable CA1822 // Must not be static
@@ -9,7 +8,7 @@ namespace NeinTile.Shell
     [Command("load", Description = "Load an existing game")]
     public class LoadGame
     {
-        public async Task<int> OnExecuteAsync(IConsole console)
+        public int OnExecute(IConsole console)
         {
             if (console is null)
                 throw new ArgumentNullException(nameof(console));
@@ -21,9 +20,9 @@ namespace NeinTile.Shell
             }
 
             using var stream = ShellProfile.GameState.OpenRead();
-            var gameState = await GameState.LoadAsync(stream);
+            var gameState = GameState.Load(stream);
 
-            return await GameLoop.Run(gameState);
+            return GameLoop.Run(gameState);
         }
     }
 }

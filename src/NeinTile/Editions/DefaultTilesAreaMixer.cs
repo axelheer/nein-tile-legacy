@@ -3,6 +3,7 @@ using NeinTile.Abstractions;
 
 namespace NeinTile.Editions
 {
+    [Serializable]
     public sealed class DefaultTilesAreaMixer : ITilesAreaMixer
     {
         private readonly Random random = new Random();

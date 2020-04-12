@@ -3,6 +3,7 @@ using NeinTile.Abstractions;
 
 namespace NeinTile.Editions
 {
+    [Serializable]
     public class InsanityTilesAreaMerger : ITilesAreaMerger
     {
         public bool CanMerge(TileInfo source, TileInfo target)

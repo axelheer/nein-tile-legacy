@@ -1,11 +1,10 @@
 using System;
-using System.Threading.Tasks;
 
 namespace NeinTile.Shell
 {
     public static class GameLoop
     {
-        public static async Task<int> Run(GameState gameState)
+        public static int Run(GameState gameState)
         {
             if (gameState is null)
                 throw new ArgumentNullException(nameof(gameState));
@@ -97,7 +96,7 @@ namespace NeinTile.Shell
                     case ConsoleKey.S when next.Modifiers == ConsoleModifiers.Control:
                         using (var stream = ShellProfile.GameState.OpenWrite())
                         {
-                            await gameState.SaveAsync(stream);
+                            gameState.Save(stream);
                         }
                         saved = true;
                         break;
@@ -105,7 +104,7 @@ namespace NeinTile.Shell
                     case ConsoleKey.L when next.Modifiers == ConsoleModifiers.Control && saved:
                         using (var stream = ShellProfile.GameState.OpenRead())
                         {
-                            gameState = await GameState.LoadAsync(stream);
+                            gameState = GameState.Load(stream);
                         }
                         break;
 

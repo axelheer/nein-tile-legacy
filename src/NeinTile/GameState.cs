@@ -1,9 +1,10 @@
 using System;
 using System.IO;
-using System.Threading.Tasks;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace NeinTile
 {
+    [Serializable]
     public sealed class GameState
     {
         public TilesDeck Deck { get; }
@@ -49,13 +50,22 @@ namespace NeinTile
             return this;
         }
 
-#pragma warning disable CA1801
-#pragma warning disable CA1822
+        public void Save(Stream stream)
+        {
+            if (stream is null)
+                throw new ArgumentNullException(nameof(stream));
 
-        public Task SaveAsync(Stream stream)
-            => throw new NotImplementedException();
+            var serializer = new BinaryFormatter();
+            serializer.Serialize(stream, this);
+        }
 
-        public static Task<GameState> LoadAsync(Stream stream)
-            => throw new NotImplementedException();
+        public static GameState Load(Stream stream)
+        {
+            if (stream is null)
+                throw new ArgumentNullException(nameof(stream));
+
+            var serializer = new BinaryFormatter();
+            return (GameState)serializer.Deserialize(stream);
+        }
     }
 }

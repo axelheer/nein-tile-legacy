@@ -2,6 +2,7 @@ using System;
 
 namespace NeinTile
 {
+    [Serializable]
     public readonly struct MoveMarking : IEquatable<MoveMarking>
     {
         public static MoveMarking Empty { get; } = new MoveMarking();

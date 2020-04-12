@@ -2,6 +2,7 @@ using System;
 
 namespace NeinTile
 {
+    [Serializable]
     public readonly struct TileInfo : IEquatable<TileInfo>
     {
         public static TileInfo Empty { get; } = new TileInfo();

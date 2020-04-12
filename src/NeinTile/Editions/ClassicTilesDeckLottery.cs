@@ -3,6 +3,7 @@ using NeinTile.Abstractions;
 
 namespace NeinTile.Editions
 {
+    [Serializable]
     public sealed class ClassicTilesDeckLottery : ITilesDeckLottery
     {
         private readonly TilesArea? area;
