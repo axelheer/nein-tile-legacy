@@ -7,24 +7,22 @@ namespace NeinTile
 {
     public abstract class GameFactory
     {
-        private static readonly IDictionary<string, GameFactory> Factories
-            = new Dictionary<string, GameFactory>(OptionComparer.Instance)
+        private static readonly IDictionary<GameEdition, GameFactory> Factories
+            = new Dictionary<GameEdition, GameFactory>()
             {
-                ["simple"] = new SimpleGameFactory(),
-                ["classic"] = new ClassicGameFactory(),
-                ["duality"] = new DualityGameFactory(),
-                ["insanity"] = new InsanityGameFactory()
+                [GameEdition.Simple] = new SimpleGameFactory(),
+                [GameEdition.Classic] = new ClassicGameFactory(),
+                [GameEdition.Duality] = new DualityGameFactory(),
+                [GameEdition.Insanity] = new InsanityGameFactory()
             };
 
-        public static GameState CreateNew(string name, GameOptions options)
+        public static GameState CreateNew(GameEdition edition, GameOptions options)
         {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException(nameof(name));
             if (options is null)
                 throw new ArgumentNullException(nameof(options));
 
-            if (!Factories.TryGetValue(name, out var factory))
-                throw new ArgumentOutOfRangeException(nameof(name), name, null);
+            if (!Factories.TryGetValue(edition, out var factory))
+                throw new ArgumentOutOfRangeException(nameof(edition), edition, null);
 
             return factory.CreateNew(options);
         }

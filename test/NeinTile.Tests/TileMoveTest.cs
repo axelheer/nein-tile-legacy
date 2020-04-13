@@ -68,8 +68,8 @@ namespace NeinTile.Tests
 
             var actual = subject.Equals(
                 new TileMove(
-                    new TileInfo(1, 2),
-                    new TileInfo(3, -1)
+                    new TileInfo(-1, 2),
+                    new TileInfo(3, 4)
                 )
             );
 
@@ -94,7 +94,7 @@ namespace NeinTile.Tests
         {
             var subject = new TileMove(
                 new TileInfo(1, 2),
-                new TileInfo(3, -1)
+                new TileInfo(3, 4)
             );
 
             var actual = subject.Equals(new object());
@@ -128,7 +128,7 @@ namespace NeinTile.Tests
 
             var actual = subject == new TileMove(
                 new TileInfo(1, 2),
-                new TileInfo(3, -1)
+                new TileInfo(-3, 4)
             );
 
             Assert.False(actual);
@@ -159,8 +159,8 @@ namespace NeinTile.Tests
             );
 
             var actual = subject != new TileMove(
-                new TileInfo(1, 2),
-                new TileInfo(3, -1)
+                new TileInfo(-1, 2),
+                new TileInfo(3, 4)
             );
 
             Assert.True(actual);

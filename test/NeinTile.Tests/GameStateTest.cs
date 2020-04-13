@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using NeinTile.Fakes;
 using Xunit;
@@ -6,6 +7,35 @@ namespace NeinTile.Tests
 {
     public class GameStateTest
     {
+        [Fact]
+        public void ShouldHandleNull()
+        {
+            var deck = Assert.Throws<ArgumentNullException>(()
+                => new GameState(null!, new FakeTilesArea()));
+
+            Assert.Equal(nameof(deck), deck.ParamName);
+
+            var area = Assert.Throws<ArgumentNullException>(()
+                => new GameState(new FakeTilesDeck(), null!));
+
+            Assert.Equal(nameof(area), area.ParamName);
+
+            var subject = new GameState(
+                new FakeTilesDeck(),
+                new FakeTilesArea()
+            );
+
+            var inputStream = Assert.Throws<ArgumentNullException>(()
+                => subject.Save(null!));
+
+            Assert.Equal(nameof(inputStream), inputStream.ParamName);
+
+            var outputStream = Assert.Throws<ArgumentNullException>(()
+                => GameState.Load(null!));
+
+            Assert.Equal(nameof(outputStream), outputStream.ParamName);
+        }
+
         [Fact]
         public void ShouldNotMove()
         {
@@ -63,7 +93,7 @@ namespace NeinTile.Tests
         [Fact]
         public void ShouldPersist()
         {
-            var expected = GameFactory.CreateNew("classic", new GameOptions(4, 4, 4))
+            var expected = GameFactory.CreateNew(GameEdition.Classic, new GameOptions(4, 4, 4))
                 .Move(MoveDirection.Right)
                 .Move(MoveDirection.Left)
                 .Move(MoveDirection.Up)

@@ -44,24 +44,9 @@ namespace NeinTile.Editions
                 markings[next] = temp;
             }
 
-            return Slice(markings, (markings.Length + 3) / 4);
-        }
-
-#if NETSTANDARD2_0
-
-        private MoveMarking[] Slice(MoveMarking[] markings, int length)
-        {
-            moves = new MoveMarking[length];
-            Array.Copy(markings, moves, moves.Length);
+            moves = markings[..((markings.Length + 3) / 4)];
             return moves;
         }
-
-#else
-
-        private MoveMarking[] Slice(MoveMarking[] markings, int length)
-            => moves = markings[..length];
-
-#endif
 
         public ITilesAreaLottery CreateNext()
             => new DefaultTilesAreaLottery(moves, heuristic.CreateNext());

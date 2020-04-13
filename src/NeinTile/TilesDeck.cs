@@ -14,14 +14,16 @@ namespace NeinTile
         private readonly TileInfo bonus;
 
         public TilesDeck(ITilesDeckMixer mixer, ITilesDeckLottery lottery)
-            : this(mixer, lottery, Array.Empty<TileInfo>())
+            : this(mixer ?? throw new ArgumentNullException(nameof(mixer)),
+                   lottery ?? throw new ArgumentNullException(nameof(lottery)),
+                   Array.Empty<TileInfo>())
         {
         }
 
         private TilesDeck(ITilesDeckMixer mixer, ITilesDeckLottery lottery, TileInfo[] tiles)
         {
-            this.mixer = mixer ?? throw new ArgumentNullException(nameof(mixer));
-            this.lottery = lottery ?? throw new ArgumentNullException(nameof(lottery));
+            this.mixer = mixer;
+            this.lottery = lottery;
 
             this.tiles = tiles.Length == 0 ? mixer.Shuffle() : tiles;
             sample = lottery.Draw(out bonus);
@@ -43,25 +45,6 @@ namespace NeinTile
             => IsBonus ? bonus : tiles[0];
 
         public virtual TilesDeck Draw(TilesArea? area = null)
-            => new TilesDeck(mixer.CreateNext(), lottery.CreateNext(area), Slice());
-
-#if NETSTANDARD2_0
-
-        private TileInfo[] Slice()
-        {
-            if (IsBonus)
-                return tiles;
-            var result = new TileInfo[tiles.Length - 1];
-            Array.Copy(tiles, 1, result, 0, result.Length);
-            return result;
-        }
-
-#else
-
-        private TileInfo[] Slice()
-            => IsBonus ? tiles : tiles[1..];
-
-#endif
-
+            => new TilesDeck(mixer.CreateNext(), lottery.CreateNext(area), IsBonus ? tiles : tiles[1..]);
     }
 }

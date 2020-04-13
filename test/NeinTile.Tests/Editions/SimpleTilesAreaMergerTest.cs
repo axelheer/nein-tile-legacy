@@ -8,8 +8,9 @@ namespace NeinTile.Editions.Tests
             => new TheoryData<TileInfo, TileInfo, bool>()
             {
                 { new TileInfo(0, 0), new TileInfo(0, 0), false },
-                { new TileInfo(0, 0), new TileInfo(2, 0), false },
-                { new TileInfo(2, 0), new TileInfo(0, 0), true },
+                { new TileInfo(0, 0), new TileInfo(2, 2), false },
+                { new TileInfo(2, 2), new TileInfo(0, 0), true },
+
                 { new TileInfo(2, 2), new TileInfo(4, 6), false },
                 { new TileInfo(2, 2), new TileInfo(2, 2), true },
                 { new TileInfo(4, 6), new TileInfo(4, 6), true },

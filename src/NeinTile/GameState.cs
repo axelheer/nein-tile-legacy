@@ -14,15 +14,17 @@ namespace NeinTile
         public GameState? Previous { get; }
 
         public GameState(TilesDeck deck, TilesArea area)
+            : this(deck ?? throw new ArgumentNullException(nameof(deck)),
+                   area ?? throw new ArgumentNullException(nameof(area)),
+                   default)
         {
-            Deck = deck ?? throw new ArgumentNullException(nameof(deck));
-            Area = area ?? throw new ArgumentNullException(nameof(area));
         }
 
-        private GameState(TilesDeck deck, TilesArea area, GameState previous)
-            : this(deck, area)
+        private GameState(TilesDeck deck, TilesArea area, GameState? previous)
         {
-            Previous = previous ?? throw new ArgumentNullException(nameof(previous));
+            Deck = deck;
+            Area = area;
+            Previous = previous;
         }
 
         public bool CanMove()
@@ -50,22 +52,22 @@ namespace NeinTile
             return this;
         }
 
-        public void Save(Stream stream)
+        public void Save(Stream inputStream)
         {
-            if (stream is null)
-                throw new ArgumentNullException(nameof(stream));
+            if (inputStream is null)
+                throw new ArgumentNullException(nameof(inputStream));
 
             var serializer = new BinaryFormatter();
-            serializer.Serialize(stream, this);
+            serializer.Serialize(inputStream, this);
         }
 
-        public static GameState Load(Stream stream)
+        public static GameState Load(Stream outputStream)
         {
-            if (stream is null)
-                throw new ArgumentNullException(nameof(stream));
+            if (outputStream is null)
+                throw new ArgumentNullException(nameof(outputStream));
 
             var serializer = new BinaryFormatter();
-            return (GameState)serializer.Deserialize(stream);
+            return (GameState)serializer.Deserialize(outputStream);
         }
     }
 }

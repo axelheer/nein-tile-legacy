@@ -14,14 +14,16 @@ namespace NeinTile
         private readonly TileInfo[,,] tiles;
 
         public TilesArea(ITilesAreaMixer mixer, ITilesAreaMerger merger, ITilesAreaLottery lottery)
-            : this(merger, lottery, mixer?.Shuffle() ?? throw new ArgumentNullException(nameof(mixer)))
+            : this(merger ?? throw new ArgumentNullException(nameof(merger)),
+                   lottery ?? throw new ArgumentNullException(nameof(lottery)),
+                   (mixer ?? throw new ArgumentNullException(nameof(mixer))).Tiles)
         {
         }
 
         private TilesArea(ITilesAreaMerger merger, ITilesAreaLottery lottery, TileInfo[,,] tiles)
         {
-            this.merger = merger ?? throw new ArgumentNullException(nameof(merger));
-            this.lottery = lottery ?? throw new ArgumentNullException(nameof(lottery));
+            this.merger = merger;
+            this.lottery = lottery;
 
             ColCount = tiles.GetLength(0);
             RowCount = tiles.GetLength(1);

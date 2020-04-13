@@ -49,7 +49,7 @@ namespace NeinTile.Tests
         {
             var subject = new TileInfo(11, 38);
 
-            var actual = subject.Equals(new TileInfo(-1, 38));
+            var actual = subject.Equals(new TileInfo(-11, 38));
 
             Assert.False(actual);
         }
@@ -89,7 +89,7 @@ namespace NeinTile.Tests
         {
             var subject = new TileInfo(11, 38);
 
-            var actual = subject == new TileInfo(11, -1);
+            var actual = subject == new TileInfo(11, -38);
 
             Assert.False(actual);
         }
@@ -109,7 +109,7 @@ namespace NeinTile.Tests
         {
             var subject = new TileInfo(11, 38);
 
-            var actual = subject != new TileInfo(-1, 38);
+            var actual = subject != new TileInfo(-11, 38);
 
             Assert.True(actual);
         }

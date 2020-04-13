@@ -1,3 +1,4 @@
+using System;
 using NeinTile.Fakes;
 using Xunit;
 
@@ -5,6 +6,20 @@ namespace NeinTile.Tests
 {
     public class TilesDeckTest
     {
+        [Fact]
+        public void ShouldHandleNull()
+        {
+            var mixer = Assert.Throws<ArgumentNullException>(()
+                => new TilesDeck(null!, new FakeTilesDeckLottery()));
+
+            Assert.Equal(nameof(mixer), mixer.ParamName);
+
+            var lottery = Assert.Throws<ArgumentNullException>(()
+                => new TilesDeck(new FakeTilesDeckMixer(), null!));
+
+            Assert.Equal(nameof(lottery), lottery.ParamName);
+        }
+
         [Fact]
         public void ShouldHintBonus()
         {

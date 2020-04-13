@@ -12,9 +12,7 @@ namespace NeinTile.Editions
         public TileInfo Merge(TileInfo source, TileInfo target, out TileInfo remainder)
         {
             remainder = default;
-            return target != TileInfo.Empty
-                ? new TileInfo(source.Value * 2, source.Score * 3)
-                : source;
+            return new TileInfo(source.Value + target.Value, source.Score + target.Score + target.Score);
         }
     }
 }

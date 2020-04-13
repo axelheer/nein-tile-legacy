@@ -7,9 +7,8 @@ namespace NeinTile.Shell
     [Command("play", Description = "Play a new game")]
     public class PlayGame
     {
-        [AllowedValues("s", "simple", "c", "classic", "d", "duality", "i", "insanity")]
-        [Option(Description = "Edition to play (defaults to 'classic')\nAllowed values are: s[imple], c[lassic], d[uality], i[nsanity]")]
-        public string Edition { get; set; } = "classic";
+        [Option(Description = "Edition to play (defaults to 'Classic')")]
+        public GameEdition Edition { get; set; } = GameEdition.Classic;
 
         [Range(1, 12)]
         [Option(Description = "Number of columns (defaults to 4)")]

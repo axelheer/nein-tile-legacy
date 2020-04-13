@@ -27,14 +27,13 @@ namespace NeinTile.Editions
             remainder = default;
             return (source, target) switch
             {
-                (_, (0, 0)) => source,
-                ((-2, 0), (-1, 0)) => new TileInfo(-3, 3),
-                ((-1, 0), (-2, 0)) => new TileInfo(-3, 3),
                 ((1, 0), (2, 0)) => new TileInfo(3, 3),
                 ((2, 0), (1, 0)) => new TileInfo(3, 3),
-                var ((v, s), _) when v < 0 => new TileInfo(v * 2, s * 2),
-                var ((v, s), _) when v > 0 => new TileInfo(v * 2, s * 3),
-                var ((_, s1), (_, s2)) => new TileInfo(0, Math.Max(s1, s2))
+                ((-2, 0), (-1, 0)) => new TileInfo(-3, 3),
+                ((-1, 0), (-2, 0)) => new TileInfo(-3, 3),
+                var ((v1, s1), (v2, s2)) when v1 > 0 => new TileInfo(v1 + v2, s1 + s2 + s2),
+                var ((v1, s1), (v2, s2)) when v1 < 0 => new TileInfo(v1 + v2, s1 + s2),
+                var ((_, s1), (_, s2)) => new TileInfo(0, Math.Max(s1, s2)),
             };
         }
     }

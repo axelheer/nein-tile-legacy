@@ -2,8 +2,8 @@ namespace NeinTile.Abstractions
 {
     public interface ITilesAreaMixer
     {
-        bool AddNext(TileInfo nextTile);
+        TileInfo[,,] Tiles { get; }
 
-        TileInfo[,,]? Shuffle();
+        bool AddNext(TileInfo nextTile);
     }
 }

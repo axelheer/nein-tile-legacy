@@ -28,11 +28,11 @@ namespace NeinTile.Editions
             tiles = new TileInfo[colCount, rowCount, layCount];
         }
 
+        public TileInfo[,,] Tiles
+            => tiles;
+
         private bool IsMixing
             => iteration < tiles.Length;
-
-        public TileInfo[,,]? Shuffle()
-            => !IsMixing ? tiles : null;
 
         public bool AddNext(TileInfo nextTile)
         {

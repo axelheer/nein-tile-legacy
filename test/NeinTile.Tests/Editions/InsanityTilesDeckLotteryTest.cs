@@ -19,7 +19,7 @@ namespace NeinTile.Editions.Tests
             var area = new TilesArea(
                 new FakeTilesAreaMixer()
                 {
-                    OnShuffle = () => new TileInfo[2, 2, 1]
+                    Tiles = new TileInfo[2, 2, 1]
                     {
                         { { new TileInfo(0, 200) }, { new TileInfo(0, 200) } },
                         { { new TileInfo(0, 200) }, { new TileInfo(0, 200) } }
@@ -38,7 +38,7 @@ namespace NeinTile.Editions.Tests
             var area = new TilesArea(
                 new FakeTilesAreaMixer()
                 {
-                    OnShuffle = () => new TileInfo[2, 2, 1]
+                    Tiles = new TileInfo[2, 2, 1]
                     {
                         { { new TileInfo(0, 2_000) }, { new TileInfo(0, 2_000) } },
                         { { new TileInfo(0, 2_000) }, { new TileInfo(0, 2_000) } }
@@ -62,7 +62,7 @@ namespace NeinTile.Editions.Tests
             var area = new TilesArea(
                 new FakeTilesAreaMixer()
                 {
-                    OnShuffle = () => new TileInfo[2, 2, 1]
+                    Tiles = new TileInfo[2, 2, 1]
                     {
                         { { new TileInfo(0, 1_000_000) }, { new TileInfo(0, 1_000_000) } },
                         { { new TileInfo(0, 1_000_000) }, { new TileInfo(0, 1_000_000) } }

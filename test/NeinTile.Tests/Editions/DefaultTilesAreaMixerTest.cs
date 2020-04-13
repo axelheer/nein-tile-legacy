@@ -1,3 +1,4 @@
+using System;
 using NeinTile.Fakes;
 using Xunit;
 
@@ -5,6 +6,15 @@ namespace NeinTile.Editions.Tests
 {
     public class DefaultTilesAreaMixerTest
     {
+        [Fact]
+        public void ShouldHandleNull()
+        {
+            var options = Assert.Throws<ArgumentNullException>(()
+                => new DefaultTilesAreaMixer(null!));
+
+            Assert.Equal(nameof(options), options.ParamName);
+        }
+
         [Fact]
         public void ShouldShuffle()
         {
@@ -18,7 +28,7 @@ namespace NeinTile.Editions.Tests
 
             DoShuffle(deck, subject);
 
-            var actual = subject.Shuffle();
+            var actual = subject.Tiles;
 
             Assert.NotNull(actual);
 

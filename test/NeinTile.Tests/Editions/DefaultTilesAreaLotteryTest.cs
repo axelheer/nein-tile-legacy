@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -5,6 +6,17 @@ namespace NeinTile.Editions.Tests
 {
     public class DefaultTilesAreaLotteryTest
     {
+        [Fact]
+        public void ShouldHandleNull()
+        {
+            var subject = new DefaultTilesAreaLottery();
+
+            var markings = Assert.Throws<ArgumentNullException>(()
+                => subject.Draw(null!));
+
+            Assert.Equal(nameof(markings), markings.ParamName);
+        }
+
         [Fact]
         public void ShouldDrawSameMove()
         {

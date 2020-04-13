@@ -8,13 +8,8 @@ namespace NeinTile.Tests
         [Fact]
         public void ShouldHandleNull()
         {
-            var name = Assert.Throws<ArgumentNullException>(()
-                => GameFactory.CreateNew(null!, new GameOptions(4, 4, 1)));
-
-            Assert.Equal(nameof(name), name.ParamName);
-
             var options = Assert.Throws<ArgumentNullException>(()
-                => GameFactory.CreateNew("name", null!));
+                => GameFactory.CreateNew(GameEdition.Classic, null!));
 
             Assert.Equal(nameof(options), options.ParamName);
         }
@@ -22,33 +17,23 @@ namespace NeinTile.Tests
         [Fact]
         public void ShouldHandleInvalid()
         {
-            var name = Assert.Throws<ArgumentOutOfRangeException>(()
-                => GameFactory.CreateNew("narf", new GameOptions(4, 4, 1)));
+            var invalid = (GameEdition)int.MinValue;
 
-            Assert.Equal(nameof(name), name.ParamName);
-            Assert.Equal("narf", name.ActualValue);
+            var edition = Assert.Throws<ArgumentOutOfRangeException>(()
+                => GameFactory.CreateNew(invalid, new GameOptions(4, 4, 1)));
+
+            Assert.Equal(nameof(edition), edition.ParamName);
+            Assert.Equal(invalid, edition.ActualValue);
         }
 
         [Theory]
-        [InlineData("s")]
-        [InlineData("c")]
-        [InlineData("d")]
-        [InlineData("i")]
-        public void ShouldCreateByKey(string key)
+        [InlineData(GameEdition.Simple)]
+        [InlineData(GameEdition.Classic)]
+        [InlineData(GameEdition.Duality)]
+        [InlineData(GameEdition.Insanity)]
+        public void ShouldCreateByEdition(GameEdition edition)
         {
-            var actual = GameFactory.CreateNew(key, new GameOptions(4, 4, 1));
-
-            Assert.NotNull(actual);
-        }
-
-        [Theory]
-        [InlineData("simple")]
-        [InlineData("classic")]
-        [InlineData("duality")]
-        [InlineData("insanity")]
-        public void ShouldCreateByName(string name)
-        {
-            var actual = GameFactory.CreateNew(name, new GameOptions(4, 4, 1));
+            var actual = GameFactory.CreateNew(edition, new GameOptions(4, 4, 1));
 
             Assert.NotNull(actual);
         }

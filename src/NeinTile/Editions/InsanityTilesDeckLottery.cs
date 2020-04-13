@@ -55,7 +55,7 @@ namespace NeinTile.Editions
         private static long[] GetPool(long minBonus, long maxBonus)
         {
             var length = 1;
-            for (var value = minBonus; value < maxBonus; value *=2)
+            for (var value = minBonus; value < maxBonus; value *= 2)
             {
                 length += 1;
             }

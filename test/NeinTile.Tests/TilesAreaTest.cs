@@ -1,3 +1,4 @@
+using System;
 using NeinTile.Fakes;
 using Xunit;
 
@@ -6,12 +7,31 @@ namespace NeinTile.Tests
     public class TilesAreaTest
     {
         [Fact]
+        public void ShouldHandleNull()
+        {
+            var mixer = Assert.Throws<ArgumentNullException>(()
+                => new TilesArea(null!, new FakeTilesAreaMerger(), new FakeTilesAreaLottery()));
+
+            Assert.Equal(nameof(mixer), mixer.ParamName);
+
+            var merger = Assert.Throws<ArgumentNullException>(()
+                => new TilesArea(new FakeTilesAreaMixer(), null!, new FakeTilesAreaLottery()));
+
+            Assert.Equal(nameof(merger), merger.ParamName);
+
+            var lottery = Assert.Throws<ArgumentNullException>(()
+                => new TilesArea(new FakeTilesAreaMixer(), new FakeTilesAreaMerger(), null!));
+
+            Assert.Equal(nameof(lottery), lottery.ParamName);
+        }
+
+        [Fact]
         public void ShouldCalculate()
         {
             var subject = new TilesArea(
                 new FakeTilesAreaMixer()
                 {
-                    OnShuffle = () => new TileInfo[2, 2, 1]
+                    Tiles = new TileInfo[2, 2, 1]
                     {
                         { { new TileInfo(1, 2) }, { new TileInfo(-5, 6) } },
                         { { new TileInfo(3, 4) }, { new TileInfo(7, 8) } }
@@ -32,7 +52,7 @@ namespace NeinTile.Tests
             var subject = new TilesArea(
                 new FakeTilesAreaMixer()
                 {
-                    OnShuffle = () => new TileInfo[2, 2, 1]
+                    Tiles = new TileInfo[2, 2, 1]
                     {
                         { { new TileInfo(1, 0) }, { new TileInfo(3, 0) } },
                         { { new TileInfo(1, 0) }, { new TileInfo(4, 0) } }
@@ -63,7 +83,7 @@ namespace NeinTile.Tests
             var subject = new TilesArea(
                 new FakeTilesAreaMixer()
                 {
-                    OnShuffle = () => new TileInfo[2, 2, 1]
+                    Tiles = new TileInfo[2, 2, 1]
                     {
                         { { new TileInfo(1, 0) }, { new TileInfo(3, 0) } },
                         { { new TileInfo(2, 0) }, { new TileInfo(4, 0) } }
@@ -94,7 +114,7 @@ namespace NeinTile.Tests
             var subject = new TilesArea(
                 new FakeTilesAreaMixer()
                 {
-                    OnShuffle = () => new TileInfo[2, 2, 1]
+                    Tiles = new TileInfo[2, 2, 1]
                     {
                         { { new TileInfo(1, 0) }, { new TileInfo(3, 0) } },
                         { { new TileInfo(1, 0) }, { new TileInfo(4, 0) } }
@@ -131,7 +151,7 @@ namespace NeinTile.Tests
             var subject = new TilesArea(
                 new FakeTilesAreaMixer()
                 {
-                    OnShuffle = () => new TileInfo[2, 2, 1]
+                    Tiles = new TileInfo[2, 2, 1]
                     {
                         { { new TileInfo(1, 0) }, { new TileInfo(3, 0) } },
                         { { new TileInfo(1, 0) }, { new TileInfo(4, 0) } }
@@ -155,7 +175,7 @@ namespace NeinTile.Tests
             var subject = new TilesArea(
                 new FakeTilesAreaMixer()
                 {
-                    OnShuffle = () => new TileInfo[2, 2, 1]
+                    Tiles = new TileInfo[2, 2, 1]
                 },
                 new FakeTilesAreaMerger()
                 {
@@ -186,7 +206,7 @@ namespace NeinTile.Tests
             var subject = new TilesArea(
                 new FakeTilesAreaMixer()
                 {
-                    OnShuffle = () => new TileInfo[2, 2, 1]
+                    Tiles = new TileInfo[2, 2, 1]
                 },
                 new FakeTilesAreaMerger()
                 {

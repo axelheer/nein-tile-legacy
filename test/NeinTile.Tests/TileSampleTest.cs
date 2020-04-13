@@ -76,6 +76,18 @@ namespace NeinTile.Tests
         }
 
         [Fact]
+        public void ShouldBeNotEitherToo()
+        {
+            var subject = new TileSample(
+                new TileInfo(1, 2),
+                new TileInfo(1, 2),
+                new TileInfo(1, 2)
+            );
+
+            Assert.False(subject.IsEither);
+        }
+
+        [Fact]
         public void ShouldCombineHashCode()
         {
             var subject = new TileSample(
@@ -122,9 +134,9 @@ namespace NeinTile.Tests
 
             var actual = subject.Equals(
                 new TileSample(
-                    new TileInfo(1, 2),
+                    new TileInfo(-1, 2),
                     new TileInfo(3, 4),
-                    new TileInfo(5, -1)
+                    new TileInfo(5, 6)
                 )
             );
 
@@ -188,8 +200,8 @@ namespace NeinTile.Tests
 
             var actual = subject == new TileSample(
                 new TileInfo(1, 2),
-                new TileInfo(3, 4),
-                new TileInfo(5, -1)
+                new TileInfo(-3, 4),
+                new TileInfo(5, 6)
             );
 
             Assert.False(actual);
@@ -225,7 +237,7 @@ namespace NeinTile.Tests
             var actual = subject != new TileSample(
                 new TileInfo(1, 2),
                 new TileInfo(3, 4),
-                new TileInfo(5, -1)
+                new TileInfo(-5, 6)
             );
 
             Assert.True(actual);
