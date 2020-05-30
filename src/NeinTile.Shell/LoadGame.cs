@@ -21,6 +21,7 @@ namespace NeinTile.Shell
 
             using var stream = ShellProfile.GameState.OpenRead();
             var gameState = GameState.Load(stream);
+            stream.Close();
 
             return GameLoop.Run(gameState);
         }
