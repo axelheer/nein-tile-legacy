@@ -8,7 +8,7 @@ namespace NeinTile
         Up,
         Down,
 
-        Forward,
-        Backward,
+        Front,
+        Back,
     }
 }

@@ -6,12 +6,12 @@ namespace NeinTile.Tests
 {
     public class MoveEnumeratorTest
     {
-        private readonly TileInfo[,,] tiles;
+        private readonly Tiles tiles;
         private readonly ITestOutputHelper output;
 
         public MoveEnumeratorTest(ITestOutputHelper output)
         {
-            tiles = new TileInfo[4, 4, 4];
+            tiles = new Tiles(4, 4, 4);
 
             for (var colIndex = 0; colIndex < 4; colIndex++)
             {
@@ -20,7 +20,7 @@ namespace NeinTile.Tests
                     for (var layIndex = 0; layIndex < 4; layIndex++)
                     {
                         tiles[colIndex, rowIndex, layIndex]
-                            = new TileInfo(16 * layIndex + rowIndex * 4 + colIndex + 1, 0);
+                            = new Tile(16 * layIndex + rowIndex * 4 + colIndex + 1, 0);
                     }
                 }
             }
@@ -40,10 +40,10 @@ namespace NeinTile.Tests
         [Theory]
         [InlineData(1, 2, 2, MoveDirection.Right)]
         [InlineData(2, 1, 2, MoveDirection.Up)]
-        [InlineData(2, 2, 1, MoveDirection.Forward)]
+        [InlineData(2, 2, 1, MoveDirection.Front)]
         public void ShouldFreeze(int colCount, int rowCount, int layCount, MoveDirection direction)
         {
-            var tiles = new TileInfo[colCount, rowCount, layCount];
+            var tiles = new Tiles(colCount, rowCount, layCount);
 
             var subject = new MoveEnumerator(tiles, direction);
 
@@ -67,12 +67,12 @@ namespace NeinTile.Tests
             => TestMove(MoveDirection.Down, i => 5 + i + 4 * (i / 12), s => s - 4);
 
         [Fact]
-        public void ShouldMoveForward()
-            => TestMove(MoveDirection.Forward, i => 48 - i, s => s + 16);
+        public void ShouldMoveFront()
+            => TestMove(MoveDirection.Front, i => 48 - i, s => s + 16);
 
         [Fact]
-        public void ShouldMoveBackward()
-            => TestMove(MoveDirection.Backward, i => 17 + i, s => s - 16);
+        public void ShouldMoveBack()
+            => TestMove(MoveDirection.Back, i => 17 + i, s => s - 16);
 
         private void TestMove(MoveDirection direction, Func<int, int> source, Func<int, int> target)
         {
@@ -86,10 +86,10 @@ namespace NeinTile.Tests
                 var expectedSource = source(iteration);
                 var expectedTarget = target(expectedSource);
 
-                var (actualSource, actualTarget) = subject.Current;
+                var (actualSource, actualTarget, _) = subject.Current;
 
-                Assert.Equal(expectedSource, actualSource.Value);
-                Assert.Equal(expectedTarget, actualTarget.Value);
+                Assert.Equal(expectedSource, tiles[actualSource].Value);
+                Assert.Equal(expectedTarget, tiles[actualTarget].Value);
 
                 iteration += 1;
             };
@@ -114,12 +114,12 @@ namespace NeinTile.Tests
             => TestMark(MoveDirection.Down, i => (i % 4, 3, i / 12));
 
         [Fact]
-        public void ShouldMarkForward()
-            => TestMark(MoveDirection.Forward, i => (3 - i % 4, 3 - i / 4 % 4, 0));
+        public void ShouldMarkFront()
+            => TestMark(MoveDirection.Front, i => (3 - i % 4, 3 - i / 4 % 4, 0));
 
         [Fact]
-        public void ShouldMarkBackward()
-            => TestMark(MoveDirection.Backward, i => (i % 4, i / 4 % 4, 3));
+        public void ShouldMarkBack()
+            => TestMark(MoveDirection.Back, i => (i % 4, i / 4 % 4, 3));
 
         private void TestMark(MoveDirection direction, Func<int, (int colIndex, int rowIndex, int layIndex)> marking)
         {
@@ -129,12 +129,11 @@ namespace NeinTile.Tests
             while (subject.MoveNext())
             {
                 var (colIndex, rowIndex, layIndex) = marking(iteration);
-                var expected = new MoveMarking(colIndex, rowIndex, layIndex);
+                var expected = new TileIndex(colIndex, rowIndex, layIndex);
 
                 output.WriteLine($"{subject.Current} => {expected}");
 
-                var (source, target) = subject.Current;
-                var actual = subject.Update(source, target);
+                var (_, _, actual) = subject.Current;
 
                 Assert.Equal(expected, actual);
 

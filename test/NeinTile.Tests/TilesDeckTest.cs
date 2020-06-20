@@ -10,12 +10,12 @@ namespace NeinTile.Tests
         public void ShouldHandleNull()
         {
             var mixer = Assert.Throws<ArgumentNullException>(()
-                => new TilesDeck(null!, new FakeTilesDeckLottery()));
+                => new TilesDeck(null!, new FakeLottery()));
 
             Assert.Equal(nameof(mixer), mixer.ParamName);
 
             var lottery = Assert.Throws<ArgumentNullException>(()
-                => new TilesDeck(new FakeTilesDeckMixer(), null!));
+                => new TilesDeck(new FakeMixer(), null!));
 
             Assert.Equal(nameof(lottery), lottery.ParamName);
         }
@@ -23,136 +23,82 @@ namespace NeinTile.Tests
         [Fact]
         public void ShouldHintBonus()
         {
-            var expected = new TileSample(
-                new TileInfo(1, 2),
-                new TileInfo(2, 3),
-                new TileInfo(3, 4)
+            var expected = new TileHint(
+                new Tile(1, 2),
+                new Tile(2, 3),
+                new Tile(3, 4)
             );
 
             var subject = new TilesDeck(
-                new FakeTilesDeckMixer(),
-                new FakeTilesDeckLottery()
+                new FakeMixer(),
+                new FakeLottery()
                 {
-                    OnDraw = () => (expected, expected.Second)
+                    OnDraw = _ => (expected, expected.Second)
                 }
             );
 
-            var actual = subject.Hint();
+            var actual = subject.Next(0).Hint;
 
-            Assert.True(subject.IsBonus);
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void ShouldHintNextTile()
         {
-            var expected = new TileSample(
-                new TileInfo(1, 2)
+            var expected = new TileHint(
+                new Tile(1, 2)
             );
 
             var subject = new TilesDeck(
-                new FakeTilesDeckMixer()
+                new FakeMixer()
                 {
-                    OnShuffle = () => new[] { expected.First }
+                    OnMix = () => new[] { expected.First }
                 },
-                new FakeTilesDeckLottery()
+                new FakeLottery()
             );
 
-            var actual = subject.Hint();
+            var actual = subject.Hint;
 
-            Assert.False(subject.IsBonus);
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void ShouldShowBonus()
         {
-            var expected = new TileSample(
-                new TileInfo(1, 2),
-                new TileInfo(2, 3),
-                new TileInfo(3, 4)
+            var expected = new TileHint(
+                new Tile(1, 2),
+                new Tile(2, 3),
+                new Tile(3, 4)
             );
 
             var subject = new TilesDeck(
-                new FakeTilesDeckMixer()
+                new FakeMixer(),
+                new FakeLottery()
                 {
-                    OnShuffle = () => new[] { expected.First, expected.Third }
-                },
-                new FakeTilesDeckLottery()
-                {
-                    OnDraw = () => (expected, expected.Second)
+                    OnDraw = _ => (expected, expected.Second)
                 }
             );
 
-            var actual = subject.Show();
+            var actual = subject.Next(0).Tile;
 
-            Assert.True(subject.IsBonus);
             Assert.Equal(expected.Second, actual);
         }
 
         [Fact]
         public void ShouldShowNextTile()
         {
-            var expected = new TileInfo(1, 2);
-            var unexpected = new TileInfo(2, 3);
+            var expected = new Tile(1, 2);
+            var unexpected = new Tile(2, 3);
 
             var subject = new TilesDeck(
-                new FakeTilesDeckMixer()
+                new FakeMixer()
                 {
-                    OnShuffle = () => new[] { expected, unexpected }
+                    OnMix = () => new[] { expected, unexpected }
                 },
-                new FakeTilesDeckLottery()
+                new FakeLottery()
             );
 
-            var actual = subject.Show();
-
-            Assert.False(subject.IsBonus);
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void ShouldDrawNewMixer()
-        {
-            var expected = new TileInfo(1, 2);
-
-            var subject = new TilesDeck(
-                new FakeTilesDeckMixer()
-                {
-                    OnShuffle = () => new TileInfo[1],
-                    OnCreateNext = () => new FakeTilesDeckMixer()
-                    {
-                        OnShuffle = () => new[] { expected }
-                    }
-                },
-                new FakeTilesDeckLottery()
-            );
-
-            var actual = subject.Draw();
-
-            Assert.Equal(1, actual.Size);
-            Assert.Equal(expected, actual[0]);
-        }
-
-        [Fact]
-        public void ShouldDrawNewLottery()
-        {
-            var expected = new TileSample(new TileInfo(1, 2));
-
-            var subject = new TilesDeck(
-                new FakeTilesDeckMixer()
-                {
-                    OnShuffle = () => new TileInfo[1]
-                },
-                new FakeTilesDeckLottery()
-                {
-                    OnCreateNext = _ => new FakeTilesDeckLottery()
-                    {
-                        OnDraw = () => (expected, expected.First)
-                    }
-                }
-            );
-
-            var actual = subject.Draw().Hint();
+            var actual = subject.Tile;
 
             Assert.Equal(expected, actual);
         }

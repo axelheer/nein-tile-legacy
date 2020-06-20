@@ -6,7 +6,13 @@
 [![GitHub status](https://github.com/axelheer/nein-tile/workflows/everything/badge.svg)](https://github.com/axelheer/nein-tile/actions)
 [![Code coverage](https://codecov.io/gh/axelheer/nein-tile/branch/master/graph/badge.svg)](https://codecov.io/gh/axelheer/nein-tile)
 
-Just playing around...
+*NEW* Download the App
+-----------------------
+
+[![App Store Download Link](.github/app-store-badge.png)](https://apps.apple.com/app/apple-store/id1518189085)
+
+.NET Global Tool
+----------------
 
     > dotnet tool install --global NeinTile.Shell
     > neintile --help
@@ -14,7 +20,7 @@ Just playing around...
 *Note:* inspired by the one and only [Threes!](https://en.wikipedia.org/wiki/Threes)
 
 Key controls
---------
+------------
 
 | Key                            | Action         |
 |:------------------------------:|----------------|

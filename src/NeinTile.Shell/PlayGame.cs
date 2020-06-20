@@ -22,12 +22,23 @@ namespace NeinTile.Shell
         [Option(Description = "Number of layers (defaults to 1)")]
         public int Layers { get; set; } = 1;
 
+        [Option(Description = "Play on a slippery surface; or not")]
+        public bool Slippery { get; set; } = false;
+
         public int OnExecute()
         {
-            var gameOptions = new GameOptions(Columns, Rows, Layers);
-            var gameState = GameFactory.CreateNew(Edition, gameOptions);
+            var maker = new GameMaker
+            {
+                ColCount = Columns,
+                RowCount = Rows,
+                LayCount = Layers,
+                Edition = Edition,
+                Slippery = Slippery
+            };
 
-            return GameLoop.Run(gameState);
+            var game = maker.MakeGame();
+
+            return GameLoop.Run(game);
         }
     }
 }

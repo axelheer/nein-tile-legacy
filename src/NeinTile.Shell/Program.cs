@@ -5,7 +5,7 @@ using McMaster.Extensions.CommandLineUtils;
 
 namespace NeinTile.Shell
 {
-    [Command("neintile", Description = "Just playing around...")]
+    [Command("neintile", Description = "*NEW* Download the App: https://apps.apple.com/app/apple-store/id1518189085")]
     [Subcommand(typeof(LoadGame), typeof(PlayGame))]
     public sealed class Program
     {

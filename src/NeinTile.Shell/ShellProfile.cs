@@ -6,7 +6,7 @@ namespace NeinTile.Shell
     public static class ShellProfile
     {
         private static int FileVersion { get; }
-            = typeof(GameFactory).Assembly.GetName().Version?.Major ?? 0;
+            = typeof(Game).Assembly.GetName().Version?.Major ?? 0;
 
         public static DirectoryInfo Profile { get; }
             = Directory.CreateDirectory(Path.Combine(
@@ -14,7 +14,7 @@ namespace NeinTile.Shell
                 ".neintile")
             );
 
-        public static FileInfo GameState { get; }
+        public static FileInfo Game { get; }
             = new FileInfo(Path.Combine(Profile.FullName, $"saved.gs{FileVersion}"));
     }
 }

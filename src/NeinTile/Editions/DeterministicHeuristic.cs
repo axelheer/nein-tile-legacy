@@ -8,7 +8,7 @@ namespace NeinTile
         private static readonly Random InitRandom = new Random();
         private static readonly object RandomLock = new object();
 
-        public static DeterministicHeuristic CreateNew()
+        public static DeterministicHeuristic Create()
         {
             lock (RandomLock)
             {
@@ -26,10 +26,10 @@ namespace NeinTile
             next = random.Next();
         }
 
-        public Random Next()
+        public Random Roll()
             => new Random(seed);
 
-        public DeterministicHeuristic CreateNext()
+        public DeterministicHeuristic Next()
             => new DeterministicHeuristic(next);
     }
 }

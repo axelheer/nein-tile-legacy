@@ -13,14 +13,14 @@ namespace NeinTile.Shell
             if (console is null)
                 throw new ArgumentNullException(nameof(console));
 
-            if (!ShellProfile.GameState.Exists)
+            if (!ShellProfile.Game.Exists)
             {
                 _ = console.WriteLine("You must save a game first.");
                 return 1;
             }
 
-            using var stream = ShellProfile.GameState.OpenRead();
-            var gameState = GameState.Load(stream);
+            using var stream = ShellProfile.Game.OpenRead();
+            var gameState = Game.Load(stream);
             stream.Close();
 
             return GameLoop.Run(gameState);

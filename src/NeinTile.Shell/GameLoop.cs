@@ -4,56 +4,56 @@ namespace NeinTile.Shell
 {
     public static class GameLoop
     {
-        public static int Run(GameState gameState)
+        public static int Run(Game game)
         {
-            if (gameState is null)
-                throw new ArgumentNullException(nameof(gameState));
+            if (game is null)
+                throw new ArgumentNullException(nameof(game));
 
-            var layerCount = gameState.Area.LayCount;
-            var gamePrinter = new GamePrinter(gameState);
+            var layerCount = game.Area.Tiles.LayCount;
+            var printer = new Printer(game);
 
-            using var view = new ShellView(gamePrinter.Width, gamePrinter.Height);
+            using var view = new ShellView(printer.Width, printer.Height);
 
             var (saved, playing) = (false, true);
             var layerIndex = layerCount - 1;
 
             while (playing)
             {
-                if (gameState is null)
-                    throw new ArgumentNullException(nameof(gameState));
+                if (game is null)
+                    throw new ArgumentNullException(nameof(game));
 
-                var content = gamePrinter.Print(gameState, layerIndex);
+                var content = printer.Print(game, layerIndex);
                 view.Print(content);
 
                 var next = view.Next();
                 switch (next.Key)
                 {
-                    case ConsoleKey.RightArrow when gameState.CanMove(MoveDirection.Right):
-                        gameState = gameState.Move(MoveDirection.Right);
+                    case ConsoleKey.RightArrow when game.CanMove(MoveDirection.Right):
+                        game = game.Move(MoveDirection.Right);
                         break;
 
-                    case ConsoleKey.LeftArrow when gameState.CanMove(MoveDirection.Left):
-                        gameState = gameState.Move(MoveDirection.Left);
+                    case ConsoleKey.LeftArrow when game.CanMove(MoveDirection.Left):
+                        game = game.Move(MoveDirection.Left);
                         break;
 
-                    case ConsoleKey.UpArrow when gameState.CanMove(MoveDirection.Up):
-                        gameState = gameState.Move(MoveDirection.Up);
+                    case ConsoleKey.UpArrow when game.CanMove(MoveDirection.Up):
+                        game = game.Move(MoveDirection.Up);
                         break;
 
-                    case ConsoleKey.DownArrow when gameState.CanMove(MoveDirection.Down):
-                        gameState = gameState.Move(MoveDirection.Down);
+                    case ConsoleKey.DownArrow when game.CanMove(MoveDirection.Down):
+                        game = game.Move(MoveDirection.Down);
                         break;
 
-                    case ConsoleKey.F when gameState.CanMove(MoveDirection.Forward):
-                        gameState = gameState.Move(MoveDirection.Forward);
+                    case ConsoleKey.F when game.CanMove(MoveDirection.Front):
+                        game = game.Move(MoveDirection.Back);
                         break;
 
-                    case ConsoleKey.B when gameState.CanMove(MoveDirection.Backward):
-                        gameState = gameState.Move(MoveDirection.Backward);
+                    case ConsoleKey.B when game.CanMove(MoveDirection.Back):
+                        game = game.Move(MoveDirection.Back);
                         break;
 
-                    case ConsoleKey.U when gameState.Previous is { }:
-                        gameState = gameState.Previous;
+                    case ConsoleKey.U when game.Previous is { }:
+                        game = game.Previous;
                         break;
 
                     case ConsoleKey.D1:
@@ -97,17 +97,17 @@ namespace NeinTile.Shell
                         break;
 
                     case ConsoleKey.S when next.Modifiers == ConsoleModifiers.Control:
-                        using (var stream = ShellProfile.GameState.OpenWrite())
+                        using (var stream = ShellProfile.Game.OpenWrite())
                         {
-                            gameState.Save(stream);
+                            game.Save(stream);
                         }
                         saved = true;
                         break;
 
                     case ConsoleKey.L when next.Modifiers == ConsoleModifiers.Control && saved:
-                        using (var stream = ShellProfile.GameState.OpenRead())
+                        using (var stream = ShellProfile.Game.OpenRead())
                         {
-                            gameState = GameState.Load(stream);
+                            game = Game.Load(stream);
                         }
                         break;
 

@@ -4,47 +4,53 @@ using NeinTile.Abstractions;
 namespace NeinTile
 {
     [Serializable]
-    public class TilesDeck
+    public sealed class TilesDeck
     {
-        private readonly ITilesDeckMixer mixer;
-        private readonly ITilesDeckLottery lottery;
+        public ILottery Lottery { get; }
+        public IMixer Mixer { get; }
 
-        private readonly TileInfo[] tiles;
-        private readonly TileSample sample;
-        private readonly TileInfo bonus;
+        public Tile Tile { get; }
+        public TileHint Hint { get; }
 
-        public TilesDeck(ITilesDeckMixer mixer, ITilesDeckLottery lottery)
-            : this(mixer ?? throw new ArgumentNullException(nameof(mixer)),
-                   lottery ?? throw new ArgumentNullException(nameof(lottery)),
-                   Array.Empty<TileInfo>())
+        private readonly Tile[] stack;
+
+        public TilesDeck(IMixer mixer, ILottery lottery)
         {
+            if (mixer is null)
+                throw new ArgumentNullException(nameof(mixer));
+            if (lottery is null)
+                throw new ArgumentNullException(nameof(lottery));
+
+            var next = mixer.Mix();
+
+            stack = next[1..];
+            Tile = next[0];
+            Hint = new TileHint(next[0]);
+            Mixer = mixer.CreateNext();
+            Lottery = lottery;
         }
 
-        private TilesDeck(ITilesDeckMixer mixer, ITilesDeckLottery lottery, TileInfo[] tiles)
+        private TilesDeck(Tile[] stack, Tile tile, TileHint hint, IMixer mixer, ILottery lottery)
         {
-            this.mixer = mixer;
-            this.lottery = lottery;
+            this.stack = stack;
 
-            this.tiles = tiles.Length == 0 ? mixer.Shuffle() : tiles;
-            sample = lottery.Draw(out bonus);
+            Tile = tile;
+            Hint = hint;
+            Mixer = mixer;
+            Lottery = lottery;
         }
 
-        public bool IsBonus
-            => bonus != TileInfo.Empty;
-
-        public int Size
-            => tiles.Length;
-
-        public TileInfo this[int index]
-            => tiles[index];
-
-        public virtual TileSample Hint()
-            => IsBonus ? sample : new TileSample(tiles[0]);
-
-        public virtual TileInfo Show()
-            => IsBonus ? bonus : tiles[0];
-
-        public virtual TilesDeck Draw(TilesArea? area = null)
-            => new TilesDeck(mixer.CreateNext(), lottery.CreateNext(area), IsBonus ? tiles : tiles[1..]);
+        public TilesDeck Next(long maxValue)
+        {
+            var bonus = Lottery.Draw(maxValue);
+            if (bonus != null)
+            {
+                var (hint, tile) = bonus.Value;
+                return new TilesDeck(stack, tile, hint, Mixer, Lottery.CreateNext());
+            }
+            return stack.Length != 0
+                ? new TilesDeck(stack[1..], stack[0], new TileHint(stack[0]), Mixer, Lottery.CreateNext())
+                : new TilesDeck(Mixer, Lottery.CreateNext());
+        }
     }
 }

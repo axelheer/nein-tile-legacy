@@ -1,30 +1,10 @@
-using System;
+using NeinTile.Abstractions;
 
 namespace NeinTile.Fakes
 {
-    public class FakeTilesDeck : TilesDeck
+    public static class FakeTilesDeck
     {
-        public FakeTilesDeck()
-            : base(new FakeTilesDeckMixer(), new FakeTilesDeckLottery())
-        {
-        }
-
-        public Func<TileSample> OnHint { get; set; }
-            = () => TileSample.Empty;
-
-        public override TileSample Hint()
-            => OnHint();
-
-        public Func<TileInfo> OnShow { get; set; }
-            = () => TileInfo.Empty;
-
-        public override TileInfo Show()
-            => OnShow();
-
-        public Func<TilesArea?, TilesDeck> OnDraw { get; set; }
-            = _ => new FakeTilesDeck();
-
-        public override TilesDeck Draw(TilesArea? area)
-            => OnDraw(area);
+        public static TilesDeck Create(IMixer? mixer = null, ILottery? lottery = null)
+            => new TilesDeck(mixer ?? new FakeMixer(), lottery ?? new FakeLottery());
     }
 }

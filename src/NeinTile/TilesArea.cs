@@ -6,95 +6,83 @@ using NeinTile.Abstractions;
 namespace NeinTile
 {
     [Serializable]
-    public class TilesArea
+    public sealed class TilesArea
     {
-        private readonly ITilesAreaMerger merger;
-        private readonly ITilesAreaLottery lottery;
+        public IDealer Dealer { get; }
+        public IMerger Merger { get; }
 
-        private readonly TileInfo[,,] tiles;
+        public Tiles Tiles { get; }
 
-        public TilesArea(ITilesAreaMixer mixer, ITilesAreaMerger merger, ITilesAreaLottery lottery)
-            : this(merger ?? throw new ArgumentNullException(nameof(merger)),
-                   lottery ?? throw new ArgumentNullException(nameof(lottery)),
-                   (mixer ?? throw new ArgumentNullException(nameof(mixer))).Tiles)
+        public TilesArea(Tiles tiles, IDealer dealer, IMerger merger)
         {
+            Tiles = tiles ?? throw new ArgumentNullException(nameof(tiles));
+            Dealer = dealer ?? throw new ArgumentNullException(nameof(dealer));
+            Merger = merger ?? throw new ArgumentNullException(nameof(merger));
         }
 
-        private TilesArea(ITilesAreaMerger merger, ITilesAreaLottery lottery, TileInfo[,,] tiles)
+        public bool CanMove(MoveDirection direction)
         {
-            this.merger = merger;
-            this.lottery = lottery;
-
-            ColCount = tiles.GetLength(0);
-            RowCount = tiles.GetLength(1);
-            LayCount = tiles.GetLength(2);
-
-            this.tiles = tiles;
-        }
-
-        public int ColCount { get; }
-        public int RowCount { get; }
-        public int LayCount { get; }
-
-        public TileInfo this[int colIndex, int rowIndex, int layIndex]
-            => tiles[colIndex, rowIndex, layIndex];
-
-        public long MaxValue
-            => Calculate<long>((value, i) => Math.Max(value, i.Value));
-
-        public long MinValue
-            => Calculate<long>((value, i) => Math.Min(value, i.Value));
-
-        public long TotalScore
-            => Calculate<long>((score, i) => score + i.Score);
-
-        private T Calculate<T>(Func<T, TileInfo, T> calculator)
-            where T : struct
-        {
-            T value = default;
-            for (var colIndex = 0; colIndex < ColCount; colIndex++)
-            {
-                for (var rowIndex = 0; rowIndex < RowCount; rowIndex++)
-                {
-                    for (var layIndex = 0; layIndex < LayCount; layIndex++)
-                        value = calculator(value, this[colIndex, rowIndex, layIndex]);
-                }
-            }
-            return value;
-        }
-
-        public virtual bool CanMove(MoveDirection direction)
-        {
-            var enumerator = new MoveEnumerator(tiles, direction);
+            var enumerator = new MoveEnumerator(Tiles, direction);
             while (enumerator.MoveNext())
             {
-                var (source, target) = enumerator.Current;
-                if (merger.CanMerge(source, target))
+                var move = enumerator.Current;
+                var source = Tiles[move.Source];
+                var target = Tiles[move.Target];
+                if (Merger.CanMerge(source, target))
                     return true;
             }
             return false;
         }
 
-        public virtual TilesArea Move(MoveDirection direction, TileInfo nextTile)
+        public TilesArea Move(MoveDirection direction, bool slippery, Tile nextTile)
         {
-            var markings = new HashSet<MoveMarking>();
-            var nextTiles = (TileInfo[,,])tiles.Clone();
+            var next = new Tiles(Tiles);
+            var markers = new List<TileIndex>();
+            var mergedEverything = false;
+            var slipperyTurn = 0;
 
-            var enumerator = new MoveEnumerator(nextTiles, direction);
-            while (enumerator.MoveNext())
+            do
             {
-                var (source, target) = enumerator.Current;
-                if (merger.CanMerge(source, target))
+                slipperyTurn += 1;
+                mergedEverything = true;
+                var enumerator = new MoveEnumerator(next, direction);
+                while (enumerator.MoveNext())
                 {
-                    target = merger.Merge(source, target, out source);
-                    _ = markings.Add(enumerator.Update(source, target));
+                    var move = enumerator.Current;
+                    if (next.IsMerge(move.Source))
+                        continue;
+                    if (next.IsMerge(move.Target))
+                        continue;
+                    var source = Tiles[move.Source];
+                    var target = Tiles[move.Target];
+                    if (Merger.CanMerge(source, target))
+                    {
+                        var merged = Merger.Merge(source, target);
+                        next.Move(merged, move.Source, move.Target,
+                            slipperyTurn
+                        );
+                        if (!markers.Contains(move.Marker))
+                            markers.Add(move.Marker);
+                        mergedEverything = false;
+                    }
                 }
             }
+            while (slippery && !mergedEverything);
 
-            foreach (var (colIndex, rowIndex, layIndex) in lottery.Draw(markings.ToArray()))
-                nextTiles[colIndex, rowIndex, layIndex] = nextTile;
+            if (slippery)
+            {
+                var freeIndices = next.Indices.Where(index
+                    => next[index] == Tile.Empty).ToArray();
+                foreach (var index in Dealer.Part(Dealer.Part(freeIndices)))
+                    next[index] = nextTile;
+            }
+            else
+            {
+                foreach (var marker in Dealer.Part(markers.ToArray()))
+                    next[marker] = nextTile;
+            }
 
-            return new TilesArea(merger, lottery.CreateNext(), nextTiles);
+            return new TilesArea(next, Dealer.CreateNext(), Merger);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using NeinTile.Editions;
 using NeinTile.Fakes;
 using Xunit;
 
@@ -9,226 +10,100 @@ namespace NeinTile.Tests
         [Fact]
         public void ShouldHandleNull()
         {
-            var mixer = Assert.Throws<ArgumentNullException>(()
-                => new TilesArea(null!, new FakeTilesAreaMerger(), new FakeTilesAreaLottery()));
+            var tiles = Assert.Throws<ArgumentNullException>(()
+                => new TilesArea(null!, new DefaultDealer(), new FakeMerger()));
 
-            Assert.Equal(nameof(mixer), mixer.ParamName);
+            Assert.Equal(nameof(tiles), tiles.ParamName);
+
+            var dealer = Assert.Throws<ArgumentNullException>(()
+                => new TilesArea(new Tiles(0, 0, 0), null!, new FakeMerger()));
+
+            Assert.Equal(nameof(dealer), dealer.ParamName);
 
             var merger = Assert.Throws<ArgumentNullException>(()
-                => new TilesArea(new FakeTilesAreaMixer(), null!, new FakeTilesAreaLottery()));
+                => new TilesArea(new Tiles(0, 0, 0), new DefaultDealer(), null!));
 
             Assert.Equal(nameof(merger), merger.ParamName);
-
-            var lottery = Assert.Throws<ArgumentNullException>(()
-                => new TilesArea(new FakeTilesAreaMixer(), new FakeTilesAreaMerger(), null!));
-
-            Assert.Equal(nameof(lottery), lottery.ParamName);
-        }
-
-        [Fact]
-        public void ShouldCalculate()
-        {
-            var subject = new TilesArea(
-                new FakeTilesAreaMixer()
-                {
-                    Tiles = new TileInfo[2, 2, 1]
-                    {
-                        { { new TileInfo(1, 2) }, { new TileInfo(-5, 6) } },
-                        { { new TileInfo(3, 4) }, { new TileInfo(7, 8) } }
-                    }
-                },
-                new FakeTilesAreaMerger(),
-                new FakeTilesAreaLottery()
-            );
-
-            Assert.Equal(-5, subject.MinValue);
-            Assert.Equal(7, subject.MaxValue);
-            Assert.Equal(20, subject.TotalScore);
         }
 
         [Fact]
         public void ShouldCanMove()
         {
+            var tiles = new Tiles(2, 2, 1);
+            tiles[0, 0, 0] = new Tile(1, 0);
+            tiles[1, 0, 0] = new Tile(1, 0);
+            tiles[0, 1, 0] = new Tile(3, 0);
+            tiles[1, 1, 0] = new Tile(4, 0);
+
             var subject = new TilesArea(
-                new FakeTilesAreaMixer()
-                {
-                    Tiles = new TileInfo[2, 2, 1]
-                    {
-                        { { new TileInfo(1, 0) }, { new TileInfo(3, 0) } },
-                        { { new TileInfo(1, 0) }, { new TileInfo(4, 0) } }
-                    }
-                },
-                new FakeTilesAreaMerger()
+                tiles,
+                new DefaultDealer(),
+                new FakeMerger()
                 {
                     OnCanMerge = (source, target) => source == target
-                },
-                new FakeTilesAreaLottery()
+                }
             );
 
             var actual = subject.CanMove(MoveDirection.Right);
 
             Assert.True(actual);
-            Assert.Equal(2, subject.ColCount);
-            Assert.Equal(2, subject.RowCount);
-            Assert.Equal(1, subject.LayCount);
-            Assert.Equal(1, subject[0, 0, 0].Value);
-            Assert.Equal(1, subject[1, 0, 0].Value);
-            Assert.Equal(3, subject[0, 1, 0].Value);
-            Assert.Equal(4, subject[1, 1, 0].Value);
+            Assert.Equal(1, subject.Tiles[0, 0, 0].Value);
+            Assert.Equal(1, subject.Tiles[1, 0, 0].Value);
+            Assert.Equal(3, subject.Tiles[0, 1, 0].Value);
+            Assert.Equal(4, subject.Tiles[1, 1, 0].Value);
         }
 
         [Fact]
         public void ShouldNotCanMove()
         {
+            var tiles = new Tiles(2, 2, 1);
+            tiles[0, 0, 0] = new Tile(1, 0);
+            tiles[1, 0, 0] = new Tile(2, 0);
+            tiles[0, 1, 0] = new Tile(3, 0);
+            tiles[1, 1, 0] = new Tile(4, 0);
+
             var subject = new TilesArea(
-                new FakeTilesAreaMixer()
-                {
-                    Tiles = new TileInfo[2, 2, 1]
-                    {
-                        { { new TileInfo(1, 0) }, { new TileInfo(3, 0) } },
-                        { { new TileInfo(2, 0) }, { new TileInfo(4, 0) } }
-                    }
-                },
-                new FakeTilesAreaMerger()
+                tiles,
+                new DefaultDealer(),
+                new FakeMerger()
                 {
                     OnCanMerge = (source, target) => source == target
-                },
-                new FakeTilesAreaLottery()
+                }
             );
 
             var actual = subject.CanMove(MoveDirection.Up);
 
             Assert.False(actual);
-            Assert.Equal(2, subject.ColCount);
-            Assert.Equal(2, subject.RowCount);
-            Assert.Equal(1, subject.LayCount);
-            Assert.Equal(1, subject[0, 0, 0].Value);
-            Assert.Equal(2, subject[1, 0, 0].Value);
-            Assert.Equal(3, subject[0, 1, 0].Value);
-            Assert.Equal(4, subject[1, 1, 0].Value);
+            Assert.Equal(1, subject.Tiles[0, 0, 0].Value);
+            Assert.Equal(2, subject.Tiles[1, 0, 0].Value);
+            Assert.Equal(3, subject.Tiles[0, 1, 0].Value);
+            Assert.Equal(4, subject.Tiles[1, 1, 0].Value);
         }
 
         [Fact]
         public void ShouldMove()
         {
-            var subject = new TilesArea(
-                new FakeTilesAreaMixer()
-                {
-                    Tiles = new TileInfo[2, 2, 1]
-                    {
-                        { { new TileInfo(1, 0) }, { new TileInfo(3, 0) } },
-                        { { new TileInfo(1, 0) }, { new TileInfo(4, 0) } }
-                    }
-                },
-                new FakeTilesAreaMerger()
-                {
-                    OnCanMerge = (source, target) => source == target,
-                    OnMerge = (source, target) =>
-                    {
-                        Assert.Equal(new TileInfo(1, 0), source);
-                        Assert.Equal(new TileInfo(1, 0), target);
+            var tiles = new Tiles(2, 2, 1);
+            tiles[0, 0, 0] = new Tile(1, 0);
+            tiles[1, 0, 0] = new Tile(1, 0);
+            tiles[0, 1, 0] = new Tile(3, 0);
+            tiles[1, 1, 0] = new Tile(4, 0);
 
-                        return (new TileInfo(2, 0), new TileInfo(0, 0));
-                    }
-                },
-                new FakeTilesAreaLottery()
+            var subject = new TilesArea(
+                tiles,
+                new DefaultDealer(),
+                new FakeMerger()
                 {
-                    OnDraw = markings => markings
+                    OnCanMerge = (source, target) => source == target
                 }
             );
 
-            var actual = subject.Move(MoveDirection.Right, new TileInfo(1, 0));
+            var actual = subject.Move(MoveDirection.Right, false, new Tile(7, 0));
 
-            Assert.Equal(1, actual[0, 0, 0].Value);
-            Assert.Equal(2, actual[1, 0, 0].Value);
-            Assert.Equal(3, actual[0, 1, 0].Value);
-            Assert.Equal(4, actual[1, 1, 0].Value);
-        }
-
-        [Fact]
-        public void ShouldMoveCopy()
-        {
-            var subject = new TilesArea(
-                new FakeTilesAreaMixer()
-                {
-                    Tiles = new TileInfo[2, 2, 1]
-                    {
-                        { { new TileInfo(1, 0) }, { new TileInfo(3, 0) } },
-                        { { new TileInfo(1, 0) }, { new TileInfo(4, 0) } }
-                    }
-                },
-                new FakeTilesAreaMerger(),
-                new FakeTilesAreaLottery()
-            );
-
-            _ = subject.Move(MoveDirection.Right, TileInfo.Empty);
-
-            Assert.Equal(1, subject[0, 0, 0].Value);
-            Assert.Equal(1, subject[1, 0, 0].Value);
-            Assert.Equal(3, subject[0, 1, 0].Value);
-            Assert.Equal(4, subject[1, 1, 0].Value);
-        }
-
-        [Fact]
-        public void ShouldMoveSameMerger()
-        {
-            var subject = new TilesArea(
-                new FakeTilesAreaMixer()
-                {
-                    Tiles = new TileInfo[2, 2, 1]
-                },
-                new FakeTilesAreaMerger()
-                {
-                    OnCanMerge = (_, __) => true,
-                    OnMerge = (_, __) => (new TileInfo(11, 0), new TileInfo(7, 0))
-                },
-                new FakeTilesAreaLottery()
-                {
-                    OnCreateNext = () => new FakeTilesAreaLottery()
-                    {
-                        OnDraw = _ => new[] { MoveMarking.Empty }
-                    }
-                }
-            );
-
-            var actual = subject.Move(MoveDirection.Right, TileInfo.Empty)
-                                .Move(MoveDirection.Right, new TileInfo(13, 0));
-
-            Assert.Equal(13, actual[0, 0, 0].Value);
-            Assert.Equal(11, actual[1, 0, 0].Value);
-            Assert.Equal(7, actual[0, 1, 0].Value);
-            Assert.Equal(11, actual[1, 1, 0].Value);
-        }
-
-        [Fact]
-        public void ShouldMoveNewLottery()
-        {
-            var subject = new TilesArea(
-                new FakeTilesAreaMixer()
-                {
-                    Tiles = new TileInfo[2, 2, 1]
-                },
-                new FakeTilesAreaMerger()
-                {
-                    OnCanMerge = (_, __) => true,
-                    OnMerge = (_, __) => (new TileInfo(11, 0), new TileInfo(7, 0))
-                },
-                new FakeTilesAreaLottery()
-                {
-                    OnCreateNext = () => new FakeTilesAreaLottery()
-                    {
-                        OnDraw = _ => new[] { new MoveMarking(0, 1, 0) }
-                    }
-                }
-            );
-
-            var actual = subject.Move(MoveDirection.Right, TileInfo.Empty)
-                                .Move(MoveDirection.Right, new TileInfo(13, 0));
-
-            Assert.Equal(7, actual[0, 0, 0].Value);
-            Assert.Equal(11, actual[1, 0, 0].Value);
-            Assert.Equal(13, actual[0, 1, 0].Value);
-            Assert.Equal(11, actual[1, 1, 0].Value);
+            Assert.Equal(7, actual.Tiles[0, 0, 0].Value);
+            Assert.Equal(0, actual.Tiles[1, 0, 0].Value);
+            Assert.Equal(3, actual.Tiles[0, 1, 0].Value);
+            Assert.Equal(4, actual.Tiles[1, 1, 0].Value);
         }
     }
 }

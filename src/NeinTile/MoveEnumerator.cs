@@ -4,43 +4,31 @@ using System.Collections.Generic;
 
 namespace NeinTile
 {
-    public struct MoveEnumerator : IEnumerator<TileMove>
+    public struct MoveEnumerator : IEnumerator<Move>
     {
-        private readonly TileInfo[,,] tiles;
-
         private bool initial;
+
         private MoveData col;
         private MoveData row;
         private MoveData lay;
-        private bool blocked;
 
-        public MoveEnumerator(TileInfo[,,] tiles, MoveDirection direction)
+        public MoveEnumerator(Tiles tiles, MoveDirection direction)
         {
-            this.tiles = tiles ?? throw new ArgumentNullException(nameof(tiles));
+            if (tiles is null)
+                throw new ArgumentNullException(nameof(tiles));
 
-            initial = false;
+            col = new MoveData(0, tiles.ColCount, direction);
+            row = new MoveData(1, tiles.RowCount, direction);
+            lay = new MoveData(2, tiles.LayCount, direction);
 
-            col = new MoveData(0, tiles.GetLength(0), direction);
-            row = new MoveData(1, tiles.GetLength(1), direction);
-            lay = new MoveData(2, tiles.GetLength(2), direction);
-
-            blocked = false;
-
-            Reset();
+            initial = true;
         }
 
-        public MoveMarking Update(TileInfo source, TileInfo target)
-        {
-            tiles[col.Index, row.Index, lay.Index] = source;
-            tiles[col.ShiftIndex, row.ShiftIndex, lay.ShiftIndex] = target;
-
-            return new MoveMarking(col.ShiftMark, row.ShiftMark, lay.ShiftMark);
-        }
-
-        public TileMove Current
-            => new TileMove(
-                tiles[col.Index, row.Index, lay.Index],
-                tiles[col.ShiftIndex, row.ShiftIndex, lay.ShiftIndex]
+        public Move Current
+            => new Move(
+                new TileIndex(col.Source, row.Source, lay.Source),
+                new TileIndex(col.Target, row.Target, lay.Target),
+                new TileIndex(col.Marker, row.Marker, lay.Marker)
             );
 
         object? IEnumerator.Current
@@ -48,40 +36,84 @@ namespace NeinTile
 
         public bool MoveNext()
         {
-            if (blocked)
+            if (col.Blocked || row.Blocked || lay.Blocked)
                 return false;
-
             if (initial)
-            {
-                initial = false;
-                return true;
-            }
-
-            if (col.MoveNext())
+                return Start();
+            if (col.Next())
                 return true;
             col.Reset();
-
-            if (row.MoveNext())
+            if (row.Next())
                 return true;
             row.Reset();
-
-            return lay.MoveNext();
+            if (lay.Next())
+                return true;
+            lay.Reset();
+            return false;
         }
 
         public void Reset()
-        {
-            initial = true;
+            => initial = true;
 
+        private bool Start()
+        {
+            initial = false;
             col.Reset();
             row.Reset();
             lay.Reset();
-
-            blocked = col.Blocked
-                || row.Blocked
-                || lay.Blocked;
+            return true;
         }
 
         void IDisposable.Dispose()
-            => Reset();
+        {
+            // nothing to do here
+        }
+
+        private struct MoveData
+        {
+            private readonly int step;
+
+            private readonly int start;
+            private readonly int shift;
+            private readonly int count;
+
+            public readonly bool Blocked { get; }
+
+            public MoveData(int dim, int dimCount, MoveDirection direction)
+            {
+                step = (int)direction % 2 == 1 ? 1 : -1;
+
+                var positive = dim + dim == (int)direction;
+                var negative = dim + dim + 1 == (int)direction;
+
+                start = negative ? 1 : 0;
+                shift = positive ? 1 : negative ? -1 : 0;
+                count = positive ? dimCount - 1 : dimCount;
+
+                Blocked = start + shift == count + shift;
+
+                index = 0;
+            }
+
+            private int index;
+
+            public int Source
+                => index;
+
+            public int Target
+                => index + shift;
+
+            public int Marker
+                => shift == 0 ? index : step < 0 ? 0 : count - 1;
+
+            public bool Next()
+            {
+                index += step;
+                return start <= index && index < count;
+            }
+
+            public void Reset()
+                => index = step > 0 ? start : count - 1;
+        }
     }
 }

@@ -1,24 +1,11 @@
-using System;
+using NeinTile.Abstractions;
+using NeinTile.Editions;
 
 namespace NeinTile.Fakes
 {
-    public class FakeTilesArea : TilesArea
+    public static class FakeTilesArea
     {
-        public FakeTilesArea()
-            : base(new FakeTilesAreaMixer(), new FakeTilesAreaMerger(), new FakeTilesAreaLottery())
-        {
-        }
-
-        public Func<MoveDirection, bool> OnCanMove { get; set; }
-            = _ => false;
-
-        public override bool CanMove(MoveDirection direction)
-            => OnCanMove(direction);
-
-        public Func<MoveDirection, TileInfo, TilesArea> OnMove { get; set; }
-            = (_, __) => new FakeTilesArea();
-
-        public override TilesArea Move(MoveDirection direction, TileInfo nextTile)
-            => OnMove(direction, nextTile);
+        public static TilesArea Create(Tiles? tiles = null, IDealer? dealer = null, IMerger? merger = null)
+            => new TilesArea(tiles ?? new Tiles(4, 4, 1), dealer ?? new DefaultDealer(), merger ?? new FakeMerger());
     }
 }
