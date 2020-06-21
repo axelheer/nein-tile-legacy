@@ -4,7 +4,7 @@ using NeinTile.Abstractions;
 namespace NeinTile.Editions
 {
     [Serializable]
-    public class ClassicMerger : IMerger
+    public sealed class ClassicMerger : IMerger
     {
         public bool CanMerge(Tile source, Tile target)
         {

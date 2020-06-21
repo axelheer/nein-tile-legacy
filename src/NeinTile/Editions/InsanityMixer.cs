@@ -51,6 +51,6 @@ namespace NeinTile.Editions
         }
 
         public IMixer CreateNext()
-            => new InsanityMixer(heuristic.Next());
+            => new InsanityMixer(heuristic.CreateNext());
     }
 }

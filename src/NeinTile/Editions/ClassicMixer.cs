@@ -42,6 +42,6 @@ namespace NeinTile.Editions
         }
 
         public IMixer CreateNext()
-            => new ClassicMixer(heuristic.Next());
+            => new ClassicMixer(heuristic.CreateNext());
     }
 }

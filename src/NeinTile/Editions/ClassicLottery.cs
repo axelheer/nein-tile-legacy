@@ -72,6 +72,6 @@ namespace NeinTile.Editions
         }
 
         public ILottery CreateNext()
-            => new ClassicLottery(heuristic.Next());
+            => new ClassicLottery(heuristic.CreateNext());
     }
 }

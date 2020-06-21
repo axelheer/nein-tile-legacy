@@ -31,6 +31,6 @@ namespace NeinTile.Editions
         }
 
         public IDealer CreateNext()
-            => new DefaultDealer(heuristic.Next(), 4);
+            => new DefaultDealer(heuristic.CreateNext(), 4);
     }
 }

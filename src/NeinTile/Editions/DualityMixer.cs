@@ -32,6 +32,6 @@ namespace NeinTile.Editions
         }
 
         public IMixer CreateNext()
-            => new DualityMixer(heuristic.Next());
+            => new DualityMixer(heuristic.CreateNext());
     }
 }

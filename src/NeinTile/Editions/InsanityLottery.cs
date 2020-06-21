@@ -28,6 +28,6 @@ namespace NeinTile.Editions
         }
 
         public ILottery CreateNext()
-            => new InsanityLottery(heuristic.Next());
+            => new InsanityLottery(heuristic.CreateNext());
     }
 }

@@ -29,7 +29,7 @@ namespace NeinTile
         public Random Roll()
             => new Random(seed);
 
-        public DeterministicHeuristic Next()
+        public DeterministicHeuristic CreateNext()
             => new DeterministicHeuristic(next);
     }
 }
