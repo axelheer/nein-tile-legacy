@@ -4,7 +4,7 @@ namespace NeinTile
 {
     public readonly struct Move : IEquatable<Move>
     {
-        public static Move Empty { get; } = new Move();
+        public static Move Empty { get; }
 
         public TileIndex Source { get; }
 

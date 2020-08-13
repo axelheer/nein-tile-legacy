@@ -4,7 +4,7 @@ namespace NeinTile
 {
     public sealed class GameMaker
     {
-        public IMaker? Maker { get; set; } = null;
+        public IMaker? Maker { get; set; }
 
         public int ColCount { get; set; } = 4;
         public int RowCount { get; set; } = 4;

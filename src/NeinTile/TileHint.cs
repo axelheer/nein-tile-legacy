@@ -5,7 +5,7 @@ namespace NeinTile
     [Serializable]
     public readonly struct TileHint : IEquatable<TileHint>
     {
-        public static TileHint Empty { get; } = new TileHint();
+        public static TileHint Empty { get; }
 
         public Tile First { get; }
 

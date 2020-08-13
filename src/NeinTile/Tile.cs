@@ -5,7 +5,7 @@ namespace NeinTile
     [Serializable]
     public readonly struct Tile : IEquatable<Tile>
     {
-        public static Tile Empty { get; } = new Tile();
+        public static Tile Empty { get; }
 
         public long Value { get; }
 
