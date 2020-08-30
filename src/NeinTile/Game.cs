@@ -55,6 +55,8 @@ namespace NeinTile
             return this;
         }
 
+#pragma warning disable MSLIB0003
+
         public void Save(Stream inputStream)
         {
             if (inputStream is null)
