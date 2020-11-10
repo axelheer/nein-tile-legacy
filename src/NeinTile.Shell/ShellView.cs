@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
+#pragma warning disable CA1416
 #pragma warning disable CA1822
 
 namespace NeinTile.Shell
