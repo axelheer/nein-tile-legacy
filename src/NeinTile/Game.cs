@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
+#pragma warning disable CA5362
+
 namespace NeinTile
 {
     [Serializable]
@@ -55,6 +57,8 @@ namespace NeinTile
             return this;
         }
 
+#pragma warning disable CA2300
+#pragma warning disable CA2301
 #pragma warning disable MSLIB0003
 #pragma warning disable SYSLIB0011
 
