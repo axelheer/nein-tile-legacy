@@ -47,21 +47,14 @@ jobs:
   prerelease:
     needs: package
     runs-on: windows-latest
-    continue-on-error: true
     steps:
     - name: Download packages
       uses: actions/download-artifact@v1
       with:
         name: packages
         path: .
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v1
-      with:
-        source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
-      env:
-        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Publish packages
-      run: dotnet nuget push *.nupkg --skip-duplicate
+      run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
     if: github.event_name == 'push' && github.ref != 'refs/heads/final'
   release:
     needs: package
@@ -72,8 +65,6 @@ jobs:
       with:
         name: packages
         path: .
-    - name: Setup dotnet
-      uses: actions/setup-dotnet@v1
     - name: Publish packages
       run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate --source nuget.org
     - name: Extract version
