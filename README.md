@@ -4,7 +4,7 @@
 [![Latest package](https://img.shields.io/nuget/v/NeinTile.Shell.svg)](https://www.nuget.org/packages/NeinTile.Shell)
 [![Download tracker](https://img.shields.io/nuget/dt/NeinTile.Shell.svg)](https://www.nuget.org/packages/NeinTile.Shell)
 [![GitHub status](https://github.com/axelheer/nein-tile-legacy/workflows/everything/badge.svg)](https://github.com/axelheer/nein-tile-legacy/actions)
-[![Code coverage](https://codecov.io/gh/axelheer/nein-tile-legacy/branch/devel/graph/badge.svg)](https://codecov.io/gh/axelheer/nein-tile-legacy)
+[![Code coverage](https://codecov.io/gh/axelheer/nein-tile-legacy/branch/main/graph/badge.svg)](https://codecov.io/gh/axelheer/nein-tile-legacy)
 
 *NEW* Download the App
 -----------------------
